@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="MacroTrack" />
   <title>MacroTrack — The Ascend Standard</title>
 
-  <link id="favicon-link" rel="icon" type="image/svg+xml" />
+  <link id="favicon-link" rel="icon" type="image/png" />
   <link id="apple-icon-link" rel="apple-touch-icon" sizes="180x180" />
   <link id="manifest-link" rel="manifest" />
 
@@ -24,7 +24,6 @@
       --blue: #2563eb;
       --green: #16a34a;
       --amber: #f59e0b;
-      --red: #ef4444;
     }
 
     * {
@@ -34,15 +33,15 @@
 
     body {
       margin: 0;
-      padding: calc(16px + env(safe-area-inset-top)) 14px calc(92px + env(safe-area-inset-bottom)) 14px;
+      padding: calc(12px + env(safe-area-inset-top)) 12px calc(84px + env(safe-area-inset-bottom)) 12px;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
     .container {
-      max-width: 780px;
+      max-width: 820px;
       margin: 0 auto;
     }
 
@@ -50,29 +49,29 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .brand-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
       background: #000000;
-      border: 1px solid #2b2b2b;
+      border: 1px solid #2a2a2a;
       display: grid;
       place-items: center;
       flex-shrink: 0;
     }
 
     .eyebrow {
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--muted);
@@ -80,24 +79,24 @@
     }
 
     h1 {
-      margin: 2px 0 0 0;
-      font-size: 22px;
-      line-height: 1.15;
+      margin: 1px 0 0 0;
+      font-size: 20px;
+      line-height: 1.1;
     }
 
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn {
       border: 1px solid var(--border);
       background: var(--card-2);
       color: var(--text);
-      border-radius: 12px;
-      padding: 9px 12px;
-      font-size: 13px;
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
     }
@@ -113,13 +112,13 @@
     }
 
     .btn-green {
-      background: rgba(22, 163, 74, 0.16);
+      background: rgba(22, 163, 74, 0.18);
       border-color: rgba(22, 163, 74, 0.45);
       color: #86efac;
     }
 
     .btn-amber {
-      background: rgba(245, 158, 11, 0.16);
+      background: rgba(245, 158, 11, 0.18);
       border-color: rgba(245, 158, 11, 0.45);
       color: #fcd34d;
     }
@@ -127,9 +126,9 @@
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 14px;
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 10px;
     }
 
     .date-bar {
@@ -145,43 +144,43 @@
 
     .date-title {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .badge {
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      padding: 3px 7px;
+      padding: 2px 7px;
       border-radius: 999px;
       background: rgba(37, 99, 235, 0.22);
       color: #93c5fd;
     }
 
     .date-sub {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
     }
 
     .mode-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .mode-btn {
-      padding: 14px;
-      border-radius: 16px;
+      padding: 11px;
+      border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--card);
       color: var(--text);
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
     }
 
@@ -195,29 +194,29 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 14px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
     .kcal-big {
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 800;
       line-height: 1.05;
     }
 
     .kcal-target {
-      font-size: 15px;
+      font-size: 14px;
       color: var(--muted);
       font-weight: 600;
     }
 
     .progress-track {
       width: 100%;
-      height: 8px;
+      height: 7px;
       border-radius: 999px;
       background: var(--card-2);
       overflow: hidden;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .progress-fill {
@@ -230,81 +229,80 @@
     .macro-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 8px;
     }
 
     .macro-box {
       background: var(--card-2);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 11px;
+      border-radius: 12px;
+      padding: 9px 10px;
     }
 
     .macro-box .label {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
     }
 
     .macro-box .val {
-      margin-top: 4px;
-      font-size: 15px;
+      margin-top: 2px;
+      font-size: 14px;
       font-weight: 700;
     }
 
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 600px) {
-      .two-col {
-        grid-template-columns: 1fr;
-      }
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .counter-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
     .counter-title {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
     }
 
     .counter-val {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 800;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .counter-val span {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--muted);
       font-weight: 600;
     }
 
     .step-row {
       display: flex;
-      gap: 8px;
+      gap: 5px;
       flex-wrap: wrap;
+    }
+
+    .step-row .btn {
+      padding: 6px 8px;
+      font-size: 11px;
     }
 
     .supp-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px;
-      border-radius: 16px;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 14px;
       border: 1px solid var(--border);
       background: var(--card);
-      margin-bottom: 10px;
       cursor: pointer;
     }
 
@@ -314,13 +312,13 @@
     }
 
     .check-circle {
-      width: 26px;
-      height: 26px;
+      width: 22px;
+      height: 22px;
       border-radius: 999px;
       border: 2px solid #475569;
       display: grid;
       place-items: center;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -331,63 +329,104 @@
       color: #fff;
     }
 
+    .meals-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 680px) {
+      .meals-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .meal-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-    }
-
-    .meal-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
+      padding: 11px;
+      margin-bottom: 0;
     }
 
     .meal-name {
       font-weight: 700;
-      font-size: 15px;
+      font-size: 14px;
+      margin-bottom: 6px;
     }
 
-    .meal-meta {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .sync-grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    .field-label {
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 600;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 10px 12px;
+    .slot-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--card-2);
+      margin-top: 6px;
+    }
+
+    .slot-row.done {
+      border-color: rgba(22, 163, 74, 0.55);
+      background: rgba(22, 163, 74, 0.12);
+    }
+
+    .slot-main {
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .slot-title {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .slot-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .alt-select {
+      max-width: 118px;
+      background: var(--card);
       color: var(--text);
-      font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 6px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--card-2);
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
     }
 
     .status-line {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
       flex-wrap: wrap;
+      margin-top: 6px;
     }
 
     .bottom-nav {
@@ -395,13 +434,13 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(11, 15, 23, 0.94);
+      background: rgba(11, 15, 23, 0.95);
       backdrop-filter: blur(12px);
       border-top: 1px solid var(--border);
-      padding: 8px 12px calc(8px + env(safe-area-inset-bottom)) 12px;
+      padding: 6px 12px calc(6px + env(safe-area-inset-bottom)) 12px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 6px;
       z-index: 40;
     }
 
@@ -409,7 +448,7 @@
       background: transparent;
       border: 0;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       display: flex;
       flex-direction: column;
@@ -431,11 +470,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 12px;
-      border-radius: 12px;
+      padding: 9px 11px;
+      border-radius: 11px;
       background: var(--card-2);
-      margin-bottom: 8px;
-      font-size: 13px;
+      margin-bottom: 7px;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -444,7 +483,7 @@
     <header class="topbar">
       <div class="brand">
         <div class="brand-icon" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 512 512">
+          <svg width="22" height="22" viewBox="0 0 512 512">
             <polygon points="292,104 148,282 252,282 220,408 364,230 260,230"
                      fill="none" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -456,24 +495,27 @@
       </div>
 
       <div class="top-actions">
-        <button id="btn-sync-now" class="btn btn-primary" type="button">Sync</button>
+        <span id="sync-pill" class="badge">Sync auto</span>
         <button id="btn-toggle-sync-box" class="btn" type="button">Cloud</button>
       </div>
     </header>
 
     <section id="sync-panel" class="card hidden">
-      <div class="sync-grid">
+      <div style="display:grid; gap:8px;">
         <div>
-          <label class="field-label" for="firebase-url-input">URL Firebase Realtime Database</label>
+          <span class="eyebrow">URL Firebase Realtime Database</span>
           <input id="firebase-url-input" type="text" placeholder="https://macrotrack-sync-default-rtdb.firebaseio.com" />
         </div>
         <div>
-          <label class="field-label" for="sync-uid-input">Identifiant personnel ($uid)</label>
+          <span class="eyebrow">Identifiant personnel ($uid)</span>
           <input id="sync-uid-input" type="text" placeholder="ex. mt_maxime_9x4k2m" />
         </div>
         <div class="status-line">
-          <span id="sync-status-text">Prêt</span>
-          <button id="btn-save-sync-config" class="btn btn-green" type="button">Enregistrer config</button>
+          <span id="sync-status-text">Synchronisation active</span>
+          <div style="display:flex; gap:6px;">
+            <button id="btn-sync-now" class="btn btn-primary" type="button">Forcer sync</button>
+            <button id="btn-save-sync-config" class="btn btn-green" type="button">Enregistrer</button>
+          </div>
         </div>
       </div>
     </section>
@@ -508,7 +550,7 @@
             </div>
           </div>
           <div style="text-align:right;">
-            <div id="meals-counter" style="font-weight:700; color:#4ade80;">0/6 repas (0/20)</div>
+            <div id="meals-counter" style="font-weight:700; color:#4ade80; font-size:13px;">0/4 blocs</div>
             <div id="pct-counter" class="date-sub">0% complété</div>
           </div>
         </div>
@@ -534,7 +576,7 @@
       </section>
 
       <div class="two-col">
-        <section class="card">
+        <section class="card" style="margin-bottom:0;">
           <div class="counter-head">
             <div class="counter-title">Eau</div>
             <span class="badge">4,5 L</span>
@@ -549,7 +591,7 @@
           </div>
         </section>
 
-        <section class="card">
+        <section class="card" style="margin-bottom:0;">
           <div class="counter-head">
             <div class="counter-title">Sel</div>
             <span class="badge" style="background:rgba(245,158,11,0.2); color:#fcd34d;">6 g</span>
@@ -568,7 +610,7 @@
       <div class="two-col">
         <div id="supp-creatine" class="supp-item" onclick="toggleSupp('creatine')">
           <div>
-            <div style="font-weight:700;">Créatine</div>
+            <div style="font-weight:700; font-size:14px;">Créatine</div>
             <div class="date-sub">5 g / jour</div>
           </div>
           <div class="check-circle" id="check-creatine"></div>
@@ -576,34 +618,48 @@
 
         <div id="supp-eaa" class="supp-item" onclick="toggleSupp('eaa')">
           <div>
-            <div style="font-weight:700;">EAA</div>
+            <div style="font-weight:700; font-size:14px;">EAA</div>
             <div class="date-sub">15 g / jour</div>
           </div>
           <div class="check-circle" id="check-eaa"></div>
         </div>
       </div>
 
-      <div id="supp-booster" class="supp-item" onclick="toggleSupp('booster')">
+      <div id="supp-booster" class="supp-item" style="margin-bottom:10px;" onclick="toggleSupp('booster')">
         <div>
-          <div style="font-weight:700;">Booster pré workout <span class="badge" style="background:rgba(239,68,68,0.2); color:#fca5a5;">200 mg caféine</span></div>
+          <div style="font-weight:700; font-size:14px;">Booster pré workout <span class="badge" style="background:rgba(239,68,68,0.2); color:#fca5a5;">200 mg caféine</span></div>
           <div class="date-sub">Prise avant séance</div>
         </div>
         <div class="check-circle" id="check-booster"></div>
       </div>
 
-      <div id="meals-list"></div>
+      <div id="meals-list" class="meals-grid"></div>
     </div>
 
     <div id="view-stats" class="hidden">
       <section class="card">
-        <h2 style="margin:0 0 8px 0; font-size:18px;">Synthèse du jour</h2>
+        <h2 style="margin:0 0 8px 0; font-size:17px;">Radar &amp; Stats</h2>
         <div id="stats-summary" class="date-sub"></div>
+      </section>
+
+      <section class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
+          <div>
+            <div class="eyebrow">Suivi hebdomadaire</div>
+            <h2 style="margin:2px 0 0 0; font-size:17px;">Bilan fin de semaine pour le coach</h2>
+          </div>
+          <button id="btn-copy-coach" class="btn btn-green" type="button">Copier pour le coach</button>
+        </div>
+        <textarea id="weekly-coach-note" placeholder="Écris ici ton point de fin de semaine (poids moyen, adhérence macros, sommeil/séances, questions ou ajustements souhaités pour le coach)..."></textarea>
+        <div class="status-line">
+          <span id="coach-copy-status">Éditable à tout moment • Synchronisé avec ton compte</span>
+        </div>
       </section>
     </div>
 
     <div id="view-history" class="hidden">
       <section class="card">
-        <h2 style="margin:0 0 10px 0; font-size:18px;">Journées enregistrées</h2>
+        <h2 style="margin:0 0 10px 0; font-size:17px;">Historique</h2>
         <div id="history-list"></div>
       </section>
     </div>
@@ -611,53 +667,132 @@
 
   <nav class="bottom-nav">
     <button id="nav-today" class="nav-btn active" type="button" onclick="switchTab('today')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+        <path d="M16 2v4M8 2v4M3 10h18M9 15l2 2 4-4"></path>
+      </svg>
       <span>Aujourd'hui</span>
     </button>
+
     <button id="nav-stats" class="nav-btn" type="button" onclick="switchTab('stats')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+        <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+      </svg>
       <span>Radar &amp; Stats</span>
     </button>
+
     <button id="nav-history" class="nav-btn" type="button" onclick="switchTab('history')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+        <path d="M3 3v5h5M12 7v5l4 2"></path>
+      </svg>
       <span>Historique</span>
     </button>
   </nav>
 
   <script>
     const DEFAULT_FIREBASE_URL = "https://macrotrack-sync-default-rtdb.firebaseio.com";
-    const STORAGE_KEY = "macrotrack_state_v1";
-    const SYNC_CFG_KEY = "macrotrack_sync_cfg_v1";
+    const DEFAULT_UID = "mt_maxime_w_8492";
+    const STORAGE_KEY = "macrotrack_state_v2";
+    const SYNC_CFG_KEY = "macrotrack_sync_cfg_v2";
 
     const TARGETS = {
       training: { kcal: 2388, p: 217, c: 255, f: 56 },
       rest:     { kcal: 2150, p: 215, c: 195, f: 56 }
     };
 
-    const BASE_MEALS = [
-      { id: "m1", name: "Repas 1 — Petit-déjeuner", items: [
-        { id: "i1", label: "Flocons d'avoine (80g)", kcal: 300, p: 10, c: 52, f: 6 },
-        { id: "i2", label: "Whey isolate (35g)", kcal: 130, p: 30, c: 2, f: 0.5 },
-        { id: "i3", label: "Blancs d'œufs (200g)", kcal: 100, p: 22, c: 1, f: 0 }
-      ]},
-      { id: "m2", name: "Repas 2 — Déjeuner", items: [
-        { id: "i4", label: "Poulet ou bœuf 5% cuit (180g)", kcal: 260, p: 50, c: 0, f: 6 },
-        { id: "i5", label: "Riz / semoule / pomme de terre cuite (250g)", kcal: 310, p: 7, c: 68, f: 1 },
-        { id: "i6", label: "Légumes + huile (10g)", kcal: 120, p: 3, c: 8, f: 10 }
-      ]},
-      { id: "m3", name: "Repas 3 — Collation pré/post", items: [
-        { id: "i7", label: "Crème de riz (70g)", kcal: 255, p: 5, c: 56, f: 1 },
-        { id: "i8", label: "Whey (30g)", kcal: 115, p: 25, c: 2, f: 1 }
-      ]},
-      { id: "m4", name: "Repas 4 — Dîner", items: [
-        { id: "i9", label: "Poisson / bœuf maigre / volaille (180g)", kcal: 270, p: 48, c: 0, f: 8 },
-        { id: "i10", label: "Féculents cuits (200g)", kcal: 250, p: 5, c: 54, f: 1 },
-        { id: "i11", label: "Fromage blanc 0% (200g)", kcal: 100, p: 17, c: 8, f: 0 }
-      ]},
-      { id: "m5", name: "Repas 5 — Soirée", items: [
-        { id: "i12", label: "Noix du Brésil (20g)", kcal: 135, p: 3, c: 2, f: 13.5 },
-        { id: "i13", label: "Caséine / fromage blanc (150g)", kcal: 75, p: 13, c: 6, f: 0 }
-      ]},
-      { id: "m6", name: "Repas 6 — Bonus / Ajustement", items: [
-        { id: "i14", label: "Fruit / légumineuses / ajustement macros", kcal: 168, p: 12, c: 28, f: 2 }
-      ]}
+    // Ordre exact : Repas 1, Repas 2, Collation (après Repas 2), Repas 3 (soir avec fruits/légumineuses)
+    const MEAL_SLOTS = [
+      {
+        id: "repas_1",
+        name: "Repas 1",
+        rows: [
+          {
+            slotId: "r1_a",
+            options: [
+              { label: "Flocons d'avoine (80g)", kcal: 300, p: 10, c: 52, f: 6 },
+              { label: "Crème de riz (80g)", kcal: 290, p: 6, c: 64, f: 1 }
+            ]
+          },
+          {
+            slotId: "r1_b",
+            options: [
+              { label: "Whey isolate (35g) + blancs œufs (150g)", kcal: 205, p: 46, c: 2, f: 0.5 },
+              { label: "Œufs entiers (2) + blancs œufs (150g)", kcal: 220, p: 30, c: 1, f: 10 }
+            ]
+          }
+        ]
+      },
+      {
+        id: "repas_2",
+        name: "Repas 2",
+        rows: [
+          {
+            slotId: "r2_a",
+            options: [
+              { label: "Poulet cuit (180g)", kcal: 295, p: 54, c: 0, f: 6.5 },
+              { label: "Bœuf 5% cuit (180g)", kcal: 270, p: 49, c: 0, f: 7 },
+              { label: "Thon rouge / poisson (180g)", kcal: 250, p: 46, c: 0, f: 6 }
+            ]
+          },
+          {
+            slotId: "r2_b",
+            options: [
+              { label: "Riz cuit (250g)", kcal: 325, p: 7, c: 70, f: 1 },
+              { label: "Pommes de terre cuites (320g)", kcal: 280, p: 6, c: 62, f: 0.5 },
+              { label: "Semoule cuite (240g)", kcal: 290, p: 8, c: 58, f: 1 }
+            ]
+          }
+        ]
+      },
+      {
+        id: "collation",
+        name: "Collation",
+        rows: [
+          {
+            slotId: "col_a",
+            options: [
+              { label: "Whey (30g) + fromage blanc 0% (200g)", kcal: 215, p: 42, c: 10, f: 1 },
+              { label: "Skyr / fromage blanc 0% (300g)", kcal: 150, p: 26, c: 12, f: 0 }
+            ]
+          },
+          {
+            slotId: "col_b",
+            options: [
+              { label: "Noix du Brésil (20g)", kcal: 135, p: 3, c: 2, f: 13.5 },
+              { label: "Beurre de cacahuète 100% (15g)", kcal: 90, p: 4, c: 2, f: 7.5 }
+            ]
+          }
+        ]
+      },
+      {
+        id: "repas_3",
+        name: "Repas 3",
+        rows: [
+          {
+            slotId: "r3_a",
+            options: [
+              { label: "Poisson / bœuf maigre / poulet (180g)", kcal: 275, p: 49, c: 0, f: 7 },
+              { label: "Œufs entiers (3) + blancs (100g)", kcal: 265, p: 29, c: 1, f: 15 }
+            ]
+          },
+          {
+            slotId: "r3_b",
+            options: [
+              { label: "Féculents cuits (200g) + légumes", kcal: 275, p: 7, c: 58, f: 1 },
+              { label: "Légumineuses cuites (180g) + légumes", kcal: 225, p: 14, c: 38, f: 1.5 }
+            ]
+          },
+          {
+            slotId: "r3_c",
+            options: [
+              { label: "Fruit (150g)", kcal: 85, p: 1, c: 20, f: 0.5 },
+              { label: "Sans fruit supplémentaire", kcal: 0, p: 0, c: 0, f: 0 }
+            ]
+          }
+        ]
+      }
     ];
 
     function buildBoltIconDataUrl(size = 512) {
@@ -698,10 +833,7 @@
       const manifestLink = document.getElementById("manifest-link");
 
       if (appleIcon) appleIcon.href = pngUrl;
-      if (favIcon) {
-        favIcon.type = "image/png";
-        favIcon.href = pngUrl;
-      }
+      if (favIcon) favIcon.href = pngUrl;
 
       const manifestObj = {
         name: "MacroTrack",
@@ -710,16 +842,15 @@
         display: "standalone",
         background_color: "#000000",
         theme_color: "#000000",
-        icons: [
-          { src: pngUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }
-        ]
+        icons: [{ src: pngUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }]
       };
-      const blob = new Blob([JSON.stringify(manifestObj)], { type: "application/manifest+json" });
-      if (manifestLink) manifestLink.href = URL.createObjectURL(blob);
+      if (manifestLink) {
+        manifestLink.href = URL.createObjectURL(new Blob([JSON.stringify(manifestObj)], { type: "application/manifest+json" }));
+      }
 
       if ("serviceWorker" in navigator) {
         const swCode = `
-          const CACHE_NAME = "macrotrack-cache-v1";
+          const CACHE_NAME = "macrotrack-cache-v2";
           self.addEventListener("install", (e) => {
             e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(["./"])));
             self.skipWaiting();
@@ -735,8 +866,7 @@
             );
           });
         `;
-        const swBlob = new Blob([swCode], { type: "application/javascript" });
-        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+        navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], { type: "application/javascript" }))).catch(() => {});
       }
     }
 
@@ -752,7 +882,8 @@
         water: 0,
         salt: 0,
         supps: { creatine: false, eaa: false, booster: false },
-        checkedItems: {}
+        selectedAlt: {},
+        checkedSlots: {}
       };
     }
 
@@ -761,49 +892,35 @@
         const raw = JSON.parse(localStorage.getItem(SYNC_CFG_KEY) || "{}");
         return {
           url: (raw.url || DEFAULT_FIREBASE_URL).replace(/\/+$/, ""),
-          uid: raw.uid || "mt_maxime_perso",
-          updatedAt: raw.updatedAt || 0
+          uid: (raw.uid || DEFAULT_UID).trim() || DEFAULT_UID
         };
       } catch {
-        return { url: DEFAULT_FIREBASE_URL, uid: "mt_maxime_perso", updatedAt: 0 };
+        return { url: DEFAULT_FIREBASE_URL, uid: DEFAULT_UID };
       }
     }
 
-    let syncCfg = loadSyncCfg();
-    let dayOffset = 0;
-
-    function loadAllState() {
+    function loadState() {
       try {
         const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
         return {
           days: raw.days || {},
+          weeklyNote: raw.weeklyNote || "",
           updatedAt: raw.updatedAt || 0
         };
       } catch {
-        return { days: {}, updatedAt: 0 };
+        return { days: {}, weeklyNote: "", updatedAt: 0 };
       }
     }
 
-    let appState = loadAllState();
+    let syncCfg = loadSyncCfg();
+    let appState = loadState();
+    let dayOffset = 0;
+    let syncTimer = null;
 
     function getCurrentDay() {
       const k = todayKey(dayOffset);
-      if (!appState.days[k]) {
-        appState.days[k] = defaultDayData();
-      }
+      if (!appState.days[k]) appState.days[k] = defaultDayData();
       return { key: k, data: appState.days[k] };
-    }
-
-    function saveLocalAndQueueSync() {
-      appState.updatedAt = Date.now();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-      render();
-      pushToFirebase();
-    }
-
-    function setStatus(msg) {
-      const el = document.getElementById("sync-status-text");
-      if (el) el.textContent = msg;
     }
 
     function endpointUrl() {
@@ -813,79 +930,116 @@
       return `${base}/users/${uid}.json`;
     }
 
+    function setSyncPill(label, color = "#93c5fd") {
+      const pill = document.getElementById("sync-pill");
+      const status = document.getElementById("sync-status-text");
+      if (pill) {
+        pill.textContent = label;
+        pill.style.color = color;
+      }
+      if (status) status.textContent = label;
+    }
+
+    function persistAndSync() {
+      appState.updatedAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      render();
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(pushToFirebase, 250);
+    }
+
     async function pushToFirebase() {
       const url = endpointUrl();
       if (!url || !navigator.onLine) {
-        setStatus("Hors ligne — enregistré en local");
+        setSyncPill("Hors ligne", "#fcd34d");
         return;
       }
       try {
+        setSyncPill("Envoi...", "#93c5fd");
         const res = await fetch(url, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(appState)
         });
         if (!res.ok) throw new Error("HTTP " + res.status);
-        setStatus("Synchronisé (" + new Date().toLocaleTimeString("fr-FR") + ")");
-      } catch (err) {
-        setStatus("Mode local actif (" + err.message + ")");
+        setSyncPill("Synchro OK", "#86efac");
+      } catch {
+        setSyncPill("Local / Erreur sync", "#fcd34d");
       }
     }
 
     async function pullFromFirebase() {
       const url = endpointUrl();
       if (!url || !navigator.onLine) {
-        setStatus("Hors ligne — données locales");
+        setSyncPill("Hors ligne", "#fcd34d");
         return;
       }
       try {
-        setStatus("Synchronisation...");
+        setSyncPill("Synchro...", "#93c5fd");
         const res = await fetch(url);
         if (!res.ok) throw new Error("HTTP " + res.status);
         const remote = await res.json();
-        if (remote && remote.days) {
+        if (remote && typeof remote === "object") {
+          const mergedDays = { ...(remote.days || {}), ...(appState.days || {}) };
           if ((remote.updatedAt || 0) > (appState.updatedAt || 0)) {
-            appState = { days: remote.days, updatedAt: remote.updatedAt || Date.now() };
+            appState = {
+              days: { ...(appState.days || {}), ...(remote.days || {}) },
+              weeklyNote: remote.weeklyNote !== undefined ? remote.weeklyNote : (appState.weeklyNote || ""),
+              updatedAt: remote.updatedAt || Date.now()
+            };
             localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
             render();
-          } else if ((appState.updatedAt || 0) > (remote.updatedAt || 0)) {
+            setSyncPill("À jour", "#86efac");
+          } else if (Object.keys(mergedDays).length > 0) {
             await pushToFirebase();
+          } else {
+            setSyncPill("À jour", "#86efac");
           }
+        } else {
+          setSyncPill("À jour", "#86efac");
         }
-        setStatus("À jour (" + new Date().toLocaleTimeString("fr-FR") + ")");
-      } catch (err) {
-        setStatus("Sync indisponible (" + err.message + ")");
+      } catch {
+        setSyncPill("Local / Hors ligne", "#fcd34d");
       }
     }
 
     function adjustWater(delta) {
       const { data } = getCurrentDay();
-      data.water = Math.max(0, Math.round((data.water + delta) * 100) / 100);
-      saveLocalAndQueueSync();
+      data.water = Math.max(0, Math.round((Number(data.water || 0) + delta) * 100) / 100);
+      persistAndSync();
     }
 
     function adjustSalt(delta) {
       const { data } = getCurrentDay();
-      data.salt = Math.max(0, Math.round((data.salt + delta) * 10) / 10);
-      saveLocalAndQueueSync();
+      data.salt = Math.max(0, Math.round((Number(data.salt || 0) + delta) * 10) / 10);
+      persistAndSync();
     }
 
     function toggleSupp(key) {
       const { data } = getCurrentDay();
+      data.supps = data.supps || {};
       data.supps[key] = !data.supps[key];
-      saveLocalAndQueueSync();
+      persistAndSync();
     }
 
-    function toggleFoodItem(itemId) {
+    function changeOption(slotId, idx) {
       const { data } = getCurrentDay();
-      data.checkedItems[itemId] = !data.checkedItems[itemId];
-      saveLocalAndQueueSync();
+      data.selectedAlt = data.selectedAlt || {};
+      data.selectedAlt[slotId] = Number(idx);
+      persistAndSync();
+    }
+
+    function toggleSlot(slotId) {
+      const { data } = getCurrentDay();
+      data.checkedSlots = data.checkedSlots || {};
+      data.checkedSlots[slotId] = !data.checkedSlots[slotId];
+      persistAndSync();
     }
 
     function setMode(mode) {
       const { data } = getCurrentDay();
       data.mode = mode;
-      saveLocalAndQueueSync();
+      persistAndSync();
     }
 
     function switchTab(tab) {
@@ -893,26 +1047,30 @@
         document.getElementById("view-" + t).classList.toggle("hidden", t !== tab);
         document.getElementById("nav-" + t).classList.toggle("active", t === tab);
       });
-      if (tab === "history") renderHistory();
       if (tab === "stats") renderStats();
+      if (tab === "history") renderHistory();
     }
 
     function renderStats() {
       const { key, data } = getCurrentDay();
       const t = TARGETS[data.mode] || TARGETS.training;
       document.getElementById("stats-summary").textContent =
-        `Date : ${key} • Profil : ${data.mode === "training" ? "Entraînement" : "Repos"} • Cible : ${t.kcal} kcal (${t.p}g P / ${t.c}g G / ${t.f}g L) • Eau : ${data.water.toFixed(2)}L • Sel : ${data.salt.toFixed(1)}g`;
+        `${key} • ${data.mode === "training" ? "Entraînement" : "Repos"} • Cible ${t.kcal} kcal (${t.p}g P / ${t.c}g G / ${t.f}g L) • Eau ${Number(data.water || 0).toFixed(2)}L • Sel ${Number(data.salt || 0).toFixed(1)}g`;
+      const noteEl = document.getElementById("weekly-coach-note");
+      if (noteEl && noteEl.value !== (appState.weeklyNote || "")) {
+        noteEl.value = appState.weeklyNote || "";
+      }
     }
 
     function renderHistory() {
       const list = document.getElementById("history-list");
-      const keys = Object.keys(appState.days).sort().reverse();
+      const keys = Object.keys(appState.days || {}).sort().reverse();
       if (!keys.length) {
-        list.innerHTML = `<div class="date-sub">Aucune journée enregistrée pour le moment.</div>`;
+        list.innerHTML = `<div class="date-sub">Aucune journée enregistrée.</div>`;
         return;
       }
       list.innerHTML = keys.map((k) => {
-        const d = appState.days[k];
+        const d = appState.days[k] || {};
         return `<div class="history-row">
           <strong>${k}</strong>
           <span>${d.mode === "training" ? "Entraînement" : "Repos"} • Eau ${Number(d.water || 0).toFixed(2)}L • Sel ${Number(d.salt || 0).toFixed(1)}g</span>
@@ -922,35 +1080,63 @@
 
     function render() {
       const { key, data } = getCurrentDay();
+      data.selectedAlt = data.selectedAlt || {};
+      data.checkedSlots = data.checkedSlots || {};
+      data.supps = data.supps || {};
       const target = TARGETS[data.mode] || TARGETS.training;
 
       document.getElementById("day-label").textContent =
         dayOffset === 0 ? "Aujourd'hui" : (dayOffset === -1 ? "Hier" : (dayOffset === 1 ? "Demain" : key));
 
-      const dt = new Date(key + "T12:00:00");
       document.getElementById("date-formatted").textContent =
-        dt.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+        new Date(key + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
 
       document.getElementById("btn-mode-training").classList.toggle("active", data.mode === "training");
       document.getElementById("btn-mode-rest").classList.toggle("active", data.mode === "rest");
 
-      let kcal = 0, p = 0, c = 0, f = 0, checkedCount = 0, totalItems = 0, mealsDone = 0;
+      let kcal = 0, p = 0, c = 0, f = 0, checkedRows = 0, totalRows = 0, blocsDone = 0;
 
-      BASE_MEALS.forEach((meal) => {
-        let mealHasChecked = false;
-        meal.items.forEach((item) => {
-          totalItems++;
-          if (data.checkedItems[item.id]) {
-            checkedCount++;
-            mealHasChecked = true;
-            kcal += item.kcal;
-            p += item.p;
-            c += item.c;
-            f += item.f;
+      const mealsHtml = MEAL_SLOTS.map((meal) => {
+        let blocHasChecked = false;
+        const rowsHtml = meal.rows.map((row) => {
+          totalRows++;
+          const altIndex = Number(data.selectedAlt[row.slotId] || 0);
+          const opt = row.options[altIndex] || row.options[0];
+          const isChecked = Boolean(data.checkedSlots[row.slotId]);
+          if (isChecked) {
+            checkedRows++;
+            blocHasChecked = true;
+            kcal += opt.kcal;
+            p += opt.p;
+            c += opt.c;
+            f += opt.f;
           }
-        });
-        if (mealHasChecked) mealsDone++;
-      });
+
+          const optionsTags = row.options.map((o, i) =>
+            `<option value="${i}" ${i === altIndex ? "selected" : ""}>Alt ${i + 1}</option>`
+          ).join("");
+
+          return `<div class="slot-row ${isChecked ? "done" : ""}">
+            <div class="slot-main" onclick="toggleSlot('${row.slotId}')">
+              <div class="slot-title">${opt.label}</div>
+              <div class="slot-meta">${opt.kcal} kcal • ${opt.p}g P • ${opt.c}g G • ${opt.f}g L</div>
+            </div>
+            <select class="alt-select" aria-label="Alternative" onchange="changeOption('${row.slotId}', this.value)">
+              ${optionsTags}
+            </select>
+            <div class="check-circle" onclick="toggleSlot('${row.slotId}')">${isChecked ? "✓" : ""}</div>
+          </div>`;
+        }).join("");
+
+        if (blocHasChecked) blocsDone++;
+
+        return `<div class="meal-card">
+          <div class="meal-name">${meal.name}</div>
+          ${rowsHtml}
+        </div>`;
+      }).join("");
+
+      document.getElementById("meals-list").innerHTML = mealsHtml;
 
       document.getElementById("kcal-done").textContent = Math.round(kcal);
       document.getElementById("kcal-target").textContent = target.kcal;
@@ -963,38 +1149,17 @@
 
       const pct = Math.min(100, Math.round((kcal / target.kcal) * 100));
       document.getElementById("kcal-progress").style.width = pct + "%";
-      document.getElementById("meals-counter").textContent = `${mealsDone}/${BASE_MEALS.length} repas (${checkedCount}/${totalItems})`;
+      document.getElementById("meals-counter").textContent = `${blocsDone}/${MEAL_SLOTS.length} blocs (${checkedRows}/${totalRows})`;
       document.getElementById("pct-counter").textContent = `${pct}% complété`;
 
       document.getElementById("water-val").textContent = Number(data.water || 0).toFixed(2);
       document.getElementById("salt-val").textContent = Number(data.salt || 0).toFixed(1);
 
       ["creatine", "eaa", "booster"].forEach((s) => {
-        const active = Boolean(data.supps && data.supps[s]);
+        const active = Boolean(data.supps[s]);
         document.getElementById("supp-" + s).classList.toggle("done", active);
         document.getElementById("check-" + s).textContent = active ? "✓" : "";
       });
-
-      const mealsContainer = document.getElementById("meals-list");
-      mealsContainer.innerHTML = BASE_MEALS.map((meal) => {
-        const rows = meal.items.map((item) => {
-          const checked = Boolean(data.checkedItems[item.id]);
-          return `<div class="supp-item ${checked ? "done" : ""}" style="margin:6px 0 0 0; padding:10px 12px;" onclick="toggleFoodItem('${item.id}')">
-            <div>
-              <div style="font-size:14px; font-weight:600;">${item.label}</div>
-              <div class="meal-meta">${item.kcal} kcal • ${item.p}g P • ${item.c}g G • ${item.f}g L</div>
-            </div>
-            <div class="check-circle">${checked ? "✓" : ""}</div>
-          </div>`;
-        }).join("");
-
-        return `<div class="meal-card">
-          <div class="meal-top">
-            <div class="meal-name">${meal.name}</div>
-          </div>
-          ${rows}
-        </div>`;
-      }).join("");
     }
 
     document.getElementById("btn-prev-day").addEventListener("click", () => { dayOffset--; render(); });
@@ -1011,17 +1176,42 @@
 
     document.getElementById("btn-save-sync-config").addEventListener("click", () => {
       syncCfg = {
-        url: document.getElementById("firebase-url-input").value.trim().replace(/\/+$/, ""),
-        uid: document.getElementById("sync-uid-input").value.trim(),
-        updatedAt: Date.now()
+        url: document.getElementById("firebase-url-input").value.trim().replace(/\/+$/, "") || DEFAULT_FIREBASE_URL,
+        uid: document.getElementById("sync-uid-input").value.trim() || DEFAULT_UID
       };
       localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncCfg));
-      setStatus("Configuration enregistrée");
       pullFromFirebase();
     });
 
+    const noteTextarea = document.getElementById("weekly-coach-note");
+    noteTextarea.value = appState.weeklyNote || "";
+    noteTextarea.addEventListener("input", () => {
+      appState.weeklyNote = noteTextarea.value;
+      appState.updatedAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(pushToFirebase, 400);
+    });
+
+    document.getElementById("btn-copy-coach").addEventListener("click", async () => {
+      const { key, data } = getCurrentDay();
+      const message =
+        `Bilan fin de semaine — MacroTrack (${key})\n` +
+        `Mode : ${data.mode === "training" ? "Entraînement" : "Repos"} | Eau : ${Number(data.water || 0).toFixed(2)}L | Sel : ${Number(data.salt || 0).toFixed(1)}g\n\n` +
+        `${(appState.weeklyNote || "").trim()}`;
+      try {
+        await navigator.clipboard.writeText(message);
+        document.getElementById("coach-copy-status").textContent = "Copié dans le presse-papiers pour ton coach.";
+      } catch {
+        document.getElementById("coach-copy-status").textContent = "Sélectionne et copie le texte ci-dessus.";
+      }
+    });
+
     window.addEventListener("online", pullFromFirebase);
-    window.addEventListener("offline", () => setStatus("Hors ligne — données locales"));
+    window.addEventListener("offline", () => setSyncPill("Hors ligne", "#fcd34d"));
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") pullFromFirebase();
+    });
 
     setupBrandAssets();
     render();
