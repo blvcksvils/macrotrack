@@ -1,29 +1,30 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#000000" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MacroTrack" />
-  <title>MacroTrack — The Ascend Standard</title>
+  <meta name="theme-color" content="#000000" />
+  <title>MacroTrack</title>
 
-  <link id="favicon-link" rel="icon" type="image/png" />
-  <link id="apple-icon-link" rel="apple-touch-icon" sizes="180x180" />
-  <link id="manifest-link" rel="manifest" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23000000'/%3E%3Cpath d='M102 28L46 100h42l-10 52 56-72H92l10-52z' fill='%23ffffff'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" id="apple-touch-icon" />
 
   <style>
     :root {
-      --bg: #0b0f17;
-      --card: #121826;
-      --card-2: #182133;
-      --border: #253047;
-      --text: #f3f6fb;
-      --muted: #94a3b8;
+      --bg: #000000;
+      --card: #0e1015;
+      --card-elev: #151821;
+      --border: #1f2430;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
       --blue: #2563eb;
-      --green: #16a34a;
-      --amber: #f59e0b;
+      --blue-soft: rgba(37, 99, 235, 0.16);
+      --orange: #f97316;
+      --emerald: #10b981;
+      --danger: #ef4444;
     }
 
     * {
@@ -33,197 +34,246 @@
 
     body {
       margin: 0;
-      padding: calc(12px + env(safe-area-inset-top)) 12px calc(86px + env(safe-area-inset-bottom)) 12px;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      padding: 0;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.35;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      padding-bottom: 92px;
     }
 
     .container {
-      max-width: 760px;
+      max-width: 540px;
       margin: 0 auto;
+      padding: 12px 12px 24px;
     }
 
-    .topbar {
+    header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 10px;
+      padding: 8px 0 12px;
+      position: sticky;
+      top: 0;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 30;
+      border-bottom: 1px solid var(--border);
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
     }
 
     .brand-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 11px;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
       background: #000000;
-      border: 1px solid #2a2a2a;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
+      border: 1px solid #2b303d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .eyebrow {
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    h1 {
-      margin: 1px 0 0 0;
-      font-size: 20px;
-      line-height: 1.1;
-    }
-
-    .top-actions {
+    .header-actions {
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .btn {
-      border: 1px solid var(--border);
-      background: var(--card-2);
+    .pill-btn {
+      background: var(--card-elev);
       color: var(--text);
-      border-radius: 10px;
-      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 10px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn-primary {
-      background: var(--blue);
-      border-color: var(--blue);
-      color: #fff;
-    }
-
-    .btn-green {
-      background: rgba(22, 163, 74, 0.18);
-      border-color: rgba(22, 163, 74, 0.45);
-      color: #86efac;
-    }
-
-    .btn-amber {
-      background: rgba(245, 158, 11, 0.18);
-      border-color: rgba(245, 158, 11, 0.45);
-      color: #fcd34d;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px;
-      margin-bottom: 10px;
-    }
-
-    .date-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .date-center {
-      text-align: center;
-    }
-
-    .date-title {
-      font-weight: 700;
-      font-size: 15px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .badge {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.22);
-      color: #93c5fd;
+    .pill-btn:active {
+      transform: scale(0.97);
     }
 
-    .date-sub {
-      font-size: 12px;
-      color: var(--muted);
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #6b7280;
+    }
+    .sync-dot.ok { background: var(--emerald); }
+    .sync-dot.syncing { background: #f59e0b; }
+    .sync-dot.err { background: var(--danger); }
+
+    .sync-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 10px;
     }
 
-    .mode-switch {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+    .sync-panel.hidden, .hidden {
+      display: none !important;
+    }
+
+    .sync-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       margin-bottom: 10px;
     }
 
-    .mode-btn {
-      padding: 11px;
-      border-radius: 14px;
+    .sync-row label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .sync-row input {
+      background: #08090d;
       border: 1px solid var(--border);
-      background: var(--card);
       color: var(--text);
-      font-weight: 700;
+      border-radius: 8px;
+      padding: 8px 10px;
       font-size: 13px;
+      width: 100%;
+    }
+
+    .sync-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .btn-secondary {
+      background: var(--card-elev);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
       cursor: pointer;
     }
 
-    .mode-btn.active {
-      background: var(--blue);
-      border-color: var(--blue);
-      color: #fff;
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 12px 0 10px;
     }
 
-    .macros-top {
+    .date-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px 6px;
+    }
+
+    .date-nav button {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 15px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .date-nav input[type="date"] {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      color-scheme: dark;
+    }
+
+    .day-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .day-toggle button {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 10px 8px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .day-toggle button.active {
+      background: var(--blue);
+      color: #ffffff;
+    }
+
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .summary-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
+      align-items: baseline;
       margin-bottom: 10px;
     }
 
-    .kcal-big {
-      font-size: 28px;
+    .summary-kcal {
+      font-size: 20px;
       font-weight: 800;
-      line-height: 1.05;
+      letter-spacing: -0.02em;
     }
 
-    .kcal-target {
-      font-size: 14px;
+    .summary-kcal span {
+      font-size: 12px;
+      font-weight: 500;
       color: var(--muted);
-      font-weight: 600;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--card-2);
-      overflow: hidden;
-      margin-bottom: 10px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #2563eb, #38bdf8);
-      width: 0%;
-      transition: width 0.2s ease;
     }
 
     .macro-grid {
@@ -233,986 +283,1023 @@
     }
 
     .macro-box {
-      background: var(--card-2);
+      background: #08090d;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 9px 10px;
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
     }
 
-    .macro-box .label {
+    .macro-label {
       font-size: 10px;
       font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
     }
 
-    .macro-box .val {
-      margin-top: 2px;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .counter-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-    }
-
-    .counter-title {
-      font-weight: 700;
+    .macro-val {
       font-size: 15px;
-    }
-
-    .counter-val {
-      font-size: 20px;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-top: 2px;
     }
 
-    .counter-val span {
-      font-size: 12px;
+    .macro-target {
+      font-size: 10px;
       color: var(--muted);
-      font-weight: 600;
     }
 
-    .step-row {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-    }
-
-    .step-row .btn {
-      padding: 6px 8px;
-      font-size: 11px;
-    }
-
-    .supp-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      cursor: pointer;
-    }
-
-    .supp-item.done {
-      border-color: rgba(22, 163, 74, 0.55);
-      background: rgba(22, 163, 74, 0.12);
-    }
-
-    .check-circle {
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      border: 2px solid #475569;
-      display: grid;
-      place-items: center;
-      font-size: 12px;
-      font-weight: 800;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    .supp-item.done .check-circle,
-    .slot-row.done .check-circle {
-      background: var(--green);
-      border-color: var(--green);
-      color: #fff;
-    }
+    .p-color { color: #60a5fa; }
+    .f-color { color: #38bdf8; }
+    .c-color { color: #fb923c; }
 
     .meal-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .meal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 10px;
     }
 
-    .meal-name {
-      font-weight: 700;
-      font-size: 15px;
-      margin-bottom: 8px;
-    }
-
-    .slot-row {
+    .meal-title-wrap {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 8px;
-      padding: 9px 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card-2);
-      margin-top: 7px;
-      flex-wrap: wrap;
     }
 
-    .slot-row.done {
-      border-color: rgba(22, 163, 74, 0.55);
-      background: rgba(22, 163, 74, 0.12);
-    }
-
-    .slot-main {
-      flex: 1 1 200px;
-      min-width: 0;
+    .meal-check {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--blue);
       cursor: pointer;
     }
 
-    .slot-title {
-      font-size: 13px;
-      font-weight: 700;
+    .meal-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #60a5fa;
+      margin: 0;
     }
 
-    .slot-meta {
+    .meal-kcal-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      background: #08090d;
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .food-row {
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(31, 36, 48, 0.7);
+    }
+
+    .food-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .badge-macro {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .badge-P { background: #2563eb; }
+    .badge-F { background: #3b82f6; }
+    .badge-C { background: #f97316; }
+
+    .food-info {
+      min-width: 0;
+    }
+
+    .food-select {
+      width: 100%;
+      background: var(--card-elev);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      padding-right: 26px;
+    }
+
+    .food-static {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 2px;
+    }
+
+    .food-sub {
       font-size: 11px;
       color: var(--muted);
       margin-top: 2px;
+      padding-left: 2px;
     }
 
-    .slot-controls {
+    .qty-box {
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex: 1 1 180px;
-      justify-content: flex-end;
+      gap: 3px;
+      background: #08090d;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 6px;
     }
 
-    .alt-select {
-      width: 100%;
-      max-width: 240px;
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 6px 8px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    textarea, input[type="text"] {
-      width: 100%;
-      padding: 9px 11px;
-      border-radius: 11px;
-      border: 1px solid var(--border);
-      background: var(--card-2);
+    .qty-input {
+      width: 46px;
+      background: transparent;
+      border: none;
       color: var(--text);
       font-size: 13px;
+      font-weight: 700;
+      text-align: right;
       font-family: inherit;
     }
 
-    textarea {
-      min-height: 96px;
-      resize: vertical;
-    }
-
-    .status-line {
+    .qty-unit {
       font-size: 11px;
       color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 6px;
+    }
+
+    .meal-footer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    .meal-macro-pill {
+      background: #08090d;
+      border-radius: 8px;
+      padding: 6px;
+      text-align: center;
+    }
+
+    .meal-macro-pill small {
+      display: block;
+      font-size: 9px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .meal-macro-pill strong {
+      font-size: 13px;
+    }
+
+    .report-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .report-textarea {
+      width: 100%;
+      min-height: 280px;
+      background: #08090d;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+      line-height: 1.5;
+      resize: vertical;
+      margin: 10px 0;
     }
 
     .bottom-nav {
       position: fixed;
+      bottom: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: rgba(11, 15, 23, 0.95);
-      backdrop-filter: blur(12px);
+      background: rgba(10, 12, 16, 0.96);
+      backdrop-filter: blur(14px);
       border-top: 1px solid var(--border);
-      padding: 6px 12px calc(6px + env(safe-area-inset-bottom)) 12px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+      display: flex;
+      justify-content: center;
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
       z-index: 40;
+    }
+
+    .bottom-nav-inner {
+      max-width: 540px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
 
     .nav-btn {
       background: transparent;
-      border: 0;
+      border: 1px solid transparent;
       color: var(--muted);
-      font-size: 11px;
-      font-weight: 600;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      padding: 4px;
+      border-radius: 10px;
+      padding: 9px;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
     }
 
     .nav-btn.active {
-      color: var(--text);
+      background: var(--blue-soft);
+      border-color: rgba(37, 99, 235, 0.45);
+      color: #60a5fa;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    .history-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 9px 11px;
-      border-radius: 11px;
-      background: var(--card-2);
-      margin-bottom: 7px;
+    .toast {
+      position: fixed;
+      bottom: 76px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 999px;
       font-size: 12px;
+      font-weight: 600;
+      z-index: 50;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header class="topbar">
+    <header>
       <div class="brand">
-        <div class="brand-icon" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 512 512">
-            <polygon points="292,104 148,282 252,282 220,408 364,230 260,230"
-                     fill="none" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+        <div class="brand-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff">
+            <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>
           </svg>
         </div>
-        <div>
-          <div class="eyebrow">The Ascend Standard</div>
-          <h1>MacroTrack</h1>
-        </div>
+        <span>MacroTrack</span>
       </div>
 
-      <div class="top-actions">
-        <span id="sync-pill" class="badge">Sync auto</span>
-        <button id="btn-toggle-sync-box" class="btn" type="button">Cloud</button>
+      <div class="header-actions">
+        <button class="pill-btn" id="btn-reset-day" title="Réinitialiser la journée">Reset</button>
+        <button class="pill-btn" id="btn-toggle-sync-box">
+          <span class="sync-dot" id="sync-dot"></span>
+          <span id="sync-label">Cloud</span>
+        </button>
       </div>
     </header>
 
-    <section id="sync-panel" class="card hidden">
-      <div style="display:grid; gap:8px;">
-        <div>
-          <span class="eyebrow">URL Firebase Realtime Database</span>
-          <input id="firebase-url-input" type="text" placeholder="https://macrotrack-sync-default-rtdb.firebaseio.com" />
-        </div>
-        <div>
-          <span class="eyebrow">Identifiant personnel ($uid)</span>
-          <input id="sync-uid-input" type="text" placeholder="ex. mt_maxime_9x4k2m" />
-        </div>
-        <div class="status-line">
-          <span id="sync-status-text">Synchronisation active</span>
-          <div style="display:flex; gap:6px;">
-            <button id="btn-sync-now" class="btn btn-primary" type="button">Forcer sync</button>
-            <button id="btn-save-sync-config" class="btn btn-green" type="button">Enregistrer</button>
-          </div>
-        </div>
+    <div class="sync-panel hidden" id="sync-panel">
+      <div class="sync-row">
+        <label>Firebase Realtime Database URL</label>
+        <input type="url" id="firebase-url-input" placeholder="https://votre-projet-default-rtdb.firebaseio.com" />
       </div>
-    </section>
-
-    <div id="view-today">
-      <section class="card">
-        <div class="date-bar">
-          <button id="btn-prev-day" class="btn" type="button" aria-label="Jour précédent">&lt;</button>
-          <div class="date-center">
-            <div class="date-title">
-              <span id="day-label">Aujourd'hui</span>
-              <span class="badge">En cours</span>
-            </div>
-            <div id="date-formatted" class="date-sub"></div>
-          </div>
-          <button id="btn-next-day" class="btn" type="button" aria-label="Jour suivant">&gt;</button>
-        </div>
-      </section>
-
-      <div class="mode-switch">
-        <button id="btn-mode-training" class="mode-btn active" type="button">Entraînement</button>
-        <button id="btn-mode-rest" class="mode-btn" type="button">Jour de repos</button>
+      <div class="sync-row">
+        <label>Identifiant de synchronisation (UID)</label>
+        <input type="text" id="sync-uid-input" placeholder="maxime-macrotrack" />
       </div>
+      <div class="sync-btns">
+        <button class="btn-primary" id="btn-sync-now">Forcer sync</button>
+        <button class="btn-secondary" id="btn-save-sync-config">Enregistrer</button>
+        <button class="btn-secondary" id="btn-close-sync-box">Fermer</button>
+      </div>
+      <div id="sync-status-msg" style="font-size:11px;color:var(--muted);margin-top:8px;"></div>
+    </div>
 
-      <section class="card">
-        <div class="macros-top">
-          <div>
-            <div class="eyebrow">Calories validées</div>
-            <div class="kcal-big">
-              <span id="kcal-done">0</span>
-              <span class="kcal-target">/ <span id="kcal-target">2388</span> kcal</span>
-            </div>
-          </div>
-          <div style="text-align:right;">
-            <div id="meals-counter" style="font-weight:700; color:#4ade80; font-size:13px;">0/4 blocs</div>
-            <div id="pct-counter" class="date-sub">0% complété</div>
-          </div>
+    <div class="controls-bar">
+      <div class="date-nav">
+        <button id="btn-prev-day" type="button">‹</button>
+        <input type="date" id="date-picker" />
+        <button id="btn-next-day" type="button">›</button>
+      </div>
+      <button class="pill-btn" id="btn-today" type="button">Aujourd'hui</button>
+    </div>
+
+    <div class="day-toggle">
+      <button id="tab-training" class="active" type="button">Jour d'entraînement</button>
+      <button id="tab-rest" type="button">Jour de repos</button>
+    </div>
+
+    <div id="view-journal">
+      <div class="summary-card">
+        <div class="summary-top">
+          <div class="summary-kcal"><span id="tot-kcal" style="font-size:22px;color:#fff;font-weight:800;">0</span> <span>/ <span id="target-kcal">0</span> kcal</span></div>
+          <div style="font-size:11px;color:var(--muted);" id="checked-count">0/0 repas validés</div>
         </div>
-
-        <div class="progress-track">
-          <div id="kcal-progress" class="progress-fill"></div>
-        </div>
-
         <div class="macro-grid">
           <div class="macro-box">
-            <div class="label">Protéines</div>
-            <div class="val"><span id="p-done">0</span> / <span id="p-target">217</span>g</div>
+            <div class="macro-label">Protéines</div>
+            <div class="macro-val p-color" id="tot-p">0g</div>
+            <div class="macro-target">cible <span id="target-p">0g</span></div>
           </div>
           <div class="macro-box">
-            <div class="label">Glucides</div>
-            <div class="val"><span id="c-done">0</span> / <span id="c-target">255</span>g</div>
+            <div class="macro-label">Lipides</div>
+            <div class="macro-val f-color" id="tot-f">0g</div>
+            <div class="macro-target">cible <span id="target-f">0g</span></div>
           </div>
           <div class="macro-box">
-            <div class="label">Lipides</div>
-            <div class="val"><span id="f-done">0</span> / <span id="f-target">56</span>g</div>
+            <div class="macro-label">Glucides</div>
+            <div class="macro-val c-color" id="tot-c">0g</div>
+            <div class="macro-target">cible <span id="target-c">0g</span></div>
           </div>
-        </div>
-      </section>
-
-      <div class="two-col">
-        <section class="card" style="margin-bottom:0;">
-          <div class="counter-head">
-            <div class="counter-title">Eau</div>
-            <span class="badge">4,5 L</span>
-          </div>
-          <div class="counter-val">
-            <span id="water-val">0.00</span> <span>/ 4,5 L</span>
-          </div>
-          <div class="step-row">
-            <button class="btn" type="button" onclick="adjustWater(-0.25)">-0.25</button>
-            <button class="btn btn-primary" type="button" onclick="adjustWater(0.25)">+0.25</button>
-            <button class="btn btn-green" type="button" onclick="adjustWater(0.5)">+0.5L</button>
-          </div>
-        </section>
-
-        <section class="card" style="margin-bottom:0;">
-          <div class="counter-head">
-            <div class="counter-title">Sel</div>
-            <span class="badge" style="background:rgba(245,158,11,0.2); color:#fcd34d;">6 g</span>
-          </div>
-          <div class="counter-val">
-            <span id="salt-val">0.0</span> <span>/ 6 g</span>
-          </div>
-          <div class="step-row">
-            <button class="btn" type="button" onclick="adjustSalt(-0.5)">-0.5g</button>
-            <button class="btn btn-amber" type="button" onclick="adjustSalt(0.5)">+0.5g</button>
-            <button class="btn btn-amber" type="button" onclick="adjustSalt(1)">+1g</button>
-          </div>
-        </section>
-      </div>
-
-      <div class="two-col">
-        <div id="supp-creatine" class="supp-item" onclick="toggleSupp('creatine')">
-          <div>
-            <div style="font-weight:700; font-size:14px;">Créatine</div>
-            <div class="date-sub">5 g / jour</div>
-          </div>
-          <div class="check-circle" id="check-creatine"></div>
-        </div>
-
-        <div id="supp-eaa" class="supp-item" onclick="toggleSupp('eaa')">
-          <div>
-            <div style="font-weight:700; font-size:14px;">EAA</div>
-            <div class="date-sub">15 g / jour</div>
-          </div>
-          <div class="check-circle" id="check-eaa"></div>
         </div>
       </div>
 
-      <div id="supp-booster" class="supp-item" style="margin-bottom:10px;" onclick="toggleSupp('booster')">
-        <div>
-          <div style="font-weight:700; font-size:14px;">Booster pré workout <span class="badge" style="background:rgba(239,68,68,0.2); color:#fca5a5;">200 mg caféine</span></div>
-          <div class="date-sub">Prise avant séance</div>
-        </div>
-        <div class="check-circle" id="check-booster"></div>
-      </div>
-
-      <div id="meals-list"></div>
+      <div id="meals-container"></div>
     </div>
 
-    <div id="view-stats" class="hidden">
-      <section class="card">
-        <h2 style="margin:0 0 8px 0; font-size:17px;">Radar &amp; Stats</h2>
-        <div id="stats-summary" class="date-sub"></div>
-      </section>
-
-      <section class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px;">
-          <div>
-            <div class="eyebrow">Suivi hebdomadaire</div>
-            <h2 style="margin:2px 0 0 0; font-size:17px;">Bilan fin de semaine pour le coach</h2>
-          </div>
-          <button id="btn-copy-coach" class="btn btn-green" type="button">Copier pour le coach</button>
+    <div id="view-report" class="hidden">
+      <div class="report-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <strong style="font-size:15px;">Bilan repas (à copier)</strong>
+          <button class="btn-primary" id="btn-copy-report" type="button" style="flex:0 0 auto;">Copier le texte</button>
         </div>
-        <textarea id="weekly-coach-note" placeholder="Écris ici ton point de fin de semaine (poids moyen, adhérence macros, sommeil/séances, questions ou ajustements souhaités pour le coach)..."></textarea>
-        <div class="status-line">
-          <span id="coach-copy-status">Éditable à tout moment • Synchronisé avec ton compte</span>
-        </div>
-      </section>
-    </div>
-
-    <div id="view-history" class="hidden">
-      <section class="card">
-        <h2 style="margin:0 0 10px 0; font-size:17px;">Historique</h2>
-        <div id="history-list"></div>
-      </section>
+        <textarea class="report-textarea" id="report-output" readonly></textarea>
+      </div>
     </div>
   </div>
 
   <nav class="bottom-nav">
-    <button id="nav-today" class="nav-btn active" type="button" onclick="switchTab('today')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="4" width="18" height="18" rx="3"></rect>
-        <path d="M16 2v4M8 2v4M3 10h18M9 15l2 2 4-4"></path>
-      </svg>
-      <span>Aujourd'hui</span>
-    </button>
-
-    <button id="nav-stats" class="nav-btn" type="button" onclick="switchTab('stats')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
-        <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
-      </svg>
-      <span>Radar &amp; Stats</span>
-    </button>
-
-    <button id="nav-history" class="nav-btn" type="button" onclick="switchTab('history')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-        <path d="M3 3v5h5M12 7v5l4 2"></path>
-      </svg>
-      <span>Historique</span>
-    </button>
+    <div class="bottom-nav-inner">
+      <button class="nav-btn active" id="nav-journal" type="button">Journal repas</button>
+      <button class="nav-btn" id="nav-report" type="button">Bilan coach</button>
+    </div>
   </nav>
 
-  <script>
-    const DEFAULT_FIREBASE_URL = "https://macrotrack-sync-default-rtdb.firebaseio.com";
-    const DEFAULT_UID = "mt_maxime_w_8492";
-    const STORAGE_KEY = "macrotrack_state_v3";
-    const SYNC_CFG_KEY = "macrotrack_sync_cfg_v3";
+  <div class="toast hidden" id="toast"></div>
 
-    const TARGETS = {
-      training: { kcal: 2388, p: 217, c: 255, f: 56 },
-      rest:     { kcal: 2150, p: 215, c: 195, f: 56 }
+  <script>
+    (function generateAppleTouchIcon() {
+      try {
+        const c = document.createElement("canvas");
+        c.width = 180;
+        c.height = 180;
+        const ctx = c.getContext("2d");
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, 180, 180);
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.moveTo(102, 28);
+        ctx.lineTo(46, 100);
+        ctx.lineTo(88, 100);
+        ctx.lineTo(78, 152);
+        ctx.lineTo(134, 80);
+        ctx.lineTo(92, 80);
+        ctx.closePath();
+        ctx.fill();
+        document.getElementById("apple-touch-icon").href = c.toDataURL("image/png");
+      } catch (e) {}
+    })();
+
+    const FOODS = {
+      "Whey isolat": { p: 86.0, f: 1.5, c: 2.0, kcal: 365 },
+      "Blanc d'oeuf liquide": { p: 10.0, f: 0.2, c: 0.7, kcal: 44 },
+      "Skyr 0%": { p: 10.0, f: 0.2, c: 3.6, kcal: 56 },
+      "Lait écrémé": { p: 3.0, f: 0.1, c: 4.8, kcal: 42 },
+      "Hipro (vanille ou myrtille)": { p: 9.4, f: 0.5, c: 3.0, kcal: 53 },
+      "Blanc de poulet cru": { p: 23.0, f: 1.5, c: 0.0, kcal: 110 },
+      "Crevettes crues": { p: 23.0, f: 0.6, c: 0.0, kcal: 97 },
+      "Blanc de dinde cru": { p: 20.0, f: 1.8, c: 0.0, kcal: 98 },
+      "Poisson blanc maigre cru": { p: 18.0, f: 0.9, c: 0.0, kcal: 81 },
+      "Boeuf 5% cru": { p: 22.0, f: 4.5, c: 0.0, kcal: 129 },
+      "Bacon maigre cru": { p: 23.0, f: 3.0, c: 0.0, kcal: 119 },
+      "Sardines au naturel": { p: 23.0, f: 6.2, c: 0.0, kcal: 148 },
+      "Oeuf entier (100g = 1 oeuf)": { p: 6.0, f: 4.8, c: 0.5, kcal: 70 },
+      "Saumon sauvage cru": { p: 20.0, f: 13.0, c: 0.0, kcal: 197 },
+      "Maquereaux nature conserve": { p: 20.0, f: 13.3, c: 0.0, kcal: 200 },
+      "Cottage cheese": { p: 12.0, f: 3.2, c: 2.8, kcal: 88 },
+      "Purée d'amandes": { p: 21.0, f: 53.0, c: 16.0, kcal: 626 },
+      "Amandes": { p: 21.0, f: 52.0, c: 10.0, kcal: 592 },
+      "Purée de noisettes": { p: 15.0, f: 62.4, c: 9.0, kcal: 656 },
+      "Noix du Brésil": { p: 14.0, f: 65.0, c: 3.0, kcal: 654 },
+      "Huile d'olive": { p: 0.0, f: 100.0, c: 0.0, kcal: 900 },
+      "Huile de lin": { p: 0.0, f: 100.0, c: 0.0, kcal: 900 },
+      "Avocat": { p: 2.0, f: 21.7, c: 4.0, kcal: 220 },
+      "Graines de lin/chia": { p: 18.0, f: 41.8, c: 12.0, kcal: 534 },
+      "Chocolat noir 85%": { p: 11.0, f: 46.0, c: 19.0, kcal: 584 },
+      "Poudre de noix de coco": { p: 7.0, f: 65.7, c: 10.0, kcal: 670 },
+      "Flocons d'avoine": { p: 13.0, f: 7.0, c: 60.0, kcal: 356 },
+      "Crème de riz": { p: 7.5, f: 0.5, c: 78.0, kcal: 369 },
+      "Farine d'avoine aromatisée": { p: 13.0, f: 7.0, c: 57.1, kcal: 356 },
+      "Galettes de riz": { p: 8.0, f: 2.5, c: 79.3, kcal: 380 },
+      "Riz cru": { p: 7.0, f: 0.8, c: 78.0, kcal: 347 },
+      "Pâtes crues": { p: 12.0, f: 1.5, c: 70.9, kcal: 348 },
+      "Pommes de terre crues": { p: 2.0, f: 0.1, c: 19.0, kcal: 85 },
+      "Patates douces crues": { p: 1.6, f: 0.1, c: 20.0, kcal: 86 },
+      "Semoule crue": { p: 12.0, f: 1.2, c: 73.1, kcal: 360 },
+      "Légumes verts cuits": { p: 0.0, f: 0.0, c: 0.0, kcal: 0 },
+      "Myrtilles": { p: 0.7, f: 0.3, c: 15.1, kcal: 57 },
+      "Fraises/framboises": { p: 0.8, f: 0.3, c: 10.0, kcal: 42 },
+      "Compote sans sucres ajoutés": { p: 0.3, f: 0.1, c: 12.0, kcal: 48 },
+      "Pomme": { p: 0.3, f: 0.2, c: 14.0, kcal: 56 },
+      "Kiwi": { p: 1.1, f: 0.5, c: 10.0, kcal: 42 },
+      "Pastèques": { p: 0.6, f: 0.2, c: 8.0, kcal: 30 },
+      "Melon": { p: 0.8, f: 0.2, c: 8.0, kcal: 34 },
+      "Ananas": { p: 0.5, f: 0.1, c: 13.0, kcal: 52 },
+      "Banane": { p: 1.1, f: 0.3, c: 23.0, kcal: 92 }
     };
 
-    const MEAL_SLOTS = [
-      {
-        id: "repas_1",
-        name: "Repas 1",
-        rows: [
+    const PLANS = {
+      training: {
+        label: "Jour d'entraînement",
+        meals: [
           {
-            slotId: "r1_a",
-            options: [
-              { label: "Flocons d'avoine (80g)", kcal: 300, p: 10, c: 52, f: 6 },
-              { label: "Crème de riz (80g)", kcal: 290, p: 6, c: 64, f: 1 }
+            id: "tr_r1",
+            name: "Repas 1",
+            items: [
+              { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }, { food: "Blanc d'oeuf liquide", qty: 301 }] },
+              { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] },
+              { macro: "C", defaultFood: "Flocons d'avoine", defaultQty: 60, options: [{ food: "Flocons d'avoine", qty: 60 }, { food: "Crème de riz", qty: 46 }, { food: "Farine d'avoine aromatisée", qty: 63 }] },
+              { macro: "C", defaultFood: "Myrtilles", defaultQty: 67, options: [{ food: "Myrtilles", qty: 67 }, { food: "Fraises/framboises", qty: 101 }, { food: "Compote sans sucres ajoutés", qty: 84 }, { food: "Pomme", qty: 72 }, { food: "Kiwi", qty: 101 }, { food: "Pastèques", qty: 126 }, { food: "Melon", qty: 126 }, { food: "Ananas", qty: 78 }] }
             ]
           },
           {
-            slotId: "r1_b",
-            options: [
-              { label: "Whey isolate (35g) + blancs œufs (150g)", kcal: 205, p: 46, c: 2, f: 0.5 },
-              { label: "Œufs entiers (2) + blancs œufs (150g)", kcal: 220, p: 30, c: 1, f: 10 }
+            id: "tr_r2",
+            name: "Repas 2",
+            items: [
+              { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }] },
+              { macro: "F", defaultFood: "Noix du Brésil", defaultQty: 20, options: [{ food: "Noix du Brésil", qty: 20 }, { food: "Amandes", qty: 25 }] },
+              { macro: "C", defaultFood: "Pomme", defaultQty: 86, options: [{ food: "Pomme", qty: 86 }, { food: "Compote sans sucres ajoutés", qty: 100 }, { food: "Kiwi", qty: 120 }, { food: "Fraises/framboises", qty: 120 }, { food: "Pastèques", qty: 150 }, { food: "Melon", qty: 150 }, { food: "Myrtilles", qty: 80 }, { food: "Ananas", qty: 92 }] }
+            ]
+          },
+          {
+            id: "tr_pre",
+            name: "Pré workout",
+            items: [
+              { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }, { food: "Blanc d'oeuf liquide", qty: 301 }, { food: "Skyr 0%", qty: 301 }, { food: "Lait écrémé", qty: 1003 }, { food: "Hipro (vanille ou myrtille)", qty: 320 }] },
+              { macro: "C", defaultFood: "Crème de riz", defaultQty: 60, options: [{ food: "Crème de riz", qty: 60 }, { food: "Galettes de riz", qty: 59 }] }
+            ]
+          },
+          {
+            id: "tr_r3",
+            name: "Repas 3",
+            items: [
+              { macro: "P", defaultFood: "Blanc de poulet cru", defaultQty: 130, options: [{ food: "Blanc de poulet cru", qty: 130 }, { food: "Crevettes crues", qty: 130 }, { food: "Blanc de dinde cru", qty: 150 }, { food: "Poisson blanc maigre cru", qty: 166 }] },
+              { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
+              { macro: "C", defaultFood: "Riz cru", defaultQty: 60, options: [{ food: "Riz cru", qty: 60 }, { food: "Pâtes crues", qty: 66 }, { food: "Pommes de terre crues", qty: 246 }, { food: "Patates douces crues", qty: 234 }, { food: "Semoule crue", qty: 64 }] },
+              { macro: "C", defaultFood: "Compote sans sucres ajoutés", defaultQty: 230, options: [{ food: "Compote sans sucres ajoutés", qty: 230 }, { food: "Banane", qty: 120 }] }
+            ]
+          },
+          {
+            id: "tr_col",
+            name: "Collation",
+            items: [
+              { macro: "P", defaultFood: "Skyr 0%", defaultQty: 250, options: [{ food: "Skyr 0%", qty: 250 }, { food: "Whey isolat", qty: 29 }] },
+              { macro: "F", defaultFood: "Graines de lin/chia", defaultQty: 22, options: [{ food: "Graines de lin/chia", qty: 22 }, { food: "Chocolat noir 85%", qty: 20 }, { food: "Poudre de noix de coco", qty: 14 }] },
+              { macro: "C", defaultFood: "Pomme", defaultQty: 93, options: [{ food: "Pomme", qty: 93 }, { food: "Ananas", qty: 100 }, { food: "Compote sans sucres ajoutés", qty: 108 }, { food: "Kiwi", qty: 130 }, { food: "Fraises/framboises", qty: 130 }, { food: "Pastèques", qty: 163 }, { food: "Melon", qty: 163 }, { food: "Myrtilles", qty: 87 }] }
+            ]
+          },
+          {
+            id: "tr_r4",
+            name: "Repas 4",
+            items: [
+              { macro: "P", defaultFood: "Blanc de dinde cru", defaultQty: 165, options: [{ food: "Blanc de dinde cru", qty: 165 }, { food: "Boeuf 5% cru", qty: 150 }, { food: "Blanc de poulet cru", qty: 143 }, { food: "Bacon maigre cru", qty: 143 }] },
+              { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
+              { macro: "C", defaultFood: "Semoule crue", defaultQty: 55, options: [{ food: "Semoule crue", qty: 55 }, { food: "Patates douces crues", qty: 201 }, { food: "Riz cru", qty: 52 }, { food: "Pâtes crues", qty: 57 }, { food: "Pommes de terre crues", qty: 212 }] },
+              { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
             ]
           }
         ]
       },
-      {
-        id: "repas_2",
-        name: "Repas 2",
-        rows: [
+      rest: {
+        label: "Jour de repos",
+        meals: [
           {
-            slotId: "r2_a",
-            options: [
-              { label: "Poulet cuit (180g)", kcal: 295, p: 54, c: 0, f: 6.5 },
-              { label: "Bœuf 5% cuit (180g)", kcal: 270, p: 49, c: 0, f: 7 },
-              { label: "Thon rouge / poisson (180g)", kcal: 250, p: 46, c: 0, f: 6 }
+            id: "re_r1",
+            name: "Repas 1",
+            items: [
+              { macro: "P", defaultFood: "Whey isolat", defaultQty: 45, options: [{ food: "Whey isolat", qty: 45 }, { food: "Blanc d'oeuf liquide", qty: 387 }] },
+              { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] },
+              { macro: "C", defaultFood: "Flocons d'avoine", defaultQty: 50, options: [{ food: "Flocons d'avoine", qty: 50 }, { food: "Crème de riz", qty: 38 }, { food: "Farine d'avoine aromatisée", qty: 52 }] },
+              { macro: "C", defaultFood: "Myrtilles", defaultQty: 67, options: [{ food: "Myrtilles", qty: 67 }, { food: "Fraises/framboises", qty: 101 }, { food: "Compote sans sucres ajoutés", qty: 84 }, { food: "Pomme", qty: 72 }, { food: "Kiwi", qty: 101 }, { food: "Pastèques", qty: 126 }, { food: "Melon", qty: 126 }, { food: "Ananas", qty: 78 }] }
             ]
           },
           {
-            slotId: "r2_b",
-            options: [
-              { label: "Riz cuit (250g)", kcal: 325, p: 7, c: 70, f: 1 },
-              { label: "Pommes de terre cuites (320g)", kcal: 280, p: 6, c: 62, f: 0.5 },
-              { label: "Semoule cuite (240g)", kcal: 290, p: 8, c: 58, f: 1 }
-            ]
-          }
-        ]
-      },
-      {
-        id: "collation",
-        name: "Collation",
-        rows: [
-          {
-            slotId: "col_a",
-            options: [
-              { label: "Whey (30g) + fromage blanc 0% (200g)", kcal: 215, p: 42, c: 10, f: 1 },
-              { label: "Skyr / fromage blanc 0% (300g)", kcal: 150, p: 26, c: 12, f: 0 }
+            id: "re_col1",
+            name: "Collation 1",
+            items: [
+              { macro: "P", defaultFood: "Whey isolat", defaultQty: 45, options: [{ food: "Whey isolat", qty: 45 }, { food: "Blanc d'oeuf liquide", qty: 387 }, { food: "Skyr 0%", qty: 387 }, { food: "Lait écrémé", qty: 1290 }, { food: "Hipro (vanille ou myrtille)", qty: 412 }] },
+              { macro: "C", defaultFood: "Crème de riz", defaultQty: 50, options: [{ food: "Crème de riz", qty: 50 }, { food: "Galettes de riz", qty: 49 }] },
+              { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] }
             ]
           },
           {
-            slotId: "col_b",
-            options: [
-              { label: "Noix du Brésil (20g)", kcal: 135, p: 3, c: 2, f: 13.5 },
-              { label: "Beurre de cacahuète 100% (15g)", kcal: 90, p: 4, c: 2, f: 7.5 }
-            ]
-          }
-        ]
-      },
-      {
-        id: "repas_3",
-        name: "Repas 3",
-        rows: [
-          {
-            slotId: "r3_a",
-            options: [
-              { label: "Poisson / bœuf maigre / poulet (180g)", kcal: 275, p: 49, c: 0, f: 7 },
-              { label: "Œufs entiers (3) + blancs (100g)", kcal: 265, p: 29, c: 1, f: 15 }
+            id: "re_r2",
+            name: "Repas 2",
+            items: [
+              { macro: "P", defaultFood: "Blanc de poulet cru", defaultQty: 130, options: [{ food: "Blanc de poulet cru", qty: 130 }, { food: "Crevettes crues", qty: 130 }, { food: "Blanc de dinde cru", qty: 150 }, { food: "Poisson blanc maigre cru", qty: 166 }] },
+              { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
+              { macro: "C", defaultFood: "Riz cru", defaultQty: 60, options: [{ food: "Riz cru", qty: 60 }, { food: "Pâtes crues", qty: 66 }, { food: "Pommes de terre crues", qty: 246 }, { food: "Patates douces crues", qty: 234 }, { food: "Semoule crue", qty: 64 }] },
+              { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
             ]
           },
           {
-            slotId: "r3_b",
-            options: [
-              { label: "Féculents cuits (200g) + légumes", kcal: 275, p: 7, c: 58, f: 1 },
-              { label: "Légumineuses cuites (180g) + légumes", kcal: 225, p: 14, c: 38, f: 1.5 }
+            id: "re_col2",
+            name: "Collation 2",
+            items: [
+              { macro: "P", defaultFood: "Skyr 0%", defaultQty: 250, options: [{ food: "Skyr 0%", qty: 250 }, { food: "Whey isolat", qty: 29 }] },
+              { macro: "F", defaultFood: "Chocolat noir 85%", defaultQty: 20, options: [{ food: "Chocolat noir 85%", qty: 20 }, { food: "Graines de lin/chia", qty: 22 }, { food: "Poudre de noix de coco", qty: 14 }] },
+              { macro: "C", defaultFood: "Ananas", defaultQty: 100, options: [{ food: "Ananas", qty: 100 }, { food: "Compote sans sucres ajoutés", qty: 108 }, { food: "Pomme", qty: 93 }, { food: "Kiwi", qty: 130 }, { food: "Fraises/framboises", qty: 130 }, { food: "Pastèques", qty: 163 }, { food: "Melon", qty: 163 }, { food: "Myrtilles", qty: 87 }] },
+              { macro: "P", defaultFood: "Whey isolat", defaultQty: 15, options: [{ food: "Whey isolat", qty: 15 }, { food: "Blanc d'oeuf liquide", qty: 129 }, { food: "Skyr 0%", qty: 129 }, { food: "Lait écrémé", qty: 430 }, { food: "Hipro (vanille ou myrtille)", qty: 137 }] }
             ]
           },
           {
-            slotId: "r3_c",
-            options: [
-              { label: "Fruit (150g)", kcal: 85, p: 1, c: 20, f: 0.5 },
-              { label: "Sans fruit supplémentaire", kcal: 0, p: 0, c: 0, f: 0 }
+            id: "re_r3",
+            name: "Repas 3",
+            items: [
+              { macro: "P", defaultFood: "Sardines au naturel", defaultQty: 150, options: [{ food: "Sardines au naturel", qty: 150 }, { food: "Oeuf entier (100g = 1 oeuf)", qty: 575 }, { food: "Saumon sauvage cru", qty: 173 }, { food: "Maquereaux nature conserve", qty: 173 }, { food: "Cottage cheese", qty: 288 }] },
+              { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
+              { macro: "C", defaultFood: "Riz cru", defaultQty: 51, options: [{ food: "Riz cru", qty: 51 }, { food: "Patates douces crues", qty: 199 }, { food: "Pâtes crues", qty: 56 }, { food: "Pommes de terre crues", qty: 209 }, { food: "Semoule crue", qty: 55 }] },
+              { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
             ]
           }
         ]
       }
-    ];
+    };
 
-    function buildBoltIconDataUrl(size = 512) {
-      const canvas = document.createElement("canvas");
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext("2d");
-      const r = size * 0.22;
+    const STORAGE_KEY = "macrotrack_logs_v3";
+    const SYNC_CFG_KEY = "macrotrack_sync_cfg_v1";
+    const DEFAULT_FIREBASE_URL = "https://macrotrack-maxime-default-rtdb.firebaseio.com";
+    const DEFAULT_UID = "maxime-macrotrack";
 
-      ctx.fillStyle = "#000000";
-      ctx.beginPath();
-      ctx.roundRect(0, 0, size, size, r);
-      ctx.fill();
-
-      ctx.strokeStyle = "#FFFFFF";
-      ctx.lineWidth = size * 0.056;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-
-      const s = size / 512;
-      ctx.beginPath();
-      ctx.moveTo(292 * s, 104 * s);
-      ctx.lineTo(148 * s, 282 * s);
-      ctx.lineTo(252 * s, 282 * s);
-      ctx.lineTo(220 * s, 408 * s);
-      ctx.lineTo(364 * s, 230 * s);
-      ctx.lineTo(260 * s, 230 * s);
-      ctx.closePath();
-      ctx.stroke();
-
-      return canvas.toDataURL("image/png");
-    }
-
-    function setupBrandAssets() {
-      const pngUrl = buildBoltIconDataUrl(512);
-      const appleIcon = document.getElementById("apple-icon-link");
-      const favIcon = document.getElementById("favicon-link");
-      const manifestLink = document.getElementById("manifest-link");
-
-      if (appleIcon) appleIcon.href = pngUrl;
-      if (favIcon) favIcon.href = pngUrl;
-
-      const manifestObj = {
-        name: "MacroTrack",
-        short_name: "MacroTrack",
-        start_url: ".",
-        display: "standalone",
-        background_color: "#000000",
-        theme_color: "#000000",
-        icons: [{ src: pngUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }]
-      };
-      if (manifestLink) {
-        manifestLink.href = URL.createObjectURL(new Blob([JSON.stringify(manifestObj)], { type: "application/manifest+json" }));
-      }
-
-      if ("serviceWorker" in navigator) {
-        const swCode = `
-          const CACHE_NAME = "macrotrack-cache-v3";
-          self.addEventListener("install", (e) => {
-            e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(["./"])));
-            self.skipWaiting();
-          });
-          self.addEventListener("fetch", (e) => {
-            if (e.request.method !== "GET" || e.request.url.includes("firebaseio.com")) return;
-            e.respondWith(
-              caches.match(e.request).then((cached) => cached || fetch(e.request).then((res) => {
-                const copy = res.clone();
-                caches.open(CACHE_NAME).then((c) => c.put(e.request, copy));
-                return res;
-              }).catch(() => cached))
-            );
-          });
-        `;
-        navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], { type: "application/javascript" }))).catch(() => {});
+    function safeReadJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (e) {
+        return fallback;
       }
     }
 
-    function todayKey(offsetDays = 0) {
+    function safeWriteJSON(key, val) {
+      try {
+        localStorage.setItem(key, JSON.stringify(val));
+      } catch (e) {}
+    }
+
+    let syncCfg = safeReadJSON(SYNC_CFG_KEY, null) || {
+      url: DEFAULT_FIREBASE_URL,
+      uid: DEFAULT_UID
+    };
+
+    let allLogs = safeReadJSON(STORAGE_KEY, {});
+    if (!allLogs || typeof allLogs !== "object") allLogs = {};
+    let currentDate = getTodayStr();
+    let syncTimeout = null;
+
+    function getTodayStr() {
       const d = new Date();
-      d.setDate(d.getDate() + offsetDays);
-      return d.toISOString().slice(0, 10);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
     }
 
-    function defaultDayData() {
+    function shiftDate(dateStr, delta) {
+      const base = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : getTodayStr();
+      const [y, m, d] = base.split("-").map(Number);
+      const dt = new Date(y, m - 1, d + delta);
+      return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
+    }
+
+    function formatDisplayDate(dateStr) {
+      const base = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : getTodayStr();
+      const [y, m, d] = base.split("-");
+      return `${d}/${m}/${y}`;
+    }
+
+    function createDefaultDayState(dayType = "training") {
+      const plan = PLANS[dayType] || PLANS.training;
+      const mealsState = {};
+      plan.meals.forEach(meal => {
+        mealsState[meal.id] = {
+          checked: false,
+          items: meal.items.map(it => ({
+            food: it.defaultFood,
+            qty: it.defaultQty
+          }))
+        };
+      });
       return {
-        mode: "training",
-        water: 0,
-        salt: 0,
-        supps: { creatine: false, eaa: false, booster: false },
-        selectedAlt: {},
-        checkedSlots: {}
+        dayType,
+        updatedAt: Date.now(),
+        meals: mealsState
       };
     }
 
-    function loadSyncCfg() {
-      try {
-        const raw = JSON.parse(localStorage.getItem(SYNC_CFG_KEY) || "{}");
-        return {
-          url: (raw.url || DEFAULT_FIREBASE_URL).replace(/\/+$/, ""),
-          uid: (raw.uid || DEFAULT_UID).trim() || DEFAULT_UID
-        };
-      } catch {
-        return { url: DEFAULT_FIREBASE_URL, uid: DEFAULT_UID };
+    function ensureDayData(dateStr) {
+      const key = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : getTodayStr();
+      if (!allLogs[key] || typeof allLogs[key] !== "object") {
+        allLogs[key] = createDefaultDayState("training");
       }
+      const dayObj = allLogs[key];
+      const dayType = dayObj.dayType === "rest" ? "rest" : "training";
+      dayObj.dayType = dayType;
+      const plan = PLANS[dayType];
+      if (!dayObj.meals || typeof dayObj.meals !== "object") dayObj.meals = {};
+      plan.meals.forEach(meal => {
+        if (!dayObj.meals[meal.id] || !Array.isArray(dayObj.meals[meal.id].items) || dayObj.meals[meal.id].items.length !== meal.items.length) {
+          dayObj.meals[meal.id] = {
+            checked: false,
+            items: meal.items.map(it => ({ food: it.defaultFood, qty: it.defaultQty }))
+          };
+        }
+      });
+      return dayObj;
     }
 
-    function loadState() {
-      try {
-        const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-        return {
-          days: raw.days || {},
-          weeklyNote: raw.weeklyNote || "",
-          updatedAt: raw.updatedAt || 0
-        };
-      } catch {
-        return { days: {}, weeklyNote: "", updatedAt: 0 };
-      }
+    function calcItemMacros(foodName, qty) {
+      const f = FOODS[foodName] || { p: 0, f: 0, c: 0, kcal: 0 };
+      const ratio = (Number(qty) || 0) / 100;
+      return {
+        p: f.p * ratio,
+        f: f.f * ratio,
+        c: f.c * ratio,
+        kcal: f.kcal * ratio
+      };
     }
 
-    let syncCfg = loadSyncCfg();
-    let appState = loadState();
-    let dayOffset = 0;
-    let syncTimer = null;
-
-    function getCurrentDay() {
-      const k = todayKey(dayOffset);
-      if (!appState.days[k]) appState.days[k] = defaultDayData();
-      return { key: k, data: appState.days[k] };
+    function calcPlanTargets(dayType) {
+      let p = 0, f = 0, c = 0, kcal = 0;
+      const plan = PLANS[dayType] || PLANS.training;
+      plan.meals.forEach(meal => {
+        meal.items.forEach(it => {
+          const m = calcItemMacros(it.defaultFood, it.defaultQty);
+          p += m.p; f += m.f; c += m.c; kcal += m.kcal;
+        });
+      });
+      return { p, f, c, kcal };
     }
 
-    function endpointUrl() {
-      const base = (syncCfg.url || "").replace(/\/+$/, "");
-      const uid = encodeURIComponent((syncCfg.uid || "").trim());
-      if (!base || !uid) return null;
-      return `${base}/users/${uid}.json`;
+    function saveLocalAndSchedulePush() {
+      const d = ensureDayData(currentDate);
+      d.updatedAt = Date.now();
+      safeWriteJSON(STORAGE_KEY, allLogs);
+      clearTimeout(syncTimeout);
+      syncTimeout = setTimeout(() => {
+        pushToFirebase();
+      }, 600);
     }
 
-    function setSyncPill(label, color = "#93c5fd") {
-      const pill = document.getElementById("sync-pill");
-      const status = document.getElementById("sync-status-text");
-      if (pill) {
-        pill.textContent = label;
-        pill.style.color = color;
-      }
-      if (status) status.textContent = label;
-    }
-
-    function persistAndSync() {
-      appState.updatedAt = Date.now();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-      render();
-      clearTimeout(syncTimer);
-      syncTimer = setTimeout(pushToFirebase, 250);
+    function setSyncUI(state, msg) {
+      const dot = document.getElementById("sync-dot");
+      const statusMsg = document.getElementById("sync-status-msg");
+      if (dot) dot.className = "sync-dot " + (state || "");
+      if (statusMsg) statusMsg.textContent = msg || "";
     }
 
     async function pushToFirebase() {
-      const url = endpointUrl();
-      if (!url || !navigator.onLine) {
-        setSyncPill("Hors ligne", "#fcd34d");
-        return;
-      }
+      if (!syncCfg.url || !syncCfg.uid) return;
+      setSyncUI("syncing", "Envoi vers le cloud...");
       try {
-        setSyncPill("Envoi...", "#93c5fd");
-        const res = await fetch(url, {
+        const endpoint = `${syncCfg.url}/users/${encodeURIComponent(syncCfg.uid)}/logs.json`;
+        const res = await fetch(endpoint, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(appState)
+          body: JSON.stringify(allLogs)
         });
         if (!res.ok) throw new Error("HTTP " + res.status);
-        setSyncPill("Synchro OK", "#86efac");
-      } catch {
-        setSyncPill("Local / Erreur sync", "#fcd34d");
+        setSyncUI("ok", "Synchronisé à " + new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
+      } catch (err) {
+        setSyncUI("err", "Mode hors-ligne (sauvegardé localement)");
       }
     }
 
     async function pullFromFirebase() {
-      const url = endpointUrl();
-      if (!url || !navigator.onLine) {
-        setSyncPill("Hors ligne", "#fcd34d");
-        return;
-      }
+      const btn = document.getElementById("btn-sync-now");
+      if (!syncCfg.url || !syncCfg.uid) return;
+      if (btn) btn.disabled = true;
+      setSyncUI("syncing", "Synchronisation...");
       try {
-        setSyncPill("Synchro...", "#93c5fd");
-        const res = await fetch(url);
+        const endpoint = `${syncCfg.url}/users/${encodeURIComponent(syncCfg.uid)}/logs.json`;
+        const res = await fetch(endpoint);
         if (!res.ok) throw new Error("HTTP " + res.status);
         const remote = await res.json();
         if (remote && typeof remote === "object") {
-          const mergedDays = { ...(remote.days || {}), ...(appState.days || {}) };
-          if ((remote.updatedAt || 0) > (appState.updatedAt || 0)) {
-            appState = {
-              days: { ...(appState.days || {}), ...(remote.days || {}) },
-              weeklyNote: remote.weeklyNote !== undefined ? remote.weeklyNote : (appState.weeklyNote || ""),
-              updatedAt: remote.updatedAt || Date.now()
-            };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-            render();
-            setSyncPill("À jour", "#86efac");
-          } else if (Object.keys(mergedDays).length > 0) {
-            await pushToFirebase();
-          } else {
-            setSyncPill("À jour", "#86efac");
-          }
+          let changed = false;
+          Object.keys(remote).forEach(dKey => {
+            const loc = allLogs[dKey];
+            const rem = remote[dKey];
+            if (rem && typeof rem === "object" && (!loc || (rem.updatedAt || 0) > (loc.updatedAt || 0))) {
+              allLogs[dKey] = rem;
+              changed = true;
+            }
+          });
+          safeWriteJSON(STORAGE_KEY, allLogs);
+          if (changed) render();
+          await pushToFirebase();
         } else {
-          setSyncPill("À jour", "#86efac");
+          await pushToFirebase();
         }
-      } catch {
-        setSyncPill("Local / Hors ligne", "#fcd34d");
+      } catch (err) {
+        setSyncUI("err", "Sync cloud impossible (hors-ligne)");
+      } finally {
+        if (btn) btn.disabled = false;
       }
     }
 
-    function adjustWater(delta) {
-      const { data } = getCurrentDay();
-      data.water = Math.max(0, Math.round((Number(data.water || 0) + delta) * 100) / 100);
-      persistAndSync();
-    }
-
-    function adjustSalt(delta) {
-      const { data } = getCurrentDay();
-      data.salt = Math.max(0, Math.round((Number(data.salt || 0) + delta) * 10) / 10);
-      persistAndSync();
-    }
-
-    function toggleSupp(key) {
-      const { data } = getCurrentDay();
-      data.supps = data.supps || {};
-      data.supps[key] = !data.supps[key];
-      persistAndSync();
-    }
-
-    function changeOption(slotId, idx) {
-      const { data } = getCurrentDay();
-      data.selectedAlt = data.selectedAlt || {};
-      data.selectedAlt[slotId] = Number(idx);
-      persistAndSync();
-    }
-
-    function toggleSlot(slotId) {
-      const { data } = getCurrentDay();
-      data.checkedSlots = data.checkedSlots || {};
-      data.checkedSlots[slotId] = !data.checkedSlots[slotId];
-      persistAndSync();
-    }
-
-    function setMode(mode) {
-      const { data } = getCurrentDay();
-      data.mode = mode;
-      persistAndSync();
-    }
-
-    function switchTab(tab) {
-      ["today", "stats", "history"].forEach((t) => {
-        document.getElementById("view-" + t).classList.toggle("hidden", t !== tab);
-        document.getElementById("nav-" + t).classList.toggle("active", t === tab);
-      });
-      if (tab === "stats") renderStats();
-      if (tab === "history") renderHistory();
-    }
-
-    function renderStats() {
-      const { key, data } = getCurrentDay();
-      const t = TARGETS[data.mode] || TARGETS.training;
-      document.getElementById("stats-summary").textContent =
-        `${key} • ${data.mode === "training" ? "Entraînement" : "Repos"} • Cible ${t.kcal} kcal (${t.p}g P / ${t.c}g G / ${t.f}g L) • Eau ${Number(data.water || 0).toFixed(2)}L • Sel ${Number(data.salt || 0).toFixed(1)}g`;
-      const noteEl = document.getElementById("weekly-coach-note");
-      if (noteEl && noteEl.value !== (appState.weeklyNote || "")) {
-        noteEl.value = appState.weeklyNote || "";
-      }
-    }
-
-    function renderHistory() {
-      const list = document.getElementById("history-list");
-      const keys = Object.keys(appState.days || {}).sort().reverse();
-      if (!keys.length) {
-        list.innerHTML = `<div class="date-sub">Aucune journée enregistrée.</div>`;
-        return;
-      }
-      list.innerHTML = keys.map((k) => {
-        const d = appState.days[k] || {};
-        return `<div class="history-row">
-          <strong>${k}</strong>
-          <span>${d.mode === "training" ? "Entraînement" : "Repos"} • Eau ${Number(d.water || 0).toFixed(2)}L • Sel ${Number(d.salt || 0).toFixed(1)}g</span>
-        </div>`;
-      }).join("");
+    function showToast(txt) {
+      const el = document.getElementById("toast");
+      if (!el) return;
+      el.textContent = txt;
+      el.classList.remove("hidden");
+      setTimeout(() => el.classList.add("hidden"), 2000);
     }
 
     function render() {
-      const { key, data } = getCurrentDay();
-      data.selectedAlt = data.selectedAlt || {};
-      data.checkedSlots = data.checkedSlots || {};
-      data.supps = data.supps || {};
-      const target = TARGETS[data.mode] || TARGETS.training;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(currentDate)) {
+        currentDate = getTodayStr();
+      }
+      const dateInput = document.getElementById("date-picker");
+      if (dateInput) dateInput.value = currentDate;
 
-      document.getElementById("day-label").textContent =
-        dayOffset === 0 ? "Aujourd'hui" : (dayOffset === -1 ? "Hier" : (dayOffset === 1 ? "Demain" : key));
+      const dayObj = ensureDayData(currentDate);
+      const dayType = dayObj.dayType;
+      const plan = PLANS[dayType];
 
-      document.getElementById("date-formatted").textContent =
-        new Date(key + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+      document.getElementById("tab-training").classList.toggle("active", dayType === "training");
+      document.getElementById("tab-rest").classList.toggle("active", dayType === "rest");
 
-      document.getElementById("btn-mode-training").classList.toggle("active", data.mode === "training");
-      document.getElementById("btn-mode-rest").classList.toggle("active", data.mode === "rest");
+      const targets = calcPlanTargets(dayType);
+      document.getElementById("target-kcal").textContent = Math.round(targets.kcal);
+      document.getElementById("target-p").textContent = targets.p.toFixed(1) + "g";
+      document.getElementById("target-f").textContent = targets.f.toFixed(1) + "g";
+      document.getElementById("target-c").textContent = targets.c.toFixed(1) + "g";
 
-      let kcal = 0, p = 0, c = 0, f = 0, checkedRows = 0, totalRows = 0, blocsDone = 0;
+      let totP = 0, totF = 0, totC = 0, totKcal = 0, checkedCount = 0;
+      const container = document.getElementById("meals-container");
+      container.innerHTML = "";
 
-      const mealsHtml = MEAL_SLOTS.map((meal) => {
-        let blocHasChecked = false;
-        const rowsHtml = meal.rows.map((row) => {
-          totalRows++;
-          const altIndex = Number(data.selectedAlt[row.slotId] || 0);
-          const opt = row.options[altIndex] || row.options[0];
-          const isChecked = Boolean(data.checkedSlots[row.slotId]);
-          if (isChecked) {
-            checkedRows++;
-            blocHasChecked = true;
-            kcal += opt.kcal;
-            p += opt.p;
-            c += opt.c;
-            f += opt.f;
+      plan.meals.forEach(meal => {
+        const mState = dayObj.meals[meal.id];
+        if (mState.checked) checkedCount++;
+
+        let mealP = 0, mealF = 0, mealC = 0, mealKcal = 0;
+        const rowsHtml = meal.items.map((itemDef, idx) => {
+          const sel = mState.items[idx] || { food: itemDef.defaultFood, qty: itemDef.defaultQty };
+          const macros = calcItemMacros(sel.food, sel.qty);
+          mealP += macros.p; mealF += macros.f; mealC += macros.c; mealKcal += macros.kcal;
+
+          const hasAlts = itemDef.options.length > 1;
+          let foodControl = "";
+          if (hasAlts) {
+            const optsHtml = itemDef.options.map(opt => {
+              const isSelected = opt.food === sel.food ? "selected" : "";
+              return `<option value="${opt.food}" data-qty="${opt.qty}" ${isSelected}>${opt.food} (≈${opt.qty}g)</option>`;
+            }).join("");
+            foodControl = `<select class="food-select" data-meal="${meal.id}" data-idx="${idx}">${optsHtml}</select>`;
+          } else {
+            foodControl = `<div class="food-static">${sel.food}</div>`;
           }
 
-          const optionsTags = row.options.map((o, i) =>
-            `<option value="${i}" ${i === altIndex ? "selected" : ""}>${o.label}</option>`
-          ).join("");
-
-          return `<div class="slot-row ${isChecked ? "done" : ""}">
-            <div class="slot-main" onclick="toggleSlot('${row.slotId}')">
-              <div class="slot-title">${opt.label}</div>
-              <div class="slot-meta">${opt.kcal} kcal • ${opt.p}g P • ${opt.c}g G • ${opt.f}g L</div>
+          return `
+            <div class="food-row">
+              <div class="badge-macro badge-${itemDef.macro}">${itemDef.macro}</div>
+              <div class="food-info">
+                ${foodControl}
+                <div class="food-sub">${Math.round(macros.kcal)} kcal • P ${macros.p.toFixed(1)}g • F ${macros.f.toFixed(1)}g • C ${macros.c.toFixed(1)}g</div>
+              </div>
+              <div class="qty-box">
+                <input type="number" class="qty-input" inputmode="decimal" step="1" min="0" value="${sel.qty}" data-meal="${meal.id}" data-idx="${idx}" />
+                <span class="qty-unit">g</span>
+              </div>
             </div>
-            <div class="slot-controls">
-              <select class="alt-select" aria-label="Choisir une alternative" onchange="changeOption('${row.slotId}', this.value)">
-                ${optionsTags}
-              </select>
-              <div class="check-circle" onclick="toggleSlot('${row.slotId}')">${isChecked ? "✓" : ""}</div>
-            </div>
-          </div>`;
+          `;
         }).join("");
 
-        if (blocHasChecked) blocsDone++;
+        totP += mealP; totF += mealF; totC += mealC; totKcal += mealKcal;
 
-        return `<div class="meal-card">
-          <div class="meal-name">${meal.name}</div>
+        const card = document.createElement("div");
+        card.className = "meal-card";
+        card.innerHTML = `
+          <div class="meal-header">
+            <div class="meal-title-wrap">
+              <input type="checkbox" class="meal-check" data-meal="${meal.id}" ${mState.checked ? "checked" : ""} />
+              <h3 class="meal-title">${meal.name}</h3>
+            </div>
+            <span class="meal-kcal-badge">${Math.round(mealKcal)} KCAL</span>
+          </div>
           ${rowsHtml}
-        </div>`;
-      }).join("");
+          <div class="meal-footer">
+            <div class="meal-macro-pill"><small>P</small><strong class="p-color">${mealP.toFixed(1)}g</strong></div>
+            <div class="meal-macro-pill"><small>F</small><strong class="f-color">${mealF.toFixed(1)}g</strong></div>
+            <div class="meal-macro-pill"><small>C</small><strong class="c-color">${mealC.toFixed(1)}g</strong></div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
 
-      document.getElementById("meals-list").innerHTML = mealsHtml;
+      document.getElementById("tot-kcal").textContent = Math.round(totKcal);
+      document.getElementById("tot-p").textContent = totP.toFixed(1) + "g";
+      document.getElementById("tot-f").textContent = totF.toFixed(1) + "g";
+      document.getElementById("tot-c").textContent = totC.toFixed(1) + "g";
+      document.getElementById("checked-count").textContent = `${checkedCount}/${plan.meals.length} repas validés`;
 
-      document.getElementById("kcal-done").textContent = Math.round(kcal);
-      document.getElementById("kcal-target").textContent = target.kcal;
-      document.getElementById("p-done").textContent = p.toFixed(1);
-      document.getElementById("p-target").textContent = target.p;
-      document.getElementById("c-done").textContent = Math.round(c);
-      document.getElementById("c-target").textContent = target.c;
-      document.getElementById("f-done").textContent = f.toFixed(1);
-      document.getElementById("f-target").textContent = target.f;
+      bindMealEvents();
+      updateReportText();
+    }
 
-      const pct = Math.min(100, Math.round((kcal / target.kcal) * 100));
-      document.getElementById("kcal-progress").style.width = pct + "%";
-      document.getElementById("meals-counter").textContent = `${blocsDone}/${MEAL_SLOTS.length} blocs (${checkedRows}/${totalRows})`;
-      document.getElementById("pct-counter").textContent = `${pct}% complété`;
+    function bindMealEvents() {
+      document.querySelectorAll(".meal-check").forEach(cb => {
+        cb.addEventListener("change", e => {
+          const mealId = e.target.dataset.meal;
+          allLogs[currentDate].meals[mealId].checked = e.target.checked;
+          saveLocalAndSchedulePush();
+          render();
+        });
+      });
 
-      document.getElementById("water-val").textContent = Number(data.water || 0).toFixed(2);
-      document.getElementById("salt-val").textContent = Number(data.salt || 0).toFixed(1);
+      document.querySelectorAll(".food-select").forEach(sel => {
+        sel.addEventListener("change", e => {
+          const mealId = e.target.dataset.meal;
+          const idx = Number(e.target.dataset.idx);
+          const chosenOpt = e.target.options[e.target.selectedIndex];
+          const newFood = chosenOpt.value;
+          const newQty = Number(chosenOpt.dataset.qty);
+          allLogs[currentDate].meals[mealId].items[idx] = { food: newFood, qty: newQty };
+          saveLocalAndSchedulePush();
+          render();
+        });
+      });
 
-      ["creatine", "eaa", "booster"].forEach((s) => {
-        const active = Boolean(data.supps[s]);
-        document.getElementById("supp-" + s).classList.toggle("done", active);
-        document.getElementById("check-" + s).textContent = active ? "✓" : "";
+      document.querySelectorAll(".qty-input").forEach(inp => {
+        inp.addEventListener("change", e => {
+          const mealId = e.target.dataset.meal;
+          const idx = Number(e.target.dataset.idx);
+          const val = Math.max(0, Number(e.target.value) || 0);
+          allLogs[currentDate].meals[mealId].items[idx].qty = val;
+          saveLocalAndSchedulePush();
+          render();
+        });
       });
     }
 
-    document.getElementById("btn-prev-day").addEventListener("click", () => { dayOffset--; render(); });
-    document.getElementById("btn-next-day").addEventListener("click", () => { dayOffset++; render(); });
-    document.getElementById("btn-mode-training").addEventListener("click", () => setMode("training"));
-    document.getElementById("btn-mode-rest").addEventListener("click", () => setMode("rest"));
-    document.getElementById("btn-sync-now").addEventListener("click", pullFromFirebase);
-    document.getElementById("btn-toggle-sync-box").addEventListener("click", () => {
-      document.getElementById("sync-panel").classList.toggle("hidden");
+    function updateReportText() {
+      const dayObj = ensureDayData(currentDate);
+      const plan = PLANS[dayObj.dayType];
+      const lines = [];
+      lines.push("Date : " + formatDisplayDate(currentDate) + " — " + plan.label);
+      lines.push("");
+
+      let dayP = 0, dayF = 0, dayC = 0, dayKcal = 0;
+
+      plan.meals.forEach(meal => {
+        const mState = dayObj.meals[meal.id];
+        let mP = 0, mF = 0, mC = 0, mKcal = 0;
+        const itemLines = mState.items.map(it => {
+          const mac = calcItemMacros(it.food, it.qty);
+          mP += mac.p; mF += mac.f; mC += mac.c; mKcal += mac.kcal;
+          return "  - " + it.food + " : " + it.qty + "g";
+        });
+        dayP += mP; dayF += mF; dayC += mC; dayKcal += mKcal;
+
+        const status = mState.checked ? "[OK]" : "[ ]";
+        lines.push(status + " " + meal.name + " (" + Math.round(mKcal) + " kcal | P: " + mP.toFixed(1) + "g | L: " + mF.toFixed(1) + "g | G: " + mC.toFixed(1) + "g)");
+        itemLines.forEach(l => lines.push(l));
+        lines.push("");
+      });
+
+      lines.push("TOTAL JOURNEE : " + Math.round(dayKcal) + " kcal | Proteines : " + dayP.toFixed(1) + "g | Lipides : " + dayF.toFixed(1) + "g | Glucides : " + dayC.toFixed(1) + "g");
+      const out = document.getElementById("report-output");
+      if (out) out.value = lines.join("\n");
+    }
+
+    document.getElementById("tab-training").addEventListener("click", () => {
+      allLogs[currentDate] = createDefaultDayState("training");
+      saveLocalAndSchedulePush();
+      render();
+    });
+
+    document.getElementById("tab-rest").addEventListener("click", () => {
+      allLogs[currentDate] = createDefaultDayState("rest");
+      saveLocalAndSchedulePush();
+      render();
+    });
+
+    document.getElementById("date-picker").addEventListener("change", e => {
+      if (e.target.value) {
+        currentDate = e.target.value;
+        render();
+      }
+    });
+
+    document.getElementById("btn-prev-day").addEventListener("click", () => {
+      currentDate = shiftDate(currentDate, -1);
+      render();
+    });
+
+    document.getElementById("btn-next-day").addEventListener("click", () => {
+      currentDate = shiftDate(currentDate, 1);
+      render();
+    });
+
+    document.getElementById("btn-today").addEventListener("click", () => {
+      currentDate = getTodayStr();
+      render();
+    });
+
+    document.getElementById("btn-reset-day").addEventListener("click", () => {
+      const currentType = ensureDayData(currentDate).dayType;
+      allLogs[currentDate] = createDefaultDayState(currentType);
+      saveLocalAndSchedulePush();
+      render();
+      showToast("Journée réinitialisée");
     });
 
     document.getElementById("firebase-url-input").value = syncCfg.url;
     document.getElementById("sync-uid-input").value = syncCfg.uid;
 
-    document.getElementById("btn-save-sync-config").addEventListener("click", () => {
+    document.getElementById("btn-sync-now").addEventListener("click", async () => {
+      await pullFromFirebase();
+      document.getElementById("sync-panel").classList.add("hidden");
+    });
+
+    document.getElementById("btn-toggle-sync-box").addEventListener("click", () => {
+      document.getElementById("sync-panel").classList.toggle("hidden");
+    });
+
+    document.getElementById("btn-close-sync-box").addEventListener("click", () => {
+      document.getElementById("sync-panel").classList.add("hidden");
+    });
+
+    document.getElementById("btn-save-sync-config").addEventListener("click", async () => {
       syncCfg = {
         url: document.getElementById("firebase-url-input").value.trim().replace(/\/+$/, "") || DEFAULT_FIREBASE_URL,
         uid: document.getElementById("sync-uid-input").value.trim() || DEFAULT_UID
       };
-      localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncCfg));
-      pullFromFirebase();
+      safeWriteJSON(SYNC_CFG_KEY, syncCfg);
+      await pullFromFirebase();
+      document.getElementById("sync-panel").classList.add("hidden");
     });
 
-    const noteTextarea = document.getElementById("weekly-coach-note");
-    noteTextarea.value = appState.weeklyNote || "";
-    noteTextarea.addEventListener("input", () => {
-      appState.weeklyNote = noteTextarea.value;
-      appState.updatedAt = Date.now();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-      clearTimeout(syncTimer);
-      syncTimer = setTimeout(pushToFirebase, 400);
+    document.getElementById("nav-journal").addEventListener("click", () => {
+      document.getElementById("view-journal").classList.remove("hidden");
+      document.getElementById("view-report").classList.add("hidden");
+      document.getElementById("nav-journal").classList.add("active");
+      document.getElementById("nav-report").classList.remove("active");
     });
 
-    document.getElementById("btn-copy-coach").addEventListener("click", async () => {
-      const { key, data } = getCurrentDay();
-      const message =
-        `Bilan fin de semaine — MacroTrack (${key})\n` +
-        `Mode : ${data.mode === "training" ? "Entraînement" : "Repos"} | Eau : ${Number(data.water || 0).toFixed(2)}L | Sel : ${Number(data.salt || 0).toFixed(1)}g\n\n` +
-        `${(appState.weeklyNote || "").trim()}`;
+    document.getElementById("nav-report").addEventListener("click", () => {
+      updateReportText();
+      document.getElementById("view-report").classList.remove("hidden");
+      document.getElementById("view-journal").classList.add("hidden");
+      document.getElementById("nav-report").classList.add("active");
+      document.getElementById("nav-journal").classList.remove("active");
+    });
+
+    document.getElementById("btn-copy-report").addEventListener("click", async () => {
+      const txt = document.getElementById("report-output").value;
       try {
-        await navigator.clipboard.writeText(message);
-        document.getElementById("coach-copy-status").textContent = "Copié dans le presse-papiers pour ton coach.";
-      } catch {
-        document.getElementById("coach-copy-status").textContent = "Sélectionne et copie le texte ci-dessus.";
+        await navigator.clipboard.writeText(txt);
+        showToast("Bilan copié dans le presse-papier");
+      } catch (e) {
+        const area = document.getElementById("report-output");
+        area.focus();
+        area.select();
+        try { document.execCommand("copy"); } catch (_) {}
+        showToast("Bilan copié");
       }
     });
 
-    window.addEventListener("online", pullFromFirebase);
-    window.addEventListener("offline", () => setSyncPill("Hors ligne", "#fcd34d"));
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") pullFromFirebase();
-    });
+    if ("serviceWorker" in navigator && window.location.protocol.startsWith("http")) {
+      try {
+        const swCode = [
+          'const CACHE_NAME = "macrotrack-cache-v4";',
+          'self.addEventListener("install", e => { self.skipWaiting(); e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(["./"]))); });',
+          'self.addEventListener("activate", e => { e.waitUntil(self.clients.claim()); });',
+          'self.addEventListener("fetch", e => {',
+          '  if (e.request.method !== "GET" || e.request.url.includes("firebaseio.com")) return;',
+          '  e.respondWith(fetch(e.request).then(res => { const copy = res.clone(); caches.open(CACHE_NAME).then(c => c.put(e.request, copy)); return res; }).catch(() => caches.match(e.request)));',
+          '});'
+        ].join("\n");
+        const blob = new Blob([swCode], { type: "application/javascript" });
+        const swUrl = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swUrl).catch(() => {});
+      } catch (e) {}
+    }
 
-    setupBrandAssets();
     render();
     pullFromFirebase();
   </script>
