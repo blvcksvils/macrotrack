@@ -15,15 +15,20 @@
   <style>
     :root {
       --bg: #000000;
-      --card: #0e1015;
-      --card-elev: #151821;
-      --border: #1f2430;
-      --text: #f3f4f6;
-      --muted: #9ca3af;
+      --surface: #0b0e16;
+      --card: #0e121d;
+      --card-2: #141926;
+      --border: #1d2436;
+      --border-soft: rgba(255, 255, 255, 0.06);
+      --text: #f8fafc;
+      --muted: #8b95a8;
       --blue: #2563eb;
-      --blue-soft: rgba(37, 99, 235, 0.16);
+      --blue-bright: #3b82f6;
+      --blue-pill: rgba(37, 99, 235, 0.22);
       --orange: #f97316;
+      --amber: #f59e0b;
       --emerald: #10b981;
+      --rose: #f43f5e;
       --danger: #ef4444;
     }
 
@@ -32,287 +37,108 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
       font-size: 14px;
-      line-height: 1.4;
+      line-height: 1.35;
+      overflow-x: hidden;
+    }
+
+    body {
       padding-bottom: 92px;
     }
 
-    .container {
-      max-width: 540px;
+    .app-shell {
+      max-width: 520px;
       margin: 0 auto;
-      padding: 12px 12px 24px;
+      padding: 10px 12px 24px;
     }
 
-    header {
+    .top-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding: 8px 0 12px;
-      position: sticky;
-      top: 0;
-      background: rgba(0, 0, 0, 0.92);
-      backdrop-filter: blur(12px);
-      z-index: 30;
-      border-bottom: 1px solid var(--border);
+      gap: 10px;
+      padding: 6px 2px 12px;
     }
 
-    .brand {
+    .brand-left {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      font-size: 16px;
-      letter-spacing: -0.02em;
+      gap: 10px;
+      min-width: 0;
     }
 
-    .brand-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: #000000;
-      border: 1px solid #2b303d;
+    .app-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: #0d111a;
+      border: 1px solid #232b3e;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
-    .header-actions {
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--blue-bright);
+      line-height: 1.1;
+    }
+
+    .app-title {
+      margin: 2px 0 0;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .header-right {
       display: flex;
       align-items: center;
       gap: 6px;
+      flex-shrink: 0;
     }
 
-    .pill-btn {
-      background: var(--card-elev);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 6px 10px;
+    .icon-chip {
+      background: #111622;
+      color: #e2e8f0;
+      border: 1px solid #20283b;
+      border-radius: 11px;
+      padding: 7px 10px;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .pill-btn:active {
+    .icon-chip:active {
       transform: scale(0.97);
     }
 
     .sync-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: #6b7280;
+      background: #64748b;
     }
     .sync-dot.ok { background: var(--emerald); }
-    .sync-dot.syncing { background: #f59e0b; }
+    .sync-dot.syncing { background: var(--amber); }
     .sync-dot.err { background: var(--danger); }
 
-    .sync-panel {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      margin-top: 10px;
-    }
-
-    .sync-panel.hidden, .hidden {
-      display: none !important;
-    }
-
-    .sync-row {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 10px;
-    }
-
-    .sync-row label {
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .sync-row input {
-      background: #08090d;
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 13px;
-      width: 100%;
-    }
-
-    .sync-btns {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      flex: 1;
-    }
-
-    .btn-secondary {
-      background: var(--card-elev);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .controls-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin: 12px 0 10px;
-    }
-
-    .date-nav {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 4px 6px;
-    }
-
-    .date-nav button {
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-size: 15px;
-      padding: 4px 8px;
-      cursor: pointer;
-    }
-
-    .date-nav input[type="date"] {
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 600;
-      font-family: inherit;
-      color-scheme: dark;
-    }
-
-    .day-toggle {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 4px;
-      gap: 4px;
-      margin-bottom: 12px;
-    }
-
-    .day-toggle button {
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 10px 8px;
-      border-radius: 9px;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-
-    .day-toggle button.active {
-      background: var(--blue);
-      color: #ffffff;
-    }
-
-    .summary-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 14px;
-    }
-
-    .summary-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 10px;
-    }
-
-    .summary-kcal {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .summary-kcal span {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--muted);
-    }
-
-    .macro-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-
-    .macro-box {
-      background: #08090d;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px;
-      text-align: center;
-    }
-
-    .macro-label {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .macro-val {
-      font-size: 15px;
-      font-weight: 800;
-      margin-top: 2px;
-    }
-
-    .macro-target {
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .p-color { color: #60a5fa; }
-    .f-color { color: #38bdf8; }
-    .c-color { color: #fb923c; }
-
-    .meal-card {
+    .cloud-panel {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -320,83 +146,624 @@
       margin-bottom: 12px;
     }
 
-    .meal-header {
+    .hidden {
+      display: none !important;
+    }
+
+    .field-group {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 4px;
       margin-bottom: 10px;
     }
 
-    .meal-title-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .field-group label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    .meal-check {
-      width: 20px;
-      height: 20px;
-      accent-color: var(--blue);
+    .field-group input {
+      background: #07090f;
+      border: 1px solid #222a3d;
+      color: var(--text);
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-size: 13px;
+      width: 100%;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-blue {
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .btn-dark {
+      background: #151b29;
+      color: #e2e8f0;
+      border: 1px solid #242d42;
+      border-radius: 9px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    .meal-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #60a5fa;
-      margin: 0;
+    .date-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
-    .meal-kcal-badge {
+    .arrow-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #131826;
+      border: 1px solid #20283d;
+      color: #cbd5e1;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .date-center {
+      text-align: center;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .date-top-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .date-main-label {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .status-pill {
+      background: rgba(37, 99, 235, 0.22);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .date-sub-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .hidden-date-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+    }
+
+    .mode-switch {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .mode-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      color: #94a3b8;
+      border-radius: 12px;
+      padding: 11px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .mode-btn.active {
+      background: var(--blue);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+    }
+
+    .hero-macros-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #7c879c;
+    }
+
+    .hero-kcal-row {
+      margin-top: 4px;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .hero-kcal-num {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .hero-kcal-target {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7c879c;
+    }
+
+    .hero-right-stats {
+      text-align: right;
+    }
+
+    .hero-meals-count {
+      font-size: 14px;
+      font-weight: 800;
+      color: #34d399;
+    }
+
+    .hero-pct {
+      font-size: 11px;
+      color: #7c879c;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .bolt-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .progress-track {
+      height: 6px;
+      background: #192030;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3b82f6, #10b981);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .three-macros-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .macro-tile {
+      background: #090c13;
+      border: 1px solid #181f30;
+      border-radius: 12px;
+      padding: 9px 8px;
+    }
+
+    .macro-tile-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .dot-badge {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 800;
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dot-p { background: #2563eb; }
+    .dot-c { background: #f97316; }
+    .dot-f { background: #06b6d4; }
+
+    .macro-tile-val {
+      margin-top: 6px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .macro-tile-val span {
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .two-col-trackers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tracker-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .tracker-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .tracker-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    .tracker-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .pill-water {
+      background: rgba(14, 165, 133, 0.16);
+      color: #38bdf8;
+    }
+
+    .pill-salt {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fbbf24;
+    }
+
+    .tracker-val-line {
+      margin: 8px 0 7px;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .tracker-big {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .tracker-goal {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .mini-track {
+      height: 4px;
+      background: #171e2e;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 9px;
+    }
+
+    .mini-fill-water {
+      height: 100%;
+      background: #38bdf8;
+      border-radius: 999px;
+    }
+
+    .mini-fill-salt {
+      height: 100%;
+      background: #f59e0b;
+      border-radius: 999px;
+    }
+
+    .step-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 5px;
+    }
+
+    .step-btn {
+      border: 1px solid #1e273b;
+      background: #121724;
+      color: #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 4px;
       font-size: 11px;
       font-weight: 700;
-      color: var(--muted);
-      background: #08090d;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .step-btn.accent-water {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+    }
+
+    .step-btn.accent-salt {
+      background: #d97706;
+      border-color: #d97706;
+      color: #ffffff;
+    }
+
+    .supp-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .supp-card {
+      background: var(--card);
       border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 11px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .supp-card.done {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .supp-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .supp-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f8fafc;
+      line-height: 1.2;
+    }
+
+    .supp-sub {
+      font-size: 11px;
+      color: #7c879c;
+      margin-top: 2px;
+    }
+
+    .circle-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #2a354d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 800;
+      color: transparent;
+    }
+
+    .supp-card.done .circle-check {
+      background: var(--emerald);
+      border-color: var(--emerald);
+      color: #04130d;
+    }
+
+    .booster-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+
+    .booster-card.done {
+      border-color: rgba(249, 115, 22, 0.5);
+      background: rgba(249, 115, 22, 0.07);
+    }
+
+    .caffeine-tag {
+      background: rgba(244, 63, 94, 0.16);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.32);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 14px 2px 8px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .section-head span {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .meal-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .meal-card.validated {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .meal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .meal-head-left {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .meal-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--emerald);
+      cursor: pointer;
+    }
+
+    .meal-name {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 800;
+      color: #60a5fa;
+    }
+
+    .meal-kcal-pill {
+      background: #090c13;
+      border: 1px solid #1c2436;
+      color: #cbd5e1;
+      font-size: 11px;
+      font-weight: 700;
       padding: 3px 8px;
       border-radius: 999px;
     }
 
-    .food-row {
+    .item-row {
       display: grid;
-      grid-template-columns: 24px 1fr auto;
+      grid-template-columns: 22px 1fr auto;
       align-items: center;
       gap: 8px;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(31, 36, 48, 0.7);
+      padding: 7px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
     }
 
-    .food-row:last-of-type {
-      border-bottom: none;
+    .item-row:first-of-type {
+      border-top: none;
     }
 
-    .badge-macro {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .badge-P { background: #2563eb; }
-    .badge-F { background: #3b82f6; }
-    .badge-C { background: #f97316; }
-
-    .food-info {
-      min-width: 0;
-    }
-
-    .food-select {
+    .item-select {
       width: 100%;
-      background: var(--card-elev);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 8px;
+      background: #121724;
+      color: #f8fafc;
+      border: 1px solid #20293e;
+      border-radius: 9px;
+      padding: 6px 26px 6px 8px;
       font-size: 13px;
       font-weight: 600;
       font-family: inherit;
@@ -404,134 +771,139 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 8px center;
-      padding-right: 26px;
     }
 
-    .food-static {
+    .item-fixed {
       font-size: 13px;
       font-weight: 600;
+      color: #e2e8f0;
       padding: 5px 2px;
     }
 
-    .food-sub {
+    .item-meta {
       font-size: 11px;
-      color: var(--muted);
+      color: #7c879c;
       margin-top: 2px;
       padding-left: 2px;
     }
 
-    .qty-box {
-      display: flex;
+    .qty-pill {
+      display: inline-flex;
       align-items: center;
-      gap: 3px;
-      background: #08090d;
-      border: 1px solid var(--border);
+      gap: 2px;
+      background: #090c13;
+      border: 1px solid #1d2538;
       border-radius: 8px;
       padding: 4px 6px;
     }
 
-    .qty-input {
-      width: 46px;
+    .qty-num {
+      width: 44px;
       background: transparent;
       border: none;
-      color: var(--text);
+      color: #ffffff;
       font-size: 13px;
       font-weight: 700;
       text-align: right;
       font-family: inherit;
     }
 
-    .qty-unit {
+    .qty-u {
       font-size: 11px;
-      color: var(--muted);
+      color: #64748b;
     }
 
-    .meal-footer {
+    .meal-summary-bar {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
-      margin-top: 10px;
+      margin-top: 8px;
       padding-top: 8px;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid #182032;
     }
 
-    .meal-macro-pill {
-      background: #08090d;
+    .meal-sum-box {
+      background: #090c13;
       border-radius: 8px;
-      padding: 6px;
+      padding: 5px;
       text-align: center;
+      font-size: 11px;
     }
 
-    .meal-macro-pill small {
-      display: block;
-      font-size: 9px;
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    .meal-macro-pill strong {
-      font-size: 13px;
-    }
-
-    .report-card {
+    .panel-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 14px;
+      margin-bottom: 12px;
     }
 
-    .report-textarea {
+    .report-area {
       width: 100%;
-      min-height: 280px;
-      background: #08090d;
-      border: 1px solid var(--border);
+      min-height: 290px;
+      background: #07090f;
+      border: 1px solid #1e2638;
       border-radius: 10px;
-      color: var(--text);
-      padding: 12px;
+      color: #e2e8f0;
+      padding: 10px;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 12.5px;
-      line-height: 1.5;
+      font-size: 12px;
+      line-height: 1.45;
+      margin: 10px 0 0;
       resize: vertical;
-      margin: 10px 0;
     }
 
-    .bottom-nav {
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      gap: 8px;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .bottom-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(10, 12, 16, 0.96);
+      background: rgba(9, 12, 18, 0.96);
       backdrop-filter: blur(14px);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: center;
+      border-top: 1px solid #192030;
       padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
       z-index: 40;
     }
 
-    .bottom-nav-inner {
-      max-width: 540px;
-      width: 100%;
+    .bottom-bar-inner {
+      max-width: 520px;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
     }
 
-    .nav-btn {
+    .tab-nav-btn {
       background: transparent;
-      border: 1px solid transparent;
-      color: var(--muted);
+      border: none;
+      color: #7c879c;
       border-radius: 10px;
-      padding: 9px;
-      font-size: 13px;
+      padding: 6px 4px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
     }
 
-    .nav-btn.active {
-      background: var(--blue-soft);
-      border-color: rgba(37, 99, 235, 0.45);
-      color: #60a5fa;
+    .tab-nav-btn.active {
+      color: #3b82f6;
+      background: rgba(37, 99, 235, 0.12);
     }
 
     .toast {
@@ -539,119 +911,272 @@
       bottom: 76px;
       left: 50%;
       transform: translateX(-50%);
-      background: #1f2937;
+      background: #1e293b;
       color: #fff;
       padding: 8px 14px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: 600;
-      z-index: 50;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      z-index: 60;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="brand-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff">
-            <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-left">
+        <div class="app-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
         </div>
-        <span>MacroTrack</span>
+        <div>
+          <div class="eyebrow">THE ASCEND STANDARD</div>
+          <h1 class="app-title">MacroTrack</h1>
+        </div>
       </div>
 
-      <div class="header-actions">
-        <button class="pill-btn" id="btn-reset-day" title="Réinitialiser la journée">Reset</button>
-        <button class="pill-btn" id="btn-toggle-sync-box">
+      <div class="header-right">
+        <button class="icon-chip" id="btn-icon-info" type="button" title="Icône app">↓ Icône</button>
+        <button class="icon-chip" id="btn-toggle-cloud" type="button">
           <span class="sync-dot" id="sync-dot"></span>
-          <span id="sync-label">Cloud</span>
+          <span>Cloud</span>
         </button>
       </div>
     </header>
 
-    <div class="sync-panel hidden" id="sync-panel">
-      <div class="sync-row">
+    <div class="cloud-panel hidden" id="cloud-panel">
+      <div class="field-group">
         <label>Firebase Realtime Database URL</label>
         <input type="url" id="firebase-url-input" placeholder="https://votre-projet-default-rtdb.firebaseio.com" />
       </div>
-      <div class="sync-row">
-        <label>Identifiant de synchronisation (UID)</label>
+      <div class="field-group">
+        <label>Identifiant (UID)</label>
         <input type="text" id="sync-uid-input" placeholder="maxime-macrotrack" />
       </div>
-      <div class="sync-btns">
-        <button class="btn-primary" id="btn-sync-now">Forcer sync</button>
-        <button class="btn-secondary" id="btn-save-sync-config">Enregistrer</button>
-        <button class="btn-secondary" id="btn-close-sync-box">Fermer</button>
+      <div class="btn-row">
+        <button class="btn-blue" id="btn-force-sync" type="button">Forcer sync</button>
+        <button class="btn-dark" id="btn-save-cloud" type="button">Enregistrer</button>
+        <button class="btn-dark" id="btn-close-cloud" type="button">Fermer</button>
       </div>
-      <div id="sync-status-msg" style="font-size:11px;color:var(--muted);margin-top:8px;"></div>
+      <div id="sync-msg" style="font-size:11px;color:#8b95a8;margin-top:8px;"></div>
     </div>
 
-    <div class="controls-bar">
-      <div class="date-nav">
-        <button id="btn-prev-day" type="button">‹</button>
-        <input type="date" id="date-picker" />
-        <button id="btn-next-day" type="button">›</button>
+    <div class="date-bar">
+      <button class="arrow-btn" id="btn-prev-date" type="button">‹</button>
+      <div class="date-center">
+        <div class="date-top-line">
+          <span class="date-main-label" id="date-heading">Aujourd'hui</span>
+          <span class="status-pill" id="date-badge">EN COURS</span>
+        </div>
+        <div class="date-sub-label" id="date-subtitle">samedi 21 novembre</div>
+        <input type="date" id="date-input" class="hidden-date-input" />
       </div>
-      <button class="pill-btn" id="btn-today" type="button">Aujourd'hui</button>
+      <button class="arrow-btn" id="btn-next-date" type="button">›</button>
     </div>
 
-    <div class="day-toggle">
-      <button id="tab-training" class="active" type="button">Jour d'entraînement</button>
-      <button id="tab-rest" type="button">Jour de repos</button>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="btn-mode-training" type="button">
+        <span>⚡</span>
+        <span>ENTRAÎNEMENT</span>
+      </button>
+      <button class="mode-btn" id="btn-mode-rest" type="button">
+        <span>🔋</span>
+        <span>JOUR DE REPOS</span>
+      </button>
     </div>
 
-    <div id="view-journal">
-      <div class="summary-card">
-        <div class="summary-top">
-          <div class="summary-kcal"><span id="tot-kcal" style="font-size:22px;color:#fff;font-weight:800;">0</span> <span>/ <span id="target-kcal">0</span> kcal</span></div>
-          <div style="font-size:11px;color:var(--muted);" id="checked-count">0/0 repas validés</div>
+    <div id="tab-today-view">
+      <div class="hero-macros-card">
+        <div class="hero-top">
+          <div>
+            <div class="hero-eyebrow">CALORIES VALIDÉES</div>
+            <div class="hero-kcal-row">
+              <span class="hero-kcal-num" id="hero-kcal">0</span>
+              <span class="hero-kcal-target">/ <span id="hero-kcal-goal">2388</span> kcal</span>
+            </div>
+          </div>
+
+          <div class="hero-right-stats">
+            <div class="hero-meals-count" id="hero-meals-summary">0/6 repas (0/20)</div>
+            <div class="hero-badge-row" style="justify-content:flex-end;">
+              <span class="hero-pct" id="hero-pct">0% complété</span>
+              <div class="bolt-badge">⚡</div>
+            </div>
+          </div>
         </div>
-        <div class="macro-grid">
-          <div class="macro-box">
-            <div class="macro-label">Protéines</div>
-            <div class="macro-val p-color" id="tot-p">0g</div>
-            <div class="macro-target">cible <span id="target-p">0g</span></div>
+
+        <div class="progress-track">
+          <div class="progress-fill" id="hero-progress-fill"></div>
+        </div>
+
+        <div class="three-macros-grid">
+          <div class="macro-tile">
+            <div class="macro-tile-head">
+              <span>PROTÉINES</span>
+              <span class="dot-badge dot-p">P</span>
+            </div>
+            <div class="macro-tile-val"><span id="hero-p">0</span><span>/<span id="hero-p-goal">217</span>g</span></div>
           </div>
-          <div class="macro-box">
-            <div class="macro-label">Lipides</div>
-            <div class="macro-val f-color" id="tot-f">0g</div>
-            <div class="macro-target">cible <span id="target-f">0g</span></div>
+          <div class="macro-tile">
+            <div class="macro-tile-head">
+              <span>GLUCIDES</span>
+              <span class="dot-badge dot-c">C</span>
+            </div>
+            <div class="macro-tile-val"><span id="hero-c">0</span><span>/<span id="hero-c-goal">255</span>g</span></div>
           </div>
-          <div class="macro-box">
-            <div class="macro-label">Glucides</div>
-            <div class="macro-val c-color" id="tot-c">0g</div>
-            <div class="macro-target">cible <span id="target-c">0g</span></div>
+          <div class="macro-tile">
+            <div class="macro-tile-head">
+              <span>LIPIDES</span>
+              <span class="dot-badge dot-f">F</span>
+            </div>
+            <div class="macro-tile-val"><span id="hero-f">0</span><span>/<span id="hero-f-goal">56</span>g</span></div>
           </div>
         </div>
       </div>
 
-      <div id="meals-container"></div>
+      <div class="two-col-trackers">
+        <div class="tracker-card">
+          <div class="tracker-top">
+            <div class="tracker-title-wrap">
+              <span>💧</span>
+              <span>Eau</span>
+            </div>
+            <span class="tracker-pill pill-water">4,5 L</span>
+          </div>
+          <div class="tracker-val-line">
+            <span class="tracker-big" id="water-val">0.00</span>
+            <span class="tracker-goal">/ 4,5 L</span>
+          </div>
+          <div class="mini-track">
+            <div class="mini-fill-water" id="water-bar" style="width:0%"></div>
+          </div>
+          <div class="step-btns">
+            <button class="step-btn" id="water-minus" type="button">-0.25</button>
+            <button class="step-btn" id="water-plus-25" type="button">+0.25</button>
+            <button class="step-btn accent-water" id="water-plus-50" type="button">+0.5L</button>
+          </div>
+        </div>
+
+        <div class="tracker-card">
+          <div class="tracker-top">
+            <div class="tracker-title-wrap">
+              <span>🧂</span>
+              <span>Sel</span>
+            </div>
+            <span class="tracker-pill pill-salt">6 g</span>
+          </div>
+          <div class="tracker-val-line">
+            <span class="tracker-big" id="salt-val">0.0</span>
+            <span class="tracker-goal">/ 6 g</span>
+          </div>
+          <div class="mini-track">
+            <div class="mini-fill-salt" id="salt-bar" style="width:0%"></div>
+          </div>
+          <div class="step-btns">
+            <button class="step-btn" id="salt-minus" type="button">-0.5g</button>
+            <button class="step-btn" id="salt-plus-05" type="button">+0.5g</button>
+            <button class="step-btn accent-salt" id="salt-plus-1" type="button">+1g</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="supp-grid-2">
+        <div class="supp-card" id="card-creatine">
+          <div class="supp-left">
+            <span style="font-size:16px;">⚡</span>
+            <div>
+              <div class="supp-name">Créatine</div>
+              <div class="supp-sub">5 g / jour</div>
+            </div>
+          </div>
+          <div class="circle-check" id="check-creatine">✓</div>
+        </div>
+
+        <div class="supp-card" id="card-eaa">
+          <div class="supp-left">
+            <span style="font-size:16px;">🧪</span>
+            <div>
+              <div class="supp-name">EAA</div>
+              <div class="supp-sub">15 g / jour</div>
+            </div>
+          </div>
+          <div class="circle-check" id="check-eaa">✓</div>
+        </div>
+      </div>
+
+      <div class="booster-card" id="card-booster">
+        <div class="supp-left">
+          <span style="font-size:18px;">🔥</span>
+          <div>
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+              <span class="supp-name">Booster pré workout</span>
+              <span class="caffeine-tag">200 mg caféine</span>
+            </div>
+            <div class="supp-sub">Prise avant séance • Suivi journalier</div>
+          </div>
+        </div>
+        <div class="circle-check" id="check-booster">✓</div>
+      </div>
+
+      <div class="section-head">
+        <h2>PLAN ALIMENTAIRE</h2>
+        <span id="plan-mode-caption">Entraînement</span>
+      </div>
+      <div id="meals-list"></div>
     </div>
 
-    <div id="view-report" class="hidden">
-      <div class="report-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <strong style="font-size:15px;">Bilan repas (à copier)</strong>
-          <button class="btn-primary" id="btn-copy-report" type="button" style="flex:0 0 auto;">Copier le texte</button>
+    <div id="tab-radar-view" class="hidden">
+      <div class="panel-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div>
+            <div class="eyebrow">BILAN COACH</div>
+            <strong style="font-size:16px;">Récapitulatif de la journée</strong>
+          </div>
+          <button class="btn-blue" id="btn-copy-summary" type="button" style="flex:0 0 auto;">Copier</button>
         </div>
-        <textarea class="report-textarea" id="report-output" readonly></textarea>
+        <textarea class="report-area" id="coach-summary-text" readonly></textarea>
+      </div>
+    </div>
+
+    <div id="tab-history-view" class="hidden">
+      <div class="panel-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+          <div>
+            <div class="eyebrow">HISTORIQUE</div>
+            <strong style="font-size:16px;">Journées enregistrées</strong>
+          </div>
+          <button class="btn-dark" id="btn-reset-current" type="button">Réinitialiser jour</button>
+        </div>
+        <div id="history-list"></div>
       </div>
     </div>
   </div>
 
-  <nav class="bottom-nav">
-    <div class="bottom-nav-inner">
-      <button class="nav-btn active" id="nav-journal" type="button">Journal repas</button>
-      <button class="nav-btn" id="nav-report" type="button">Bilan coach</button>
+  <nav class="bottom-bar">
+    <div class="bottom-bar-inner">
+      <button class="tab-nav-btn active" id="nav-today" type="button">
+        <span>☑</span>
+        <span>Aujourd'hui</span>
+      </button>
+      <button class="tab-nav-btn" id="nav-radar" type="button">
+        <span>◔</span>
+        <span>Radar & Stats</span>
+      </button>
+      <button class="tab-nav-btn" id="nav-history" type="button">
+        <span>📅</span>
+        <span>Historique</span>
+      </button>
     </div>
   </nav>
 
   <div class="toast hidden" id="toast"></div>
 
   <script>
-    (function generateAppleTouchIcon() {
+    (function setupAppleIcon() {
       try {
         const c = document.createElement("canvas");
         c.width = 180;
@@ -723,7 +1248,8 @@
 
     const PLANS = {
       training: {
-        label: "Jour d'entraînement",
+        label: "Entraînement",
+        targets: { kcal: 2388, p: 217, c: 255, f: 56 },
         meals: [
           {
             id: "tr_r1",
@@ -785,6 +1311,7 @@
       },
       rest: {
         label: "Jour de repos",
+        targets: { kcal: 2180, p: 205, c: 198, f: 58 },
         meals: [
           {
             id: "re_r1",
@@ -839,12 +1366,12 @@
       }
     };
 
-    const STORAGE_KEY = "macrotrack_logs_v3";
-    const SYNC_CFG_KEY = "macrotrack_sync_cfg_v1";
-    const DEFAULT_FIREBASE_URL = "https://macrotrack-maxime-default-rtdb.firebaseio.com";
+    const LOGS_KEY = "macrotrack_ascend_logs_v1";
+    const CFG_KEY = "macrotrack_ascend_cfg_v1";
+    const DEFAULT_URL = "https://macrotrack-maxime-default-rtdb.firebaseio.com";
     const DEFAULT_UID = "maxime-macrotrack";
 
-    function safeReadJSON(key, fallback) {
+    function readStore(key, fallback) {
       try {
         const raw = localStorage.getItem(key);
         return raw ? JSON.parse(raw) : fallback;
@@ -853,455 +1380,517 @@
       }
     }
 
-    function safeWriteJSON(key, val) {
+    function writeStore(key, val) {
       try {
         localStorage.setItem(key, JSON.stringify(val));
       } catch (e) {}
     }
 
-    let syncCfg = safeReadJSON(SYNC_CFG_KEY, null) || {
-      url: DEFAULT_FIREBASE_URL,
-      uid: DEFAULT_UID
-    };
+    let cfg = readStore(CFG_KEY, null) || { url: DEFAULT_URL, uid: DEFAULT_UID };
+    let store = readStore(LOGS_KEY, {});
+    if (!store || typeof store !== "object") store = {};
 
-    let allLogs = safeReadJSON(STORAGE_KEY, {});
-    if (!allLogs || typeof allLogs !== "object") allLogs = {};
-    let currentDate = getTodayStr();
-    let syncTimeout = null;
-
-    function getTodayStr() {
+    function todayISO() {
       const d = new Date();
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${y}-${m}-${day}`;
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     }
 
-    function shiftDate(dateStr, delta) {
-      const base = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : getTodayStr();
+    function addDaysISO(iso, delta) {
+      const base = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : todayISO();
       const [y, m, d] = base.split("-").map(Number);
       const dt = new Date(y, m - 1, d + delta);
       return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
     }
 
-    function formatDisplayDate(dateStr) {
-      const base = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : getTodayStr();
-      const [y, m, d] = base.split("-");
-      return `${d}/${m}/${y}`;
+    function formatFrenchDate(iso) {
+      const base = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : todayISO();
+      const [y, m, d] = base.split("-").map(Number);
+      const dt = new Date(y, m - 1, d);
+      return dt.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
     }
 
-    function createDefaultDayState(dayType = "training") {
-      const plan = PLANS[dayType] || PLANS.training;
-      const mealsState = {};
-      plan.meals.forEach(meal => {
-        mealsState[meal.id] = {
+    function defaultDay(mode = "training") {
+      const plan = PLANS[mode] || PLANS.training;
+      const meals = {};
+      plan.meals.forEach(m => {
+        meals[m.id] = {
           checked: false,
-          items: meal.items.map(it => ({
-            food: it.defaultFood,
-            qty: it.defaultQty
-          }))
+          items: m.items.map(it => ({ food: it.defaultFood, qty: it.defaultQty }))
         };
       });
       return {
-        dayType,
+        mode,
+        water: 0,
+        salt: 0,
+        creatine: false,
+        eaa: false,
+        booster: false,
         updatedAt: Date.now(),
-        meals: mealsState
+        meals
       };
     }
 
-    function ensureDayData(dateStr) {
-      const key = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? dateStr : getTodayStr();
-      if (!allLogs[key] || typeof allLogs[key] !== "object") {
-        allLogs[key] = createDefaultDayState("training");
+    let currentDate = todayISO();
+    let syncTimer = null;
+
+    function getDay(iso) {
+      const key = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : todayISO();
+      if (!store[key] || typeof store[key] !== "object") {
+        store[key] = defaultDay("training");
       }
-      const dayObj = allLogs[key];
-      const dayType = dayObj.dayType === "rest" ? "rest" : "training";
-      dayObj.dayType = dayType;
-      const plan = PLANS[dayType];
-      if (!dayObj.meals || typeof dayObj.meals !== "object") dayObj.meals = {};
-      plan.meals.forEach(meal => {
-        if (!dayObj.meals[meal.id] || !Array.isArray(dayObj.meals[meal.id].items) || dayObj.meals[meal.id].items.length !== meal.items.length) {
-          dayObj.meals[meal.id] = {
+      const d = store[key];
+      d.mode = d.mode === "rest" ? "rest" : "training";
+      d.water = Number(d.water) || 0;
+      d.salt = Number(d.salt) || 0;
+      d.creatine = Boolean(d.creatine);
+      d.eaa = Boolean(d.eaa);
+      d.booster = Boolean(d.booster);
+      if (!d.meals || typeof d.meals !== "object") d.meals = {};
+      PLANS[d.mode].meals.forEach(m => {
+        if (!d.meals[m.id] || !Array.isArray(d.meals[m.id].items) || d.meals[m.id].items.length !== m.items.length) {
+          d.meals[m.id] = {
             checked: false,
-            items: meal.items.map(it => ({ food: it.defaultFood, qty: it.defaultQty }))
+            items: m.items.map(it => ({ food: it.defaultFood, qty: it.defaultQty }))
           };
         }
       });
-      return dayObj;
+      return d;
     }
 
-    function calcItemMacros(foodName, qty) {
+    function itemMacros(foodName, qty) {
       const f = FOODS[foodName] || { p: 0, f: 0, c: 0, kcal: 0 };
-      const ratio = (Number(qty) || 0) / 100;
-      return {
-        p: f.p * ratio,
-        f: f.f * ratio,
-        c: f.c * ratio,
-        kcal: f.kcal * ratio
-      };
+      const r = (Number(qty) || 0) / 100;
+      return { p: f.p * r, f: f.f * r, c: f.c * r, kcal: f.kcal * r };
     }
 
-    function calcPlanTargets(dayType) {
-      let p = 0, f = 0, c = 0, kcal = 0;
-      const plan = PLANS[dayType] || PLANS.training;
-      plan.meals.forEach(meal => {
-        meal.items.forEach(it => {
-          const m = calcItemMacros(it.defaultFood, it.defaultQty);
-          p += m.p; f += m.f; c += m.c; kcal += m.kcal;
-        });
-      });
-      return { p, f, c, kcal };
+    function toast(msg) {
+      const el = document.getElementById("toast");
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.remove("hidden");
+      setTimeout(() => el.classList.add("hidden"), 2000);
     }
 
-    function saveLocalAndSchedulePush() {
-      const d = ensureDayData(currentDate);
-      d.updatedAt = Date.now();
-      safeWriteJSON(STORAGE_KEY, allLogs);
-      clearTimeout(syncTimeout);
-      syncTimeout = setTimeout(() => {
-        pushToFirebase();
-      }, 600);
-    }
-
-    function setSyncUI(state, msg) {
+    function setSyncState(cls, text) {
       const dot = document.getElementById("sync-dot");
-      const statusMsg = document.getElementById("sync-status-msg");
-      if (dot) dot.className = "sync-dot " + (state || "");
-      if (statusMsg) statusMsg.textContent = msg || "";
+      const msg = document.getElementById("sync-msg");
+      if (dot) dot.className = "sync-dot " + (cls || "");
+      if (msg) msg.textContent = text || "";
     }
 
-    async function pushToFirebase() {
-      if (!syncCfg.url || !syncCfg.uid) return;
-      setSyncUI("syncing", "Envoi vers le cloud...");
+    async function pushCloud() {
+      if (!cfg.url || !cfg.uid) return;
+      setSyncState("syncing", "Synchronisation...");
       try {
-        const endpoint = `${syncCfg.url}/users/${encodeURIComponent(syncCfg.uid)}/logs.json`;
-        const res = await fetch(endpoint, {
+        const res = await fetch(`${cfg.url}/users/${encodeURIComponent(cfg.uid)}/logs.json`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(allLogs)
+          body: JSON.stringify(store)
         });
         if (!res.ok) throw new Error("HTTP " + res.status);
-        setSyncUI("ok", "Synchronisé à " + new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
-      } catch (err) {
-        setSyncUI("err", "Mode hors-ligne (sauvegardé localement)");
+        setSyncState("ok", "Synchronisé à " + new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
+      } catch (e) {
+        setSyncState("err", "Hors-ligne (sauvegarde locale active)");
       }
     }
 
-    async function pullFromFirebase() {
-      const btn = document.getElementById("btn-sync-now");
-      if (!syncCfg.url || !syncCfg.uid) return;
+    async function pullCloud() {
+      const btn = document.getElementById("btn-force-sync");
+      if (!cfg.url || !cfg.uid) return;
       if (btn) btn.disabled = true;
-      setSyncUI("syncing", "Synchronisation...");
+      setSyncState("syncing", "Lecture cloud...");
       try {
-        const endpoint = `${syncCfg.url}/users/${encodeURIComponent(syncCfg.uid)}/logs.json`;
-        const res = await fetch(endpoint);
+        const res = await fetch(`${cfg.url}/users/${encodeURIComponent(cfg.uid)}/logs.json`);
         if (!res.ok) throw new Error("HTTP " + res.status);
         const remote = await res.json();
         if (remote && typeof remote === "object") {
-          let changed = false;
-          Object.keys(remote).forEach(dKey => {
-            const loc = allLogs[dKey];
-            const rem = remote[dKey];
+          let updated = false;
+          Object.keys(remote).forEach(k => {
+            const loc = store[k];
+            const rem = remote[k];
             if (rem && typeof rem === "object" && (!loc || (rem.updatedAt || 0) > (loc.updatedAt || 0))) {
-              allLogs[dKey] = rem;
-              changed = true;
+              store[k] = rem;
+              updated = true;
             }
           });
-          safeWriteJSON(STORAGE_KEY, allLogs);
-          if (changed) render();
-          await pushToFirebase();
+          writeStore(LOGS_KEY, store);
+          if (updated) renderAll();
+          await pushCloud();
         } else {
-          await pushToFirebase();
+          await pushCloud();
         }
-      } catch (err) {
-        setSyncUI("err", "Sync cloud impossible (hors-ligne)");
+      } catch (e) {
+        setSyncState("err", "Hors-ligne (sauvegarde locale active)");
       } finally {
         if (btn) btn.disabled = false;
       }
     }
 
-    function showToast(txt) {
-      const el = document.getElementById("toast");
-      if (!el) return;
-      el.textContent = txt;
-      el.classList.remove("hidden");
-      setTimeout(() => el.classList.add("hidden"), 2000);
+    function persistAndSync() {
+      const d = getDay(currentDate);
+      d.updatedAt = Date.now();
+      writeStore(LOGS_KEY, store);
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(pushCloud, 600);
     }
 
-    function render() {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(currentDate)) {
-        currentDate = getTodayStr();
+    function buildCoachReport() {
+      const day = getDay(currentDate);
+      const plan = PLANS[day.mode];
+      const out = [];
+      out.push(`MacroTrack — ${formatFrenchDate(currentDate)} (${plan.label})`);
+      out.push(`Eau : ${day.water.toFixed(2)} L / 4,5 L | Sel : ${day.salt.toFixed(1)} g / 6 g`);
+      out.push(`Créatine : ${day.creatine ? "OK" : "Non"} | EAA : ${day.eaa ? "OK" : "Non"} | Booster : ${day.booster ? "OK" : "Non"}`);
+      out.push("");
+
+      let sumP = 0, sumC = 0, sumF = 0, sumKcal = 0;
+      plan.meals.forEach(m => {
+        const st = day.meals[m.id];
+        let mP = 0, mC = 0, mF = 0, mKcal = 0;
+        const lines = st.items.map(it => {
+          const mac = itemMacros(it.food, it.qty);
+          mP += mac.p; mC += mac.c; mF += mac.f; mKcal += mac.kcal;
+          return `  - ${it.food} : ${it.qty}g`;
+        });
+        if (st.checked) {
+          sumP += mP; sumC += mC; sumF += mF; sumKcal += mKcal;
+        }
+        out.push(`${st.checked ? "[✓]" : "[ ]"} ${m.name} (${Math.round(mKcal)} kcal | P ${mP.toFixed(1)}g | C ${mC.toFixed(1)}g | L ${mF.toFixed(1)}g)`);
+        lines.forEach(l => out.push(l));
+      });
+
+      out.push("");
+      out.push(`TOTAL VALIDÉ : ${Math.round(sumKcal)} kcal | P ${sumP.toFixed(1)}g | C ${sumC.toFixed(1)}g | L ${sumF.toFixed(1)}g`);
+      const ta = document.getElementById("coach-summary-text");
+      if (ta) ta.value = out.join("\n");
+    }
+
+    function renderHistory() {
+      const box = document.getElementById("history-list");
+      if (!box) return;
+      const keys = Object.keys(store).sort().reverse();
+      if (!keys.length) {
+        box.innerHTML = `<div style="color:#7c879c;font-size:12px;">Aucune journée enregistrée pour le moment.</div>`;
+        return;
       }
-      const dateInput = document.getElementById("date-picker");
-      if (dateInput) dateInput.value = currentDate;
-
-      const dayObj = ensureDayData(currentDate);
-      const dayType = dayObj.dayType;
-      const plan = PLANS[dayType];
-
-      document.getElementById("tab-training").classList.toggle("active", dayType === "training");
-      document.getElementById("tab-rest").classList.toggle("active", dayType === "rest");
-
-      const targets = calcPlanTargets(dayType);
-      document.getElementById("target-kcal").textContent = Math.round(targets.kcal);
-      document.getElementById("target-p").textContent = targets.p.toFixed(1) + "g";
-      document.getElementById("target-f").textContent = targets.f.toFixed(1) + "g";
-      document.getElementById("target-c").textContent = targets.c.toFixed(1) + "g";
-
-      let totP = 0, totF = 0, totC = 0, totKcal = 0, checkedCount = 0;
-      const container = document.getElementById("meals-container");
-      container.innerHTML = "";
-
-      plan.meals.forEach(meal => {
-        const mState = dayObj.meals[meal.id];
-        if (mState.checked) checkedCount++;
-
-        let mealP = 0, mealF = 0, mealC = 0, mealKcal = 0;
-        const rowsHtml = meal.items.map((itemDef, idx) => {
-          const sel = mState.items[idx] || { food: itemDef.defaultFood, qty: itemDef.defaultQty };
-          const macros = calcItemMacros(sel.food, sel.qty);
-          mealP += macros.p; mealF += macros.f; mealC += macros.c; mealKcal += macros.kcal;
-
-          const hasAlts = itemDef.options.length > 1;
-          let foodControl = "";
-          if (hasAlts) {
-            const optsHtml = itemDef.options.map(opt => {
-              const isSelected = opt.food === sel.food ? "selected" : "";
-              return `<option value="${opt.food}" data-qty="${opt.qty}" ${isSelected}>${opt.food} (≈${opt.qty}g)</option>`;
-            }).join("");
-            foodControl = `<select class="food-select" data-meal="${meal.id}" data-idx="${idx}">${optsHtml}</select>`;
-          } else {
-            foodControl = `<div class="food-static">${sel.food}</div>`;
+      box.innerHTML = keys.map(k => {
+        const d = getDay(k);
+        const plan = PLANS[d.mode];
+        let valKcal = 0, valMeals = 0;
+        plan.meals.forEach(m => {
+          const st = d.meals[m.id];
+          if (st.checked) {
+            valMeals++;
+            st.items.forEach(it => { valKcal += itemMacros(it.food, it.qty).kcal; });
           }
+        });
+        return `
+          <div class="history-item">
+            <div>
+              <strong style="font-size:13px;">${formatFrenchDate(k)}</strong>
+              <div style="font-size:11px;color:#8b95a8;">${plan.label} • ${valMeals}/${plan.meals.length} repas</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:12px;font-weight:700;color:#60a5fa;">${Math.round(valKcal)} kcal</span>
+              <button class="btn-dark" data-open-date="${k}" type="button" style="padding:5px 9px;font-size:11px;">Ouvrir</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      box.querySelectorAll("[data-open-date]").forEach(b => {
+        b.addEventListener("click", () => {
+          currentDate = b.dataset.openDate;
+          switchMainTab("today");
+          renderAll();
+        });
+      });
+    }
+
+    function renderAll() {
+      const day = getDay(currentDate);
+      const isToday = currentDate === todayISO();
+      const plan = PLANS[day.mode];
+
+      document.getElementById("date-heading").textContent = isToday ? "Aujourd'hui" : currentDate;
+      document.getElementById("date-badge").textContent = isToday ? "EN COURS" : "ARCHIVÉ";
+      document.getElementById("date-subtitle").textContent = formatFrenchDate(currentDate);
+      document.getElementById("date-input").value = currentDate;
+
+      document.getElementById("btn-mode-training").classList.toggle("active", day.mode === "training");
+      document.getElementById("btn-mode-rest").classList.toggle("active", day.mode === "rest");
+      document.getElementById("plan-mode-caption").textContent = plan.label;
+
+      document.getElementById("hero-kcal-goal").textContent = plan.targets.kcal;
+      document.getElementById("hero-p-goal").textContent = plan.targets.p;
+      document.getElementById("hero-c-goal").textContent = plan.targets.c;
+      document.getElementById("hero-f-goal").textContent = plan.targets.f;
+
+      let totalFoodsCount = 0;
+      let checkedMealsCount = 0;
+      let valKcal = 0, valP = 0, valC = 0, valF = 0;
+
+      const mealsEl = document.getElementById("meals-list");
+      mealsEl.innerHTML = "";
+
+      plan.meals.forEach(m => {
+        const st = day.meals[m.id];
+        totalFoodsCount += m.items.length;
+        if (st.checked) checkedMealsCount++;
+
+        let mKcal = 0, mP = 0, mC = 0, mF = 0;
+        const rows = m.items.map((def, idx) => {
+          const sel = st.items[idx] || { food: def.defaultFood, qty: def.defaultQty };
+          const mac = itemMacros(sel.food, sel.qty);
+          mKcal += mac.kcal; mP += mac.p; mC += mac.c; mF += mac.f;
+
+          const control = def.options.length > 1
+            ? `<select class="item-select" data-meal="${m.id}" data-idx="${idx}">${
+                def.options.map(op => `<option value="${op.food}" data-qty="${op.qty}" ${op.food === sel.food ? "selected" : ""}>${op.food} (≈${op.qty}g)</option>`).join("")
+              }</select>`
+            : `<div class="item-fixed">${sel.food}</div>`;
 
           return `
-            <div class="food-row">
-              <div class="badge-macro badge-${itemDef.macro}">${itemDef.macro}</div>
-              <div class="food-info">
-                ${foodControl}
-                <div class="food-sub">${Math.round(macros.kcal)} kcal • P ${macros.p.toFixed(1)}g • F ${macros.f.toFixed(1)}g • C ${macros.c.toFixed(1)}g</div>
+            <div class="item-row">
+              <span class="dot-badge dot-${def.macro.toLowerCase()}">${def.macro}</span>
+              <div>
+                ${control}
+                <div class="item-meta">${Math.round(mac.kcal)} kcal • P ${mac.p.toFixed(1)}g • C ${mac.c.toFixed(1)}g • L ${mac.f.toFixed(1)}g</div>
               </div>
-              <div class="qty-box">
-                <input type="number" class="qty-input" inputmode="decimal" step="1" min="0" value="${sel.qty}" data-meal="${meal.id}" data-idx="${idx}" />
-                <span class="qty-unit">g</span>
+              <div class="qty-pill">
+                <input type="number" class="qty-num" inputmode="decimal" step="1" min="0" value="${sel.qty}" data-meal="${m.id}" data-idx="${idx}" />
+                <span class="qty-u">g</span>
               </div>
             </div>
           `;
         }).join("");
 
-        totP += mealP; totF += mealF; totC += mealC; totKcal += mealKcal;
+        if (st.checked) {
+          valKcal += mKcal; valP += mP; valC += mC; valF += mF;
+        }
 
         const card = document.createElement("div");
-        card.className = "meal-card";
+        card.className = "meal-card" + (st.checked ? " validated" : "");
         card.innerHTML = `
-          <div class="meal-header">
-            <div class="meal-title-wrap">
-              <input type="checkbox" class="meal-check" data-meal="${meal.id}" ${mState.checked ? "checked" : ""} />
-              <h3 class="meal-title">${meal.name}</h3>
+          <div class="meal-head">
+            <div class="meal-head-left">
+              <input type="checkbox" class="meal-checkbox" data-meal="${m.id}" ${st.checked ? "checked" : ""} />
+              <h3 class="meal-name">${m.name}</h3>
             </div>
-            <span class="meal-kcal-badge">${Math.round(mealKcal)} KCAL</span>
+            <span class="meal-kcal-pill">${Math.round(mKcal)} KCAL</span>
           </div>
-          ${rowsHtml}
-          <div class="meal-footer">
-            <div class="meal-macro-pill"><small>P</small><strong class="p-color">${mealP.toFixed(1)}g</strong></div>
-            <div class="meal-macro-pill"><small>F</small><strong class="f-color">${mealF.toFixed(1)}g</strong></div>
-            <div class="meal-macro-pill"><small>C</small><strong class="c-color">${mealC.toFixed(1)}g</strong></div>
+          ${rows}
+          <div class="meal-summary-bar">
+            <div class="meal-sum-box"><strong style="color:#60a5fa;">P ${mP.toFixed(1)}g</strong></div>
+            <div class="meal-sum-box"><strong style="color:#fb923c;">C ${mC.toFixed(1)}g</strong></div>
+            <div class="meal-sum-box"><strong style="color:#38bdf8;">L ${mF.toFixed(1)}g</strong></div>
           </div>
         `;
-        container.appendChild(card);
+        mealsEl.appendChild(card);
       });
 
-      document.getElementById("tot-kcal").textContent = Math.round(totKcal);
-      document.getElementById("tot-p").textContent = totP.toFixed(1) + "g";
-      document.getElementById("tot-f").textContent = totF.toFixed(1) + "g";
-      document.getElementById("tot-c").textContent = totC.toFixed(1) + "g";
-      document.getElementById("checked-count").textContent = `${checkedCount}/${plan.meals.length} repas validés`;
+      document.getElementById("hero-kcal").textContent = Math.round(valKcal);
+      document.getElementById("hero-p").textContent = Math.round(valP);
+      document.getElementById("hero-c").textContent = Math.round(valC);
+      document.getElementById("hero-f").textContent = Math.round(valF);
+      document.getElementById("hero-meals-summary").textContent = `${checkedMealsCount}/${plan.meals.length} repas (0/${totalFoodsCount})`;
 
-      bindMealEvents();
-      updateReportText();
-    }
+      const pct = plan.targets.kcal > 0 ? Math.min(100, Math.round((valKcal / plan.targets.kcal) * 100)) : 0;
+      document.getElementById("hero-pct").textContent = `${pct}% complété`;
+      document.getElementById("hero-progress-fill").style.width = `${pct}%`;
 
-    function bindMealEvents() {
-      document.querySelectorAll(".meal-check").forEach(cb => {
+      document.getElementById("water-val").textContent = day.water.toFixed(2);
+      document.getElementById("water-bar").style.width = `${Math.min(100, (day.water / 4.5) * 100)}%`;
+
+      document.getElementById("salt-val").textContent = day.salt.toFixed(1);
+      document.getElementById("salt-bar").style.width = `${Math.min(100, (day.salt / 6) * 100)}%`;
+
+      document.getElementById("card-creatine").classList.toggle("done", day.creatine);
+      document.getElementById("card-eaa").classList.toggle("done", day.eaa);
+      document.getElementById("card-booster").classList.toggle("done", day.booster);
+
+      mealsEl.querySelectorAll(".meal-checkbox").forEach(cb => {
         cb.addEventListener("change", e => {
-          const mealId = e.target.dataset.meal;
-          allLogs[currentDate].meals[mealId].checked = e.target.checked;
-          saveLocalAndSchedulePush();
-          render();
+          getDay(currentDate).meals[e.target.dataset.meal].checked = e.target.checked;
+          persistAndSync();
+          renderAll();
         });
       });
 
-      document.querySelectorAll(".food-select").forEach(sel => {
+      mealsEl.querySelectorAll(".item-select").forEach(sel => {
         sel.addEventListener("change", e => {
-          const mealId = e.target.dataset.meal;
-          const idx = Number(e.target.dataset.idx);
-          const chosenOpt = e.target.options[e.target.selectedIndex];
-          const newFood = chosenOpt.value;
-          const newQty = Number(chosenOpt.dataset.qty);
-          allLogs[currentDate].meals[mealId].items[idx] = { food: newFood, qty: newQty };
-          saveLocalAndSchedulePush();
-          render();
+          const op = e.target.options[e.target.selectedIndex];
+          getDay(currentDate).meals[e.target.dataset.meal].items[Number(e.target.dataset.idx)] = {
+            food: op.value,
+            qty: Number(op.dataset.qty)
+          };
+          persistAndSync();
+          renderAll();
         });
       });
 
-      document.querySelectorAll(".qty-input").forEach(inp => {
+      mealsEl.querySelectorAll(".qty-num").forEach(inp => {
         inp.addEventListener("change", e => {
-          const mealId = e.target.dataset.meal;
-          const idx = Number(e.target.dataset.idx);
           const val = Math.max(0, Number(e.target.value) || 0);
-          allLogs[currentDate].meals[mealId].items[idx].qty = val;
-          saveLocalAndSchedulePush();
-          render();
+          getDay(currentDate).meals[e.target.dataset.meal].items[Number(e.target.dataset.idx)].qty = val;
+          persistAndSync();
+          renderAll();
         });
       });
+
+      buildCoachReport();
+      renderHistory();
     }
 
-    function updateReportText() {
-      const dayObj = ensureDayData(currentDate);
-      const plan = PLANS[dayObj.dayType];
-      const lines = [];
-      lines.push("Date : " + formatDisplayDate(currentDate) + " — " + plan.label);
-      lines.push("");
+    function switchMainTab(tab) {
+      document.getElementById("tab-today-view").classList.toggle("hidden", tab !== "today");
+      document.getElementById("tab-radar-view").classList.toggle("hidden", tab !== "radar");
+      document.getElementById("tab-history-view").classList.toggle("hidden", tab !== "history");
 
-      let dayP = 0, dayF = 0, dayC = 0, dayKcal = 0;
-
-      plan.meals.forEach(meal => {
-        const mState = dayObj.meals[meal.id];
-        let mP = 0, mF = 0, mC = 0, mKcal = 0;
-        const itemLines = mState.items.map(it => {
-          const mac = calcItemMacros(it.food, it.qty);
-          mP += mac.p; mF += mac.f; mC += mac.c; mKcal += mac.kcal;
-          return "  - " + it.food + " : " + it.qty + "g";
-        });
-        dayP += mP; dayF += mF; dayC += mC; dayKcal += mKcal;
-
-        const status = mState.checked ? "[OK]" : "[ ]";
-        lines.push(status + " " + meal.name + " (" + Math.round(mKcal) + " kcal | P: " + mP.toFixed(1) + "g | L: " + mF.toFixed(1) + "g | G: " + mC.toFixed(1) + "g)");
-        itemLines.forEach(l => lines.push(l));
-        lines.push("");
-      });
-
-      lines.push("TOTAL JOURNEE : " + Math.round(dayKcal) + " kcal | Proteines : " + dayP.toFixed(1) + "g | Lipides : " + dayF.toFixed(1) + "g | Glucides : " + dayC.toFixed(1) + "g");
-      const out = document.getElementById("report-output");
-      if (out) out.value = lines.join("\n");
+      document.getElementById("nav-today").classList.toggle("active", tab === "today");
+      document.getElementById("nav-radar").classList.toggle("active", tab === "radar");
+      document.getElementById("nav-history").classList.toggle("active", tab === "history");
+      if (tab === "radar") buildCoachReport();
+      if (tab === "history") renderHistory();
     }
 
-    document.getElementById("tab-training").addEventListener("click", () => {
-      allLogs[currentDate] = createDefaultDayState("training");
-      saveLocalAndSchedulePush();
-      render();
-    });
+    document.getElementById("nav-today").addEventListener("click", () => switchMainTab("today"));
+    document.getElementById("nav-radar").addEventListener("click", () => switchMainTab("radar"));
+    document.getElementById("nav-history").addEventListener("click", () => switchMainTab("history"));
 
-    document.getElementById("tab-rest").addEventListener("click", () => {
-      allLogs[currentDate] = createDefaultDayState("rest");
-      saveLocalAndSchedulePush();
-      render();
+    document.getElementById("btn-prev-date").addEventListener("click", () => {
+      currentDate = addDaysISO(currentDate, -1);
+      renderAll();
     });
-
-    document.getElementById("date-picker").addEventListener("change", e => {
+    document.getElementById("btn-next-date").addEventListener("click", () => {
+      currentDate = addDaysISO(currentDate, 1);
+      renderAll();
+    });
+    document.getElementById("date-heading").addEventListener("click", () => {
+      document.getElementById("date-input").showPicker ? document.getElementById("date-input").showPicker() : document.getElementById("date-input").click();
+    });
+    document.getElementById("date-input").addEventListener("change", e => {
       if (e.target.value) {
         currentDate = e.target.value;
-        render();
+        renderAll();
       }
     });
 
-    document.getElementById("btn-prev-day").addEventListener("click", () => {
-      currentDate = shiftDate(currentDate, -1);
-      render();
+    document.getElementById("btn-mode-training").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      if (d.mode !== "training") {
+        store[currentDate] = defaultDay("training");
+        persistAndSync();
+        renderAll();
+      }
+    });
+    document.getElementById("btn-mode-rest").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      if (d.mode !== "rest") {
+        store[currentDate] = defaultDay("rest");
+        persistAndSync();
+        renderAll();
+      }
     });
 
-    document.getElementById("btn-next-day").addEventListener("click", () => {
-      currentDate = shiftDate(currentDate, 1);
-      render();
+    document.getElementById("water-minus").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.water = Math.max(0, Number((d.water - 0.25).toFixed(2)));
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("water-plus-25").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.water = Number((d.water + 0.25).toFixed(2));
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("water-plus-50").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.water = Number((d.water + 0.50).toFixed(2));
+      persistAndSync(); renderAll();
     });
 
-    document.getElementById("btn-today").addEventListener("click", () => {
-      currentDate = getTodayStr();
-      render();
+    document.getElementById("salt-minus").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.salt = Math.max(0, Number((d.salt - 0.5).toFixed(1)));
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("salt-plus-05").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.salt = Number((d.salt + 0.5).toFixed(1));
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("salt-plus-1").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.salt = Number((d.salt + 1.0).toFixed(1));
+      persistAndSync(); renderAll();
     });
 
-    document.getElementById("btn-reset-day").addEventListener("click", () => {
-      const currentType = ensureDayData(currentDate).dayType;
-      allLogs[currentDate] = createDefaultDayState(currentType);
-      saveLocalAndSchedulePush();
-      render();
-      showToast("Journée réinitialisée");
+    document.getElementById("card-creatine").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.creatine = !d.creatine;
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("card-eaa").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.eaa = !d.eaa;
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("card-booster").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.booster = !d.booster;
+      persistAndSync(); renderAll();
     });
 
-    document.getElementById("firebase-url-input").value = syncCfg.url;
-    document.getElementById("sync-uid-input").value = syncCfg.uid;
+    document.getElementById("firebase-url-input").value = cfg.url;
+    document.getElementById("sync-uid-input").value = cfg.uid;
 
-    document.getElementById("btn-sync-now").addEventListener("click", async () => {
-      await pullFromFirebase();
-      document.getElementById("sync-panel").classList.add("hidden");
+    document.getElementById("btn-toggle-cloud").addEventListener("click", () => {
+      document.getElementById("cloud-panel").classList.toggle("hidden");
     });
-
-    document.getElementById("btn-toggle-sync-box").addEventListener("click", () => {
-      document.getElementById("sync-panel").classList.toggle("hidden");
+    document.getElementById("btn-close-cloud").addEventListener("click", () => {
+      document.getElementById("cloud-panel").classList.add("hidden");
     });
-
-    document.getElementById("btn-close-sync-box").addEventListener("click", () => {
-      document.getElementById("sync-panel").classList.add("hidden");
+    document.getElementById("btn-force-sync").addEventListener("click", async () => {
+      await pullCloud();
+      document.getElementById("cloud-panel").classList.add("hidden");
     });
-
-    document.getElementById("btn-save-sync-config").addEventListener("click", async () => {
-      syncCfg = {
-        url: document.getElementById("firebase-url-input").value.trim().replace(/\/+$/, "") || DEFAULT_FIREBASE_URL,
+    document.getElementById("btn-save-cloud").addEventListener("click", async () => {
+      cfg = {
+        url: document.getElementById("firebase-url-input").value.trim().replace(/\/+$/, "") || DEFAULT_URL,
         uid: document.getElementById("sync-uid-input").value.trim() || DEFAULT_UID
       };
-      safeWriteJSON(SYNC_CFG_KEY, syncCfg);
-      await pullFromFirebase();
-      document.getElementById("sync-panel").classList.add("hidden");
+      writeStore(CFG_KEY, cfg);
+      await pullCloud();
+      document.getElementById("cloud-panel").classList.add("hidden");
     });
 
-    document.getElementById("nav-journal").addEventListener("click", () => {
-      document.getElementById("view-journal").classList.remove("hidden");
-      document.getElementById("view-report").classList.add("hidden");
-      document.getElementById("nav-journal").classList.add("active");
-      document.getElementById("nav-report").classList.remove("active");
+    document.getElementById("btn-icon-info").addEventListener("click", () => {
+      toast("Partager → Sur l'écran d'accueil pour l'icône éclair");
     });
 
-    document.getElementById("nav-report").addEventListener("click", () => {
-      updateReportText();
-      document.getElementById("view-report").classList.remove("hidden");
-      document.getElementById("view-journal").classList.add("hidden");
-      document.getElementById("nav-report").classList.add("active");
-      document.getElementById("nav-journal").classList.remove("active");
+    document.getElementById("btn-reset-current").addEventListener("click", () => {
+      const m = getDay(currentDate).mode;
+      store[currentDate] = defaultDay(m);
+      persistAndSync();
+      renderAll();
+      toast("Journée réinitialisée");
     });
 
-    document.getElementById("btn-copy-report").addEventListener("click", async () => {
-      const txt = document.getElementById("report-output").value;
+    document.getElementById("btn-copy-summary").addEventListener("click", async () => {
+      const txt = document.getElementById("coach-summary-text").value;
       try {
         await navigator.clipboard.writeText(txt);
-        showToast("Bilan copié dans le presse-papier");
+        toast("Bilan coach copié");
       } catch (e) {
-        const area = document.getElementById("report-output");
-        area.focus();
-        area.select();
+        const el = document.getElementById("coach-summary-text");
+        el.focus(); el.select();
         try { document.execCommand("copy"); } catch (_) {}
-        showToast("Bilan copié");
+        toast("Bilan coach copié");
       }
     });
 
-    if ("serviceWorker" in navigator && window.location.protocol.startsWith("http")) {
-      try {
-        const swCode = [
-          'const CACHE_NAME = "macrotrack-cache-v4";',
-          'self.addEventListener("install", e => { self.skipWaiting(); e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(["./"]))); });',
-          'self.addEventListener("activate", e => { e.waitUntil(self.clients.claim()); });',
-          'self.addEventListener("fetch", e => {',
-          '  if (e.request.method !== "GET" || e.request.url.includes("firebaseio.com")) return;',
-          '  e.respondWith(fetch(e.request).then(res => { const copy = res.clone(); caches.open(CACHE_NAME).then(c => c.put(e.request, copy)); return res; }).catch(() => caches.match(e.request)));',
-          '});'
-        ].join("\n");
-        const blob = new Blob([swCode], { type: "application/javascript" });
-        const swUrl = URL.createObjectURL(blob);
-        navigator.serviceWorker.register(swUrl).catch(() => {});
-      } catch (e) {}
-    }
-
-    render();
-    pullFromFirebase();
+    renderAll();
+    pullCloud();
   </script>
 </body>
 </html>
