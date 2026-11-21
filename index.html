@@ -19,12 +19,10 @@
       --card: #0e121d;
       --card-2: #141926;
       --border: #1d2436;
-      --border-soft: rgba(255, 255, 255, 0.06);
       --text: #f8fafc;
       --muted: #8b95a8;
       --blue: #2563eb;
       --blue-bright: #3b82f6;
-      --blue-pill: rgba(37, 99, 235, 0.22);
       --orange: #f97316;
       --amber: #f59e0b;
       --emerald: #10b981;
@@ -502,7 +500,7 @@
     }
 
     .pill-water {
-      background: rgba(14, 165, 133, 0.16);
+      background: rgba(14, 165, 233, 0.16);
       color: #38bdf8;
     }
 
@@ -542,12 +540,21 @@
       height: 100%;
       background: #38bdf8;
       border-radius: 999px;
+      transition: width 0.2s ease;
     }
 
     .mini-fill-salt {
       height: 100%;
       background: #f59e0b;
       border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+
+    .mini-fill-caffeine {
+      height: 100%;
+      background: #f43f5e;
+      border-radius: 999px;
+      transition: width 0.2s ease;
     }
 
     .step-btns {
@@ -644,32 +651,104 @@
       color: #04130d;
     }
 
-    .booster-card {
+    .caffeine-pill {
+      background: rgba(244, 63, 94, 0.16);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.34);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .energy-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 12px 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .energy-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-      cursor: pointer;
+      gap: 8px;
+      margin-bottom: 8px;
     }
 
-    .booster-card.done {
-      border-color: rgba(249, 115, 22, 0.5);
-      background: rgba(249, 115, 22, 0.07);
+    .energy-title-group {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
     }
 
-    .caffeine-tag {
-      background: rgba(244, 63, 94, 0.16);
-      color: #fb7185;
-      border: 1px solid rgba(244, 63, 94, 0.32);
+    .drink-rows {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .drink-box {
+      background: #090c13;
+      border: 1px solid #181f30;
+      border-radius: 12px;
+      padding: 9px 10px;
+    }
+
+    .drink-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .drink-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+
+    .drink-mg {
       font-size: 10px;
+      color: #8b95a8;
+      font-weight: 600;
+    }
+
+    .drink-counter-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      gap: 6px;
+    }
+
+    .cnt-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #141a29;
+      border: 1px solid #222c42;
+      color: #ffffff;
+      font-size: 15px;
       font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cnt-btn.plus-drink {
+      background: #e11d48;
+      border-color: #e11d48;
+    }
+
+    .cnt-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
     }
 
     .section-head {
@@ -940,7 +1019,7 @@
       </div>
 
       <div class="header-right">
-        <button class="icon-chip" id="btn-icon-info" type="button" title="Icône app">↓ Icône</button>
+        <button class="icon-chip" id="btn-icon-info" type="button">↓ Icône</button>
         <button class="icon-chip" id="btn-toggle-cloud" type="button">
           <span class="sync-dot" id="sync-dot"></span>
           <span>Cloud</span>
@@ -990,6 +1069,7 @@
     </div>
 
     <div id="tab-today-view">
+      <!-- Calories & Macros -->
       <div class="hero-macros-card">
         <div class="hero-top">
           <div>
@@ -1038,6 +1118,7 @@
         </div>
       </div>
 
+      <!-- Hydratation (Eau) & Sel -->
       <div class="two-col-trackers">
         <div class="tracker-card">
           <div class="tracker-top">
@@ -1084,44 +1165,80 @@
         </div>
       </div>
 
+      <!-- Créatine & Caféine -->
       <div class="supp-grid-2">
         <div class="supp-card" id="card-creatine">
           <div class="supp-left">
             <span style="font-size:16px;">⚡</span>
             <div>
               <div class="supp-name">Créatine</div>
-              <div class="supp-sub">5 g / jour</div>
+              <div class="supp-sub" id="creatine-sub">5 g / jour</div>
             </div>
           </div>
           <div class="circle-check" id="check-creatine">✓</div>
         </div>
 
-        <div class="supp-card" id="card-eaa">
-          <div class="supp-left">
-            <span style="font-size:16px;">🧪</span>
-            <div>
-              <div class="supp-name">EAA</div>
-              <div class="supp-sub">15 g / jour</div>
+        <div class="tracker-card" style="padding:10px 12px;">
+          <div class="tracker-top">
+            <div class="tracker-title-wrap">
+              <span>☕</span>
+              <span>Caféine</span>
             </div>
+            <span class="caffeine-pill" id="caffeine-total-pill">0 mg</span>
           </div>
-          <div class="circle-check" id="check-eaa">✓</div>
+          <div class="tracker-val-line" style="margin:6px 0 6px;">
+            <span class="tracker-big" id="caffeine-val" style="font-size:18px;">0</span>
+            <span class="tracker-goal">/ 400 mg</span>
+          </div>
+          <div class="mini-track" style="margin-bottom:7px;">
+            <div class="mini-fill-caffeine" id="caffeine-bar" style="width:0%"></div>
+          </div>
+          <div class="step-btns">
+            <button class="step-btn" id="caf-minus" type="button">-50</button>
+            <button class="step-btn" id="caf-plus-50" type="button">+50</button>
+            <button class="step-btn" id="caf-plus-100" type="button">+100</button>
+          </div>
         </div>
       </div>
 
-      <div class="booster-card" id="card-booster">
-        <div class="supp-left">
-          <span style="font-size:18px;">🔥</span>
-          <div>
-            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
-              <span class="supp-name">Booster pré workout</span>
-              <span class="caffeine-tag">200 mg caféine</span>
+      <!-- Boissons énergisantes : Monster Ultra & C4 -->
+      <div class="energy-card">
+        <div class="energy-header">
+          <div class="energy-title-group">
+            <span>🥫</span>
+            <strong style="font-size:13px;">Boissons énergisantes</strong>
+          </div>
+          <span style="font-size:11px;color:#8b95a8;font-weight:600;" id="drinks-count-label">0 canette</span>
+        </div>
+
+        <div class="drink-rows">
+          <div class="drink-box">
+            <div class="drink-top">
+              <span class="drink-name">Monster Ultra</span>
+              <span class="drink-mg">150 mg</span>
             </div>
-            <div class="supp-sub">Prise avant séance • Suivi journalier</div>
+            <div class="drink-counter-row">
+              <button class="cnt-btn" id="monster-minus" type="button">−</button>
+              <span class="cnt-val" id="monster-count">0</span>
+              <button class="cnt-btn plus-drink" id="monster-plus" type="button">+</button>
+            </div>
+          </div>
+
+          <div class="drink-box">
+            <div class="drink-top">
+              <span class="drink-name">C4</span>
+              <span class="drink-mg">200 mg</span>
+            </div>
+            <div class="drink-counter-row">
+              <button class="cnt-btn" id="c4-minus" type="button">−</button>
+              <span class="cnt-val" id="c4-count">0</span>
+              <button class="cnt-btn plus-drink" id="c4-plus" type="button">+</button>
+            </div>
           </div>
         </div>
-        <div class="circle-check" id="check-booster">✓</div>
       </div>
 
+      <!-- Liste des repas -->
       <div class="section-head">
         <h2>PLAN ALIMENTAIRE</h2>
         <span id="plan-mode-caption">Entraînement</span>
@@ -1129,6 +1246,7 @@
       <div id="meals-list"></div>
     </div>
 
+    <!-- VUE 2 : RADAR & STATS -->
     <div id="tab-radar-view" class="hidden">
       <div class="panel-card">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
@@ -1142,6 +1260,7 @@
       </div>
     </div>
 
+    <!-- VUE 3 : HISTORIQUE -->
     <div id="tab-history-view" class="hidden">
       <div class="panel-card">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
@@ -1366,7 +1485,7 @@
       }
     };
 
-    const LOGS_KEY = "macrotrack_ascend_logs_v1";
+    const LOGS_KEY = "macrotrack_ascend_logs_v2";
     const CFG_KEY = "macrotrack_ascend_cfg_v1";
     const DEFAULT_URL = "https://macrotrack-maxime-default-rtdb.firebaseio.com";
     const DEFAULT_UID = "maxime-macrotrack";
@@ -1423,8 +1542,9 @@
         water: 0,
         salt: 0,
         creatine: false,
-        eaa: false,
-        booster: false,
+        monsterUltra: 0,
+        c4: 0,
+        extraCaffeine: 0,
         updatedAt: Date.now(),
         meals
       };
@@ -1443,8 +1563,9 @@
       d.water = Number(d.water) || 0;
       d.salt = Number(d.salt) || 0;
       d.creatine = Boolean(d.creatine);
-      d.eaa = Boolean(d.eaa);
-      d.booster = Boolean(d.booster);
+      d.monsterUltra = Math.max(0, parseInt(d.monsterUltra, 10) || 0);
+      d.c4 = Math.max(0, parseInt(d.c4, 10) || 0);
+      d.extraCaffeine = Math.max(0, Number(d.extraCaffeine) || 0);
       if (!d.meals || typeof d.meals !== "object") d.meals = {};
       PLANS[d.mode].meals.forEach(m => {
         if (!d.meals[m.id] || !Array.isArray(d.meals[m.id].items) || d.meals[m.id].items.length !== m.items.length) {
@@ -1455,6 +1576,10 @@
         }
       });
       return d;
+    }
+
+    function getTotalCaffeine(day) {
+      return (day.monsterUltra * 150) + (day.c4 * 200) + (Number(day.extraCaffeine) || 0);
     }
 
     function itemMacros(foodName, qty) {
@@ -1537,10 +1662,11 @@
     function buildCoachReport() {
       const day = getDay(currentDate);
       const plan = PLANS[day.mode];
+      const caf = getTotalCaffeine(day);
       const out = [];
       out.push(`MacroTrack — ${formatFrenchDate(currentDate)} (${plan.label})`);
-      out.push(`Eau : ${day.water.toFixed(2)} L / 4,5 L | Sel : ${day.salt.toFixed(1)} g / 6 g`);
-      out.push(`Créatine : ${day.creatine ? "OK" : "Non"} | EAA : ${day.eaa ? "OK" : "Non"} | Booster : ${day.booster ? "OK" : "Non"}`);
+      out.push(`Hydratation : ${day.water.toFixed(2)} L / 4,5 L | Sel : ${day.salt.toFixed(1)} g / 6 g | Créatine : ${day.creatine ? "5g (OK)" : "0g"}`);
+      out.push(`Boissons énergisantes : Monster Ultra x${day.monsterUltra} | C4 x${day.c4} | Caféine totale : ${caf} mg`);
       out.push("");
 
       let sumP = 0, sumC = 0, sumF = 0, sumKcal = 0;
@@ -1584,11 +1710,12 @@
             st.items.forEach(it => { valKcal += itemMacros(it.food, it.qty).kcal; });
           }
         });
+        const caf = getTotalCaffeine(d);
         return `
           <div class="history-item">
             <div>
               <strong style="font-size:13px;">${formatFrenchDate(k)}</strong>
-              <div style="font-size:11px;color:#8b95a8;">${plan.label} • ${valMeals}/${plan.meals.length} repas</div>
+              <div style="font-size:11px;color:#8b95a8;">${plan.label} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${caf}mg caféine</div>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
               <span style="font-size:12px;font-weight:700;color:#60a5fa;">${Math.round(valKcal)} kcal</span>
@@ -1706,8 +1833,16 @@
       document.getElementById("salt-bar").style.width = `${Math.min(100, (day.salt / 6) * 100)}%`;
 
       document.getElementById("card-creatine").classList.toggle("done", day.creatine);
-      document.getElementById("card-eaa").classList.toggle("done", day.eaa);
-      document.getElementById("card-booster").classList.toggle("done", day.booster);
+      document.getElementById("creatine-sub").textContent = day.creatine ? "5 g / 5 g validé" : "5 g / jour";
+
+      const caf = getTotalCaffeine(day);
+      const totalCans = day.monsterUltra + day.c4;
+      document.getElementById("monster-count").textContent = day.monsterUltra;
+      document.getElementById("c4-count").textContent = day.c4;
+      document.getElementById("caffeine-val").textContent = caf;
+      document.getElementById("caffeine-total-pill").textContent = `${caf} mg`;
+      document.getElementById("caffeine-bar").style.width = `${Math.min(100, (caf / 400) * 100)}%`;
+      document.getElementById("drinks-count-label").textContent = `${totalCans} canette${totalCans > 1 ? "s" : ""}`;
 
       mealsEl.querySelectorAll(".meal-checkbox").forEach(cb => {
         cb.addEventListener("change", e => {
@@ -1779,7 +1914,8 @@
     document.getElementById("btn-mode-training").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "training") {
-        store[currentDate] = defaultDay("training");
+        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, monsterUltra: d.monsterUltra, c4: d.c4, extraCaffeine: d.extraCaffeine };
+        store[currentDate] = Object.assign(defaultDay("training"), prev);
         persistAndSync();
         renderAll();
       }
@@ -1787,7 +1923,8 @@
     document.getElementById("btn-mode-rest").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "rest") {
-        store[currentDate] = defaultDay("rest");
+        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, monsterUltra: d.monsterUltra, c4: d.c4, extraCaffeine: d.extraCaffeine };
+        store[currentDate] = Object.assign(defaultDay("rest"), prev);
         persistAndSync();
         renderAll();
       }
@@ -1830,14 +1967,42 @@
       d.creatine = !d.creatine;
       persistAndSync(); renderAll();
     });
-    document.getElementById("card-eaa").addEventListener("click", () => {
+
+    document.getElementById("monster-minus").addEventListener("click", () => {
       const d = getDay(currentDate);
-      d.eaa = !d.eaa;
+      d.monsterUltra = Math.max(0, d.monsterUltra - 1);
       persistAndSync(); renderAll();
     });
-    document.getElementById("card-booster").addEventListener("click", () => {
+    document.getElementById("monster-plus").addEventListener("click", () => {
       const d = getDay(currentDate);
-      d.booster = !d.booster;
+      d.monsterUltra += 1;
+      persistAndSync(); renderAll();
+    });
+
+    document.getElementById("c4-minus").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.c4 = Math.max(0, d.c4 - 1);
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("c4-plus").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.c4 += 1;
+      persistAndSync(); renderAll();
+    });
+
+    document.getElementById("caf-minus").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.extraCaffeine = Math.max(0, d.extraCaffeine - 50);
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("caf-plus-50").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.extraCaffeine += 50;
+      persistAndSync(); renderAll();
+    });
+    document.getElementById("caf-plus-100").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.extraCaffeine += 100;
       persistAndSync(); renderAll();
     });
 
