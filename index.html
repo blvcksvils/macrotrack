@@ -1139,7 +1139,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .tab-nav-btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      display: block;
     }
 
     .tab-nav-btn.active {
@@ -1350,6 +1358,25 @@
         </div>
       </div>
 
+      <!-- Shaker de Whey rapide (ajoute les macros au total de la journée) -->
+      <div class="whey-quick-card">
+        <div class="whey-head">
+          <div class="supp-left">
+            <span>🥤</span>
+            <strong style="font-size:13px;">Shaker Whey isolat</strong>
+          </div>
+          <span class="whey-macros-badge" id="whey-preview-macros">25g • 25g P • 100 kcal</span>
+        </div>
+        <div class="whey-controls">
+          <div class="whey-qty-wrap">
+            <input type="number" id="whey-shake-qty" class="whey-qty-input" inputmode="decimal" min="1" step="1" value="25" />
+            <span class="qty-u">g</span>
+          </div>
+          <button class="whey-add-btn" id="btn-add-whey-shake" type="button">+ Ajouter shaker</button>
+        </div>
+        <div class="whey-shakers-list" id="whey-shakers-list"></div>
+      </div>
+
       <!-- Booster pré workout -->
       <div class="booster-card" id="card-booster">
         <div class="supp-left">
@@ -1363,25 +1390,6 @@
           </div>
         </div>
         <div class="circle-check" id="check-booster">✓</div>
-      </div>
-
-      <!-- Shaker de Whey rapide (ajoute les macros au total de la journée) -->
-      <div class="whey-quick-card">
-        <div class="whey-head">
-          <div class="supp-left">
-            <span>🥤</span>
-            <strong style="font-size:13px;">Shaker Whey isolat</strong>
-          </div>
-          <span class="whey-macros-badge" id="whey-preview-macros">35g • 30.1g P</span>
-        </div>
-        <div class="whey-controls">
-          <div class="whey-qty-wrap">
-            <input type="number" id="whey-shake-qty" class="whey-qty-input" inputmode="decimal" min="1" step="1" value="35" />
-            <span class="qty-u">g</span>
-          </div>
-          <button class="whey-add-btn" id="btn-add-whey-shake" type="button">+ Ajouter shaker</button>
-        </div>
-        <div class="whey-shakers-list" id="whey-shakers-list"></div>
       </div>
 
       <!-- Caféine : uniquement Café et Boissons énergisantes -->
@@ -1484,15 +1492,26 @@
   <nav class="bottom-bar">
     <div class="bottom-bar-inner">
       <button class="tab-nav-btn active" id="nav-today" type="button">
-        <span>☑</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+          <path d="M9 12l2 2 4-4"></path>
+        </svg>
         <span>Aujourd'hui</span>
       </button>
       <button class="tab-nav-btn" id="nav-radar" type="button">
-        <span>◔</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 3v9l6.5 3.5"></path>
+        </svg>
         <span>Radar & Stats</span>
       </button>
       <button class="tab-nav-btn" id="nav-history" type="button">
-        <span>📅</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
         <span>Historique</span>
       </button>
     </div>
@@ -1814,10 +1833,15 @@
       return { p: f.p * r, f: f.f * r, c: f.c * r, kcal: f.kcal * r };
     }
 
+    function shakerMacros(qty) {
+      const q = Math.max(0, Number(qty) || 0);
+      return { p: q, c: 0, f: 0, kcal: q * 4 };
+    }
+
     function getWheyTotalMacros(day) {
       let p = 0, c = 0, f = 0, kcal = 0;
       day.wheyShakes.forEach(sh => {
-        const m = itemMacros("Whey isolat", sh.qty);
+        const m = shakerMacros(sh.qty);
         p += m.p; c += m.c; f += m.f; kcal += m.kcal;
       });
       return { p, c, f, kcal };
@@ -1883,7 +1907,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(store)
         });
-        if (!res.ok) throw new Error("HTTP " + res.status);
+        if (!res.ok) throw new Error(res.status === 404 ? "HTTP 404 (URL Firebase introuvable)" : "HTTP " + res.status);
         setSyncState("ok", "Synchronisé à " + new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
         return true;
       } catch (e) {
@@ -1906,7 +1930,7 @@
       try {
         const endpoint = `${baseUrl}/users/${encodeURIComponent(uid)}/logs.json`;
         const res = await fetch(endpoint, { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
+        if (!res.ok) throw new Error(res.status === 404 ? "HTTP 404 (URL Firebase introuvable)" : "HTTP " + res.status);
         const remote = await res.json();
         let updated = false;
         if (remote && typeof remote === "object") {
@@ -2104,10 +2128,10 @@
 
     function renderWheyShakes(day) {
       const qtyInput = document.getElementById("whey-shake-qty");
-      const qty = Math.max(0, Number(qtyInput ? qtyInput.value : 35) || 0);
-      const prevMac = itemMacros("Whey isolat", qty);
+      const qty = Math.max(0, Number(qtyInput ? qtyInput.value : 25) || 0);
+      const prevMac = shakerMacros(qty);
       const badge = document.getElementById("whey-preview-macros");
-      if (badge) badge.textContent = `${qty}g • ${prevMac.p.toFixed(1)}g P • ${Math.round(prevMac.kcal)} kcal`;
+      if (badge) badge.textContent = `${qty}g • ${prevMac.p.toFixed(0)}g P • ${Math.round(prevMac.kcal)} kcal`;
 
       const listEl = document.getElementById("whey-shakers-list");
       if (!listEl) return;
@@ -2116,10 +2140,10 @@
         return;
       }
       listEl.innerHTML = day.wheyShakes.map((sh, i) => {
-        const m = itemMacros("Whey isolat", sh.qty);
+        const m = shakerMacros(sh.qty);
         return `
           <span class="whey-chip">
-            <strong>Whey ${sh.qty}g</strong> (${m.p.toFixed(1)}g P / ${Math.round(m.kcal)} kcal)
+            <strong>Whey ${sh.qty}g</strong> (${m.p.toFixed(0)}g P / ${Math.round(m.kcal)} kcal)
             <button class="whey-del-btn" data-del-whey="${i}" type="button" title="Supprimer">×</button>
           </span>
         `;
@@ -2413,7 +2437,7 @@
 
     document.getElementById("btn-add-whey-shake").addEventListener("click", () => {
       const inp = document.getElementById("whey-shake-qty");
-      const qty = Math.max(1, Number(inp ? inp.value : 35) || 35);
+      const qty = Math.max(1, Number(inp ? inp.value : 25) || 25);
       const d = getDay(currentDate);
       d.wheyShakes.push({ qty });
       persistAndSync();
@@ -2491,14 +2515,30 @@
       }
     });
 
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") {
-        pullCloud();
+    // Synchronisation automatique : à l'ouverture, au retour sur l'app, au retour réseau et toutes les 60s
+    let isSyncing = false;
+    async function autoSync() {
+      if (isSyncing || !navigator.onLine) return;
+      isSyncing = true;
+      try {
+        await pullCloud(false);
+      } finally {
+        isSyncing = false;
       }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") autoSync();
     });
+    window.addEventListener("focus", () => autoSync());
+    window.addEventListener("online", () => autoSync());
+
+    setInterval(() => {
+      if (document.visibilityState === "visible") autoSync();
+    }, 60000);
 
     renderAll();
-    pullCloud();
+    autoSync();
   </script>
 </body>
 </html>
