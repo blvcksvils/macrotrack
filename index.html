@@ -11,6 +11,7 @@
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23000000'/%3E%3Cpath d='M102 28L46 100h42l-10 52 56-72H92l10-52z' fill='%23ffffff'/%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" id="apple-touch-icon" />
+  <link rel="manifest" href="./manifest.json" />
 
   <style>
     :root {
@@ -316,6 +317,39 @@
       border-radius: 16px;
       padding: 12px;
       margin-bottom: 10px;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+
+    .hero-macros-card.remaining-mode {
+      border-color: rgba(245, 158, 11, 0.45);
+    }
+
+    .hero-mode-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.14);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.28);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .hero-macros-card.remaining-mode .hero-mode-chip {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fbbf24;
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .val-over {
+      color: #fb923c !important;
     }
 
     .hero-top {
@@ -440,6 +474,59 @@
       font-size: 10.5px;
       font-weight: 600;
       color: #64748b;
+    }
+
+    /* Poids à jeun (compact) */
+    .weight-bar-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 9px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .weight-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .weight-meta {
+      font-size: 10.5px;
+      color: #7c879c;
+      margin-top: 1px;
+    }
+
+    .weight-input-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #090c13;
+      border: 1px solid #1f283d;
+      border-radius: 9px;
+      padding: 5px 8px;
+      flex-shrink: 0;
+    }
+
+    .weight-input {
+      width: 54px;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 800;
+      text-align: right;
+      font-family: inherit;
+    }
+
+    .weight-input::placeholder {
+      color: #475569;
+      font-weight: 600;
     }
 
     /* Two-col Trackers */
@@ -652,7 +739,7 @@
       white-space: nowrap;
     }
 
-    /* Shaker Whey rapide (ajoute aux macros de la journée) */
+    /* Shaker Whey rapide */
     .whey-quick-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -749,7 +836,7 @@
       font-size: 12px;
     }
 
-    /* Tuile Caféine : Café vs Boissons énergisantes */
+    /* Tuile Caféine */
     .caffeine-master-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -909,6 +996,22 @@
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 6px center;
+    }
+
+    .reuse-btn {
+      background: #121724;
+      color: #cbd5e1;
+      border: 1px solid #23304c;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .reuse-btn:active {
+      transform: scale(0.97);
     }
 
     /* Meal Card */
@@ -1118,6 +1221,25 @@
       white-space: nowrap;
     }
 
+    .cheat-macros-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .cheat-macro-input {
+      background: #090c13;
+      border: 1px solid #1b2336;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 11.5px;
+      font-family: inherit;
+      width: 100%;
+      text-align: center;
+    }
+
     .cheat-list {
       display: flex;
       flex-direction: column;
@@ -1142,6 +1264,67 @@
       font-weight: 700;
       font-size: 11px;
       white-space: nowrap;
+    }
+
+    .cheat-item-sub {
+      font-size: 10px;
+      color: #8b95a8;
+      margin-top: 2px;
+    }
+
+    /* Segmented mini switch & Weight stats */
+    .seg-mini {
+      display: inline-flex;
+      background: #090c13;
+      border: 1px solid #1e273b;
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .seg-mini-btn {
+      background: transparent;
+      border: none;
+      color: #8b95a8;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .seg-mini-btn.active {
+      background: var(--blue);
+      color: #ffffff;
+    }
+
+    .weight-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .weight-stat-box {
+      background: #090c13;
+      border: 1px solid #181f30;
+      border-radius: 8px;
+      padding: 6px;
+      text-align: center;
+    }
+
+    .weight-stat-lbl {
+      font-size: 9.5px;
+      color: #7c879c;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .weight-stat-val {
+      font-size: 13px;
+      font-weight: 800;
+      color: #f8fafc;
+      margin-top: 2px;
     }
 
     /* Secondary Panels */
@@ -1340,14 +1523,14 @@
     </div>
 
     <div id="tab-today-view">
-      <!-- Calories & Macros -->
-      <div class="hero-macros-card">
+      <!-- Calories & Macros (tap pour basculer Validé / Restant) -->
+      <div class="hero-macros-card" id="hero-macros-card" title="Appuyer pour basculer Validé / Restant">
         <div class="hero-top">
           <div>
-            <div class="hero-eyebrow">CALORIES VALIDÉES</div>
+            <div class="hero-eyebrow"><span id="hero-eyebrow-text">CALORIES VALIDÉES</span><span class="hero-mode-chip" id="hero-mode-chip">RESTANT ⇄</span></div>
             <div class="hero-kcal-row">
               <span class="hero-kcal-num" id="hero-kcal">0</span>
-              <span class="hero-kcal-target">/ <span id="hero-kcal-goal">2388</span> kcal</span>
+              <span class="hero-kcal-target" id="hero-kcal-suffix">/ <span id="hero-kcal-goal">2388</span> kcal</span>
             </div>
           </div>
 
@@ -1367,22 +1550,37 @@
               <span>PROTÉINES</span>
               <span class="dot-badge dot-p">P</span>
             </div>
-            <div class="macro-tile-val"><span id="hero-p">0</span><span>/<span id="hero-p-goal">217</span>g</span></div>
+            <div class="macro-tile-val"><span id="hero-p">0</span><span id="hero-p-suffix">/<span id="hero-p-goal">217</span>g</span></div>
           </div>
           <div class="macro-tile">
             <div class="macro-tile-head">
               <span>GLUCIDES</span>
               <span class="dot-badge dot-c">C</span>
             </div>
-            <div class="macro-tile-val"><span id="hero-c">0</span><span>/<span id="hero-c-goal">255</span>g</span></div>
+            <div class="macro-tile-val"><span id="hero-c">0</span><span id="hero-c-suffix">/<span id="hero-c-goal">255</span>g</span></div>
           </div>
           <div class="macro-tile">
             <div class="macro-tile-head">
               <span>LIPIDES</span>
               <span class="dot-badge dot-f">F</span>
             </div>
-            <div class="macro-tile-val"><span id="hero-f">0</span><span>/<span id="hero-f-goal">56</span>g</span></div>
+            <div class="macro-tile-val"><span id="hero-f">0</span><span id="hero-f-suffix">/<span id="hero-f-goal">56</span>g</span></div>
           </div>
+        </div>
+      </div>
+
+      <!-- Poids à jeun -->
+      <div class="weight-bar-card">
+        <div class="weight-left">
+          <span style="font-size:15px;">⚖️</span>
+          <div>
+            <div class="supp-name">Poids à jeun</div>
+            <div class="weight-meta" id="weight-avg-caption">Moy. 7j : —</div>
+          </div>
+        </div>
+        <div class="weight-input-wrap">
+          <input type="number" id="weight-input" class="weight-input" inputmode="decimal" step="0.1" min="30" max="250" placeholder="—" />
+          <span class="qty-u">kg</span>
         </div>
       </div>
 
@@ -1492,7 +1690,7 @@
         <div class="circle-check" id="check-booster">✓</div>
       </div>
 
-      <!-- Caféine : Café et Boissons énergisantes -->
+      <!-- Caféine -->
       <div class="caffeine-master-card">
         <div class="caf-master-top">
           <div class="caf-master-title">
@@ -1540,7 +1738,10 @@
 
       <!-- Repas -->
       <div class="section-head">
-        <h2>PLAN ALIMENTAIRE</h2>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <h2>PLAN ALIMENTAIRE</h2>
+          <button class="reuse-btn" id="btn-reuse-choices" type="button" title="Reprendre les aliments de la dernière journée similaire">↺ Précédent</button>
+        </div>
         <div class="section-head-right">
           <select id="phase-select" class="phase-select" aria-label="Phase alimentaire"></select>
           <span id="plan-mode-caption">Entraînement</span>
@@ -1561,6 +1762,11 @@
           <input type="text" id="cheat-text-input" class="cheat-text-input" placeholder="Ex : 2 carrés de chocolat, pizza..." />
           <input type="number" id="cheat-kcal-input" class="cheat-kcal-input" inputmode="decimal" min="0" step="10" placeholder="kcal" />
           <button class="cheat-add-btn" id="btn-add-cheat" type="button">+ Ajouter</button>
+        </div>
+        <div class="cheat-macros-row">
+          <input type="number" id="cheat-p-input" class="cheat-macro-input" inputmode="decimal" min="0" step="1" placeholder="P (g) opt." />
+          <input type="number" id="cheat-c-input" class="cheat-macro-input" inputmode="decimal" min="0" step="1" placeholder="G (g) opt." />
+          <input type="number" id="cheat-f-input" class="cheat-macro-input" inputmode="decimal" min="0" step="1" placeholder="L (g) opt." />
         </div>
         <div class="cheat-list" id="cheat-list"></div>
       </div>
@@ -1585,10 +1791,31 @@
       <div class="panel-card">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
           <div>
-            <div class="eyebrow">BILAN COACH</div>
-            <strong style="font-size:15px;">Récapitulatif</strong>
+            <div class="eyebrow">SUIVI DU POIDS</div>
+            <strong style="font-size:15px;">Évolution à jeun</strong>
           </div>
-          <button class="btn-blue" id="btn-copy-summary" type="button" style="flex:0 0 auto;">Copier</button>
+          <div class="seg-mini">
+            <button class="seg-mini-btn active" id="btn-weight-7d" type="button">7j</button>
+            <button class="seg-mini-btn" id="btn-weight-30d" type="button">30j</button>
+          </div>
+        </div>
+        <div id="weight-chart-box" style="width:100%;margin-top:8px;"></div>
+        <div class="weight-stats-row" id="weight-stats-row"></div>
+      </div>
+
+      <div class="panel-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+          <div>
+            <div class="eyebrow">BILAN COACH</div>
+            <strong style="font-size:15px;" id="coach-report-title">Récapitulatif du jour</strong>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="seg-mini">
+              <button class="seg-mini-btn active" id="btn-report-day" type="button">Jour</button>
+              <button class="seg-mini-btn" id="btn-report-week" type="button">7 jours</button>
+            </div>
+            <button class="btn-blue" id="btn-copy-summary" type="button" style="flex:0 0 auto;">Copier</button>
+          </div>
         </div>
         <textarea class="report-area" id="coach-summary-text" readonly></textarea>
       </div>
@@ -1903,6 +2130,7 @@
       return {
         phase: phKey,
         mode,
+        weight: null,
         water: 0,
         salt: 0,
         creatine: false,
@@ -1919,6 +2147,9 @@
 
     let currentDate = todayISO();
     let syncTimer = null;
+    let heroRemainingMode = false;
+    let weightRangeDays = 7;
+    let reportMode = "day";
 
     function getDay(iso) {
       const key = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : todayISO();
@@ -1928,6 +2159,7 @@
       const d = store[key];
       d.phase = PHASES[d.phase] ? d.phase : DEFAULT_PHASE;
       d.mode = d.mode === "rest" ? "rest" : "training";
+      d.weight = (d.weight !== null && d.weight !== undefined && d.weight !== "" && Number(d.weight) > 0) ? Number(d.weight) : null;
       d.water = Number(d.water) || 0;
       d.salt = Number(d.salt) || 0;
       d.creatine = Boolean(d.creatine);
@@ -2017,7 +2249,14 @@
       valF += wheyMac.f;
 
       day.cheats.forEach(ch => {
-        valKcal += Math.max(0, Number(ch.kcal) || 0);
+        const cp = Math.max(0, Number(ch.p) || 0);
+        const cc = Math.max(0, Number(ch.c) || 0);
+        const cf = Math.max(0, Number(ch.f) || 0);
+        const ck = Math.max(0, Number(ch.kcal) || 0);
+        valP += cp;
+        valC += cc;
+        valF += cf;
+        valKcal += ck > 0 ? ck : (cp * 4 + cc * 4 + cf * 9);
       });
 
       return { valKcal, valP, valC, valF, checkedMeals, checkedFoods, totalFoods, totalMeals: plan.meals.length, targets: plan.targets };
@@ -2198,13 +2437,198 @@
       }
     }
 
+    function getWeightSeries(endIso, numDays) {
+      const pts = [];
+      for (let i = numDays - 1; i >= 0; i--) {
+        const iso = addDaysISO(endIso, -i);
+        const d = store[iso];
+        const w = (d && d.weight !== null && d.weight !== undefined && Number(d.weight) > 0) ? Number(d.weight) : null;
+        pts.push({ iso, weight: w });
+      }
+      return pts;
+    }
+
+    function renderWeightChart() {
+      const pts = getWeightSeries(currentDate, weightRangeDays);
+      const valid = pts.filter(p => p.weight !== null);
+      const box = document.getElementById("weight-chart-box");
+      const statsRow = document.getElementById("weight-stats-row");
+      const btn7 = document.getElementById("btn-weight-7d");
+      const btn30 = document.getElementById("btn-weight-30d");
+      if (btn7) btn7.classList.toggle("active", weightRangeDays === 7);
+      if (btn30) btn30.classList.toggle("active", weightRangeDays === 30);
+
+      const last7 = getWeightSeries(currentDate, 7).filter(p => p.weight !== null);
+      const cap = document.getElementById("weight-avg-caption");
+      if (cap) {
+        if (last7.length) {
+          const avg7 = last7.reduce((a, b) => a + b.weight, 0) / last7.length;
+          cap.textContent = `Moy. 7j : ${avg7.toFixed(1)} kg (${last7.length} pesée${last7.length > 1 ? "s" : ""})`;
+        } else {
+          cap.textContent = "Moy. 7j : —";
+        }
+      }
+
+      if (!box || !statsRow) return;
+      if (!valid.length) {
+        box.innerHTML = `<div style="color:#7c879c;font-size:12px;text-align:center;padding:18px 0;">Aucune pesée enregistrée sur les ${weightRangeDays} derniers jours.</div>`;
+        statsRow.innerHTML = `
+          <div class="weight-stat-box"><div class="weight-stat-lbl">Moyenne</div><div class="weight-stat-val">—</div></div>
+          <div class="weight-stat-box"><div class="weight-stat-lbl">Dernier</div><div class="weight-stat-val">—</div></div>
+          <div class="weight-stat-box"><div class="weight-stat-lbl">Variation</div><div class="weight-stat-val">—</div></div>
+        `;
+        return;
+      }
+
+      const avg = valid.reduce((a, b) => a + b.weight, 0) / valid.length;
+      const first = valid[0].weight;
+      const last = valid[valid.length - 1].weight;
+      const diff = last - first;
+      const diffStr = valid.length > 1 ? `${diff > 0 ? "+" : ""}${diff.toFixed(1)} kg` : "—";
+      const diffColor = valid.length > 1 ? (diff <= 0 ? "#34d399" : "#fb923c") : "#f8fafc";
+
+      statsRow.innerHTML = `
+        <div class="weight-stat-box"><div class="weight-stat-lbl">Moy. ${weightRangeDays}j</div><div class="weight-stat-val">${avg.toFixed(1)} kg</div></div>
+        <div class="weight-stat-box"><div class="weight-stat-lbl">Dernier</div><div class="weight-stat-val">${last.toFixed(1)} kg</div></div>
+        <div class="weight-stat-box"><div class="weight-stat-lbl">Variation</div><div class="weight-stat-val" style="color:${diffColor};">${diffStr}</div></div>
+      `;
+
+      const W = 340, H = 135, padL = 34, padR = 12, padT = 14, padB = 22;
+      const minW = Math.min(...valid.map(p => p.weight)) - 0.5;
+      const maxW = Math.max(...valid.map(p => p.weight)) + 0.5;
+      const span = Math.max(0.5, maxW - minW);
+
+      const xPos = idx => padL + (pts.length > 1 ? (idx / (pts.length - 1)) * (W - padL - padR) : (W - padL - padR) / 2);
+      const yPos = val => padT + (1 - (val - minW) / span) * (H - padT - padB);
+
+      const avgY = yPos(avg);
+      const polyPts = [];
+      let dots = "";
+      pts.forEach((p, idx) => {
+        if (p.weight !== null) {
+          const x = xPos(idx), y = yPos(p.weight);
+          polyPts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+          dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.6" fill="#38bdf8" stroke="#0f172a" stroke-width="1.5" />`;
+        }
+      });
+
+      const lblStart = pts[0].iso.slice(8) + "/" + pts[0].iso.slice(5, 7);
+      const lblEnd = pts[pts.length - 1].iso.slice(8) + "/" + pts[pts.length - 1].iso.slice(5, 7);
+
+      box.innerHTML = `
+        <svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;">
+          <line x1="${padL}" y1="${padT}" x2="${W - padR}" y2="${padT}" stroke="#182032" stroke-width="1" />
+          <line x1="${padL}" y1="${(H - padB).toFixed(1)}" x2="${W - padR}" y2="${(H - padB).toFixed(1)}" stroke="#182032" stroke-width="1" />
+          <line x1="${padL}" y1="${avgY.toFixed(1)}" x2="${W - padR}" y2="${avgY.toFixed(1)}" stroke="#10b981" stroke-width="1.2" stroke-dasharray="4 3" />
+          <text x="${padL - 5}" y="${(padT + 4).toFixed(1)}" fill="#64748b" font-size="9" text-anchor="end">${maxW.toFixed(1)}</text>
+          <text x="${padL - 5}" y="${(H - padB + 3).toFixed(1)}" fill="#64748b" font-size="9" text-anchor="end">${minW.toFixed(1)}</text>
+          <text x="${padL}" y="${H - 4}" fill="#64748b" font-size="9" text-anchor="start">${lblStart}</text>
+          <text x="${W - padR}" y="${H - 4}" fill="#64748b" font-size="9" text-anchor="end">${lblEnd}</text>
+          ${polyPts.length > 1 ? `<polyline points="${polyPts.join(" ")}" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />` : ""}
+          ${dots}
+        </svg>
+      `;
+    }
+
+    function buildWeeklyCoachReport() {
+      const startIso = addDaysISO(currentDate, -6);
+      const days = [];
+      for (let i = 6; i >= 0; i--) {
+        const iso = addDaysISO(currentDate, -i);
+        if (store[iso]) {
+          const d = getDay(iso);
+          const st = getDayStats(d);
+          if (hasDayData(d, st)) {
+            days.push({ iso, d, st, caf: getCaffeineBreakdown(d) });
+          }
+        }
+      }
+
+      const out = [];
+      out.push(`MacroTrack — BILAN 7 JOURS (${startIso} → ${currentDate})`);
+      if (!days.length) {
+        out.push("Aucune journée renseignée sur cette période.");
+        return out.join("\n");
+      }
+
+      const n = days.length;
+      const trDays = days.filter(x => x.d.mode === "training").length;
+      const reDays = n - trDays;
+      const avgKcal = days.reduce((a, x) => a + x.st.valKcal, 0) / n;
+      const avgP = days.reduce((a, x) => a + x.st.valP, 0) / n;
+      const avgC = days.reduce((a, x) => a + x.st.valC, 0) / n;
+      const avgF = days.reduce((a, x) => a + x.st.valF, 0) / n;
+      const avgWater = days.reduce((a, x) => a + x.d.water, 0) / n;
+      const avgSalt = days.reduce((a, x) => a + x.d.salt, 0) / n;
+      const avgCaf = days.reduce((a, x) => a + x.caf.totalMg, 0) / n;
+
+      const weights = days.filter(x => x.d.weight && x.d.weight > 0).map(x => x.d.weight);
+      const creaCount = days.filter(x => x.d.creatine).length;
+      const eaaCount = days.filter(x => x.d.eaa).length;
+      const boostCount = days.filter(x => x.d.booster).length;
+
+      out.push(`Jours suivis : ${n}/7 (${trDays} Entraînement • ${reDays} Repos)`);
+      if (weights.length) {
+        const avgW = weights.reduce((a, b) => a + b, 0) / weights.length;
+        const deltaW = weights.length > 1 ? weights[weights.length - 1] - weights[0] : 0;
+        out.push(`Poids à jeun : moy. ${avgW.toFixed(1)} kg (${weights.length} pesées${weights.length > 1 ? `, var. ${deltaW > 0 ? "+" : ""}${deltaW.toFixed(1)} kg` : ""})`);
+      }
+      out.push("");
+      out.push(`MOYENNES JOURNALIÈRES :`);
+      out.push(`• Calories : ${Math.round(avgKcal)} kcal`);
+      out.push(`• Macros   : P ${Math.round(avgP)}g | G ${Math.round(avgC)}g | L ${Math.round(avgF)}g`);
+      out.push(`• Eau / Sel: ${avgWater.toFixed(2)} L | ${avgSalt.toFixed(1)} g`);
+      out.push(`• Caféine  : ${Math.round(avgCaf)} mg/j`);
+      out.push(`• Suppl.   : Créatine ${creaCount}/${n} | EAA ${eaaCount}/${n} | Booster ${boostCount}/${n}`);
+
+      const allCheats = [];
+      days.forEach(x => {
+        x.d.cheats.forEach(c => {
+          const macroInfo = (c.p || c.c || c.f) ? ` [P${c.p || 0}/G${c.c || 0}/L${c.f || 0}]` : "";
+          const kcalInfo = c.kcal > 0 ? ` (${Math.round(c.kcal)} kcal)` : "";
+          allCheats.push(`  - ${x.iso.slice(8)}/${x.iso.slice(5, 7)} : ${c.text}${kcalInfo}${macroInfo}`);
+        });
+      });
+      if (allCheats.length) {
+        out.push("");
+        out.push(`ÉCARTS DE LA SEMAINE (${allCheats.length}) :`);
+        allCheats.forEach(l => out.push(l));
+      } else {
+        out.push("");
+        out.push("ÉCARTS DE LA SEMAINE : Aucun ✓");
+      }
+
+      out.push("");
+      out.push("DÉTAIL PAR JOUR :");
+      days.forEach(x => {
+        const wTxt = x.d.weight ? ` | ${x.d.weight.toFixed(1)}kg` : "";
+        out.push(`• ${x.iso.slice(8)}/${x.iso.slice(5, 7)} (${x.d.mode === "training" ? "TR" : "RE"}) : ${Math.round(x.st.valKcal)} kcal (P${Math.round(x.st.valP)} G${Math.round(x.st.valC)} L${Math.round(x.st.valF)}) | ${x.d.water.toFixed(1)}L${wTxt}`);
+      });
+
+      return out.join("\n");
+    }
+
     function buildCoachReport() {
+      const btnDay = document.getElementById("btn-report-day");
+      const btnWeek = document.getElementById("btn-report-week");
+      const titleEl = document.getElementById("coach-report-title");
+      if (btnDay) btnDay.classList.toggle("active", reportMode === "day");
+      if (btnWeek) btnWeek.classList.toggle("active", reportMode === "week");
+      if (titleEl) titleEl.textContent = reportMode === "week" ? "Bilan hebdomadaire (7 jours)" : "Récapitulatif du jour";
+
+      const ta = document.getElementById("coach-summary-text");
+      if (reportMode === "week") {
+        if (ta) ta.value = buildWeeklyCoachReport();
+        return;
+      }
+
       const day = getDay(currentDate);
       const plan = getPlan(day);
       const caf = getCaffeineBreakdown(day);
       const dayStats = getDayStats(day);
       const out = [];
       out.push(`MacroTrack — ${formatFrenchDate(currentDate)} (${getPhaseObj(day.phase).label} • ${plan.label})`);
+      if (day.weight && day.weight > 0) out.push(`Poids à jeun : ${day.weight.toFixed(1)} kg`);
       out.push(`Eau : ${day.water.toFixed(2)} L / 4,5 L | Sel : ${day.salt.toFixed(1)} g / 6 g`);
       out.push(`Créatine : ${day.creatine ? "OK" : "Non"} | EAA : ${day.eaa ? "OK" : "Non"} | Booster : ${day.booster ? "OK" : "Non"}`);
       out.push(`Caféine : ${caf.totalMg} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Boissons énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${day.booster ? " | Booster = 200 mg" : ""})`);
@@ -2212,7 +2636,10 @@
         out.push(`Shakers Whey : ${day.wheyShakes.map(s => `${s.qty}g`).join(", ")}`);
       }
       if (day.cheats.length) {
-        out.push(`Écarts : ${day.cheats.map(c => c.kcal > 0 ? `${c.text} (${c.kcal} kcal)` : c.text).join(" | ")}`);
+        out.push(`Écarts : ${day.cheats.map(c => {
+          const m = (c.p || c.c || c.f) ? ` [P${c.p || 0}/G${c.c || 0}/L${c.f || 0}]` : "";
+          return c.kcal > 0 ? `${c.text} (${Math.round(c.kcal)} kcal)${m}` : `${c.text}${m}`;
+        }).join(" | ")}`);
       }
       out.push("");
 
@@ -2236,7 +2663,6 @@
 
       out.push("");
       out.push(`TOTAL JOURNÉE : ${Math.round(dayStats.valKcal)} kcal | P ${dayStats.valP.toFixed(1)}g | C ${dayStats.valC.toFixed(1)}g | L ${dayStats.valF.toFixed(1)}g`);
-      const ta = document.getElementById("coach-summary-text");
       if (ta) ta.value = out.join("\n");
     }
 
@@ -2244,6 +2670,7 @@
       if (!d) return false;
       return (
         st.checkedFoods > 0 ||
+        (d.weight && d.weight > 0) ||
         d.water > 0 ||
         d.salt > 0 ||
         d.creatine ||
@@ -2280,7 +2707,7 @@
           <div class="history-item">
             <div>
               <strong style="font-size:12.5px;">${formatFrenchDate(k)}</strong>
-              <div style="font-size:10.5px;color:#8b95a8;">${getPhaseObj(d.phase).label} • ${plan.label} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${caf.totalMg}mg caf.</div>
+              <div style="font-size:10.5px;color:#8b95a8;">${getPhaseObj(d.phase).label} • ${plan.label}${d.weight ? ` • ${d.weight.toFixed(1)}kg` : ``} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${caf.totalMg}mg caf.</div>
               <div style="font-size:10.5px;color:#cbd5e1;margin-top:2px;">P ${Math.round(st.valP)}g • G ${Math.round(st.valC)}g • L ${Math.round(st.valF)}g</div>
             </div>
             <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
@@ -2351,15 +2778,22 @@
         listEl.innerHTML = "";
         return;
       }
-      listEl.innerHTML = day.cheats.map((ch, i) => `
-        <div class="cheat-item">
-          <span style="color:#e2e8f0;word-break:break-word;">${ch.text}</span>
-          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-            ${ch.kcal > 0 ? `<span class="cheat-item-kcal">+${Math.round(ch.kcal)} kcal</span>` : ""}
-            <button class="whey-del-btn" data-del-cheat="${i}" type="button" title="Supprimer">×</button>
+      listEl.innerHTML = day.cheats.map((ch, i) => {
+        const hasM = (ch.p > 0 || ch.c > 0 || ch.f > 0);
+        const effKcal = ch.kcal > 0 ? ch.kcal : (hasM ? (ch.p * 4 + ch.c * 4 + ch.f * 9) : 0);
+        return `
+          <div class="cheat-item">
+            <div style="min-width:0;">
+              <div style="color:#e2e8f0;word-break:break-word;">${ch.text}</div>
+              ${hasM ? `<div class="cheat-item-sub">P ${ch.p || 0}g • G ${ch.c || 0}g • L ${ch.f || 0}g</div>` : ""}
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              ${effKcal > 0 ? `<span class="cheat-item-kcal">+${Math.round(effKcal)} kcal</span>` : ""}
+              <button class="whey-del-btn" data-del-cheat="${i}" type="button" title="Supprimer">×</button>
+            </div>
           </div>
-        </div>
-      `).join("");
+        `;
+      }).join("");
 
       listEl.querySelectorAll("[data-del-cheat]").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -2389,10 +2823,8 @@
         phaseSel.innerHTML = Object.keys(PHASES).map(k => `<option value="${k}" ${k === day.phase ? "selected" : ""}>${PHASES[k].label}</option>`).join("");
       }
 
-      document.getElementById("hero-kcal-goal").textContent = plan.targets.kcal;
-      document.getElementById("hero-p-goal").textContent = plan.targets.p;
-      document.getElementById("hero-c-goal").textContent = plan.targets.c;
-      document.getElementById("hero-f-goal").textContent = plan.targets.f;
+      const heroCard = document.getElementById("hero-macros-card");
+      if (heroCard) heroCard.classList.toggle("remaining-mode", heroRemainingMode);
 
       const dayStats = getDayStats(day);
       const mealsEl = document.getElementById("meals-list");
@@ -2457,11 +2889,54 @@
         mealsEl.appendChild(card);
       });
 
-      document.getElementById("hero-kcal").textContent = Math.round(dayStats.valKcal);
-      document.getElementById("hero-p").textContent = Math.round(dayStats.valP);
-      document.getElementById("hero-c").textContent = Math.round(dayStats.valC);
-      document.getElementById("hero-f").textContent = Math.round(dayStats.valF);
+      const heroKcalEl = document.getElementById("hero-kcal");
+      const heroPEl = document.getElementById("hero-p");
+      const heroCEl = document.getElementById("hero-c");
+      const heroFEl = document.getElementById("hero-f");
+      const eyebrowTxt = document.getElementById("hero-eyebrow-text");
+      const modeChip = document.getElementById("hero-mode-chip");
+
+      if (heroRemainingMode) {
+        const remKcal = Math.round(plan.targets.kcal - dayStats.valKcal);
+        const remP = Math.round(plan.targets.p - dayStats.valP);
+        const remC = Math.round(plan.targets.c - dayStats.valC);
+        const remF = Math.round(plan.targets.f - dayStats.valF);
+        if (eyebrowTxt) eyebrowTxt.textContent = "RESTANT À MANGER";
+        if (modeChip) modeChip.textContent = "VALIDÉ ⇄";
+        heroKcalEl.textContent = remKcal < 0 ? `+${Math.abs(remKcal)}` : remKcal;
+        heroKcalEl.classList.toggle("val-over", remKcal < 0);
+        document.getElementById("hero-kcal-suffix").innerHTML = remKcal < 0 ? "kcal en surplus" : "kcal restants";
+        heroPEl.textContent = remP < 0 ? `+${Math.abs(remP)}` : remP;
+        heroPEl.classList.toggle("val-over", remP < 0);
+        document.getElementById("hero-p-suffix").textContent = "g";
+        heroCEl.textContent = remC < 0 ? `+${Math.abs(remC)}` : remC;
+        heroCEl.classList.toggle("val-over", remC < 0);
+        document.getElementById("hero-c-suffix").textContent = "g";
+        heroFEl.textContent = remF < 0 ? `+${Math.abs(remF)}` : remF;
+        heroFEl.classList.toggle("val-over", remF < 0);
+        document.getElementById("hero-f-suffix").textContent = "g";
+      } else {
+        if (eyebrowTxt) eyebrowTxt.textContent = "CALORIES VALIDÉES";
+        if (modeChip) modeChip.textContent = "RESTANT ⇄";
+        heroKcalEl.textContent = Math.round(dayStats.valKcal);
+        heroKcalEl.classList.remove("val-over");
+        document.getElementById("hero-kcal-suffix").innerHTML = `/ <span id="hero-kcal-goal">${plan.targets.kcal}</span> kcal`;
+        heroPEl.textContent = Math.round(dayStats.valP);
+        heroPEl.classList.remove("val-over");
+        document.getElementById("hero-p-suffix").innerHTML = `/<span id="hero-p-goal">${plan.targets.p}</span>g`;
+        heroCEl.textContent = Math.round(dayStats.valC);
+        heroCEl.classList.remove("val-over");
+        document.getElementById("hero-c-suffix").innerHTML = `/<span id="hero-c-goal">${plan.targets.c}</span>g`;
+        heroFEl.textContent = Math.round(dayStats.valF);
+        heroFEl.classList.remove("val-over");
+        document.getElementById("hero-f-suffix").innerHTML = `/<span id="hero-f-goal">${plan.targets.f}</span>g`;
+      }
       document.getElementById("hero-meals-summary").textContent = `${dayStats.checkedMeals}/${dayStats.totalMeals} repas (${dayStats.checkedFoods}/${dayStats.totalFoods})`;
+
+      const wInp = document.getElementById("weight-input");
+      if (wInp && document.activeElement !== wInp) {
+        wInp.value = day.weight !== null ? day.weight : "";
+      }
 
       const pct = plan.targets.kcal > 0 ? Math.min(100, Math.round((dayStats.valKcal / plan.targets.kcal) * 100)) : 0;
       document.getElementById("hero-pct").textContent = `${pct}% complété`;
@@ -2537,6 +3012,7 @@
       });
 
       renderRadarChart();
+      renderWeightChart();
       buildCoachReport();
       renderHistory();
     }
@@ -2553,6 +3029,7 @@
         renderAll();
       } else if (tab === "radar") {
         renderRadarChart();
+        renderWeightChart();
         buildCoachReport();
       } else if (tab === "history") {
         renderHistory();
@@ -2585,7 +3062,7 @@
       const nextPhase = e.target.value;
       const d = getDay(currentDate);
       if (PHASES[nextPhase] && d.phase !== nextPhase) {
-        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
+        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
         store[currentDate] = Object.assign(defaultDay(d.mode, nextPhase), prev);
         persistAndSync();
         renderAll();
@@ -2596,7 +3073,7 @@
     document.getElementById("btn-mode-training").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "training") {
-        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
+        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
         store[currentDate] = Object.assign(defaultDay("training", d.phase), prev);
         persistAndSync();
         renderAll();
@@ -2605,7 +3082,7 @@
     document.getElementById("btn-mode-rest").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "rest") {
-        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
+        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
         store[currentDate] = Object.assign(defaultDay("rest", d.phase), prev);
         persistAndSync();
         renderAll();
@@ -2677,16 +3154,28 @@
     document.getElementById("btn-add-cheat").addEventListener("click", () => {
       const txtEl = document.getElementById("cheat-text-input");
       const kcalEl = document.getElementById("cheat-kcal-input");
+      const pEl = document.getElementById("cheat-p-input");
+      const cEl = document.getElementById("cheat-c-input");
+      const fEl = document.getElementById("cheat-f-input");
       const text = (txtEl ? txtEl.value : "").trim();
-      const kcal = Math.max(0, Number(kcalEl ? kcalEl.value : 0) || 0);
+      const p = Math.max(0, Number(pEl ? pEl.value : 0) || 0);
+      const c = Math.max(0, Number(cEl ? cEl.value : 0) || 0);
+      const f = Math.max(0, Number(fEl ? fEl.value : 0) || 0);
+      let kcal = Math.max(0, Number(kcalEl ? kcalEl.value : 0) || 0);
       if (!text) {
         toast("Indique un écart à ajouter");
         return;
       }
+      if (kcal === 0 && (p > 0 || c > 0 || f > 0)) {
+        kcal = Math.round(p * 4 + c * 4 + f * 9);
+      }
       const d = getDay(currentDate);
-      d.cheats.push({ text, kcal });
+      d.cheats.push({ text, kcal, p, c, f });
       if (txtEl) txtEl.value = "";
       if (kcalEl) kcalEl.value = "";
+      if (pEl) pEl.value = "";
+      if (cEl) cEl.value = "";
+      if (fEl) fEl.value = "";
       persistAndSync();
       renderAll();
       toast("Écart ajouté");
@@ -2779,6 +3268,76 @@
     setInterval(() => {
       if (document.visibilityState === "visible") autoSync();
     }, 60000);
+
+    document.getElementById("hero-macros-card").addEventListener("click", () => {
+      heroRemainingMode = !heroRemainingMode;
+      renderAll();
+    });
+
+    document.getElementById("weight-input").addEventListener("change", e => {
+      const raw = e.target.value.trim().replace(",", ".");
+      const val = parseFloat(raw);
+      const d = getDay(currentDate);
+      d.weight = (!isNaN(val) && val > 0) ? Number(val.toFixed(1)) : null;
+      persistAndSync();
+      renderAll();
+      if (d.weight !== null) toast(`Poids enregistré : ${d.weight.toFixed(1)} kg`);
+    });
+
+    document.getElementById("btn-reuse-choices").addEventListener("click", () => {
+      const cur = getDay(currentDate);
+      const candidates = Object.keys(store)
+        .filter(k => k < currentDate && store[k] && typeof store[k] === "object")
+        .sort()
+        .reverse();
+      const matchKey = candidates.find(k => {
+        const d = store[k];
+        const ph = PHASES[d.phase] ? d.phase : DEFAULT_PHASE;
+        return ph === cur.phase && d.mode === cur.mode && d.meals;
+      });
+      if (!matchKey) {
+        toast("Aucune journée précédente compatible");
+        return;
+      }
+      const prevDay = getDay(matchKey);
+      const plan = getPlan(cur);
+      plan.meals.forEach(m => {
+        if (prevDay.meals[m.id] && Array.isArray(prevDay.meals[m.id].items)) {
+          cur.meals[m.id].items = prevDay.meals[m.id].items.map((it, idx) => ({
+            food: it.food,
+            qty: it.qty,
+            checked: cur.meals[m.id].items[idx] ? cur.meals[m.id].items[idx].checked : false
+          }));
+        }
+      });
+      persistAndSync();
+      renderAll();
+      toast(`Choix repris du ${matchKey.slice(8)}/${matchKey.slice(5, 7)}`);
+    });
+
+    document.getElementById("btn-weight-7d").addEventListener("click", () => {
+      weightRangeDays = 7;
+      renderWeightChart();
+    });
+    document.getElementById("btn-weight-30d").addEventListener("click", () => {
+      weightRangeDays = 30;
+      renderWeightChart();
+    });
+
+    document.getElementById("btn-report-day").addEventListener("click", () => {
+      reportMode = "day";
+      buildCoachReport();
+    });
+    document.getElementById("btn-report-week").addEventListener("click", () => {
+      reportMode = "week";
+      buildCoachReport();
+    });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
 
     renderAll();
     autoSync();
