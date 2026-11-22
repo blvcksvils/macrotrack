@@ -1176,6 +1176,59 @@
       white-space: nowrap;
     }
 
+    /* Barres protéinées */
+    .bar-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 12px;
+      margin-top: 12px;
+      margin-bottom: 10px;
+    }
+
+    .bar-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 64px auto;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .bar-select,
+    .bar-qty-select {
+      background: #090c13;
+      color: var(--text);
+      border: 1px solid #1f283d;
+      border-radius: 9px;
+      padding: 8px 22px 8px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      width: 100%;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      text-overflow: ellipsis;
+    }
+
+    .bar-add-btn {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      padding: 0 11px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .bar-preview {
+      font-size: 10.5px;
+      color: #8b95a8;
+      margin-top: 6px;
+    }
+
     /* Écarts / Hors plan */
     .cheat-card {
       background: var(--card);
@@ -1749,6 +1802,29 @@
       </div>
       <div id="meals-list"></div>
 
+      <!-- Barres protéinées -->
+      <div class="bar-card">
+        <div class="whey-head">
+          <div class="supp-left">
+            <span>🍫</span>
+            <strong style="font-size:13px;">Barres protéinées</strong>
+          </div>
+          <span class="whey-macros-badge" id="bars-summary-pill">Aucune barre</span>
+        </div>
+        <div class="bar-controls">
+          <select id="protein-bar-select" class="bar-select" aria-label="Choisir une barre protéinée"></select>
+          <select id="protein-bar-qty" class="bar-qty-select" aria-label="Quantité">
+            <option value="0.5">0.5</option>
+            <option value="1" selected>1</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2</option>
+          </select>
+          <button class="bar-add-btn" id="btn-add-bar" type="button">+ Ajouter</button>
+        </div>
+        <div class="bar-preview" id="bar-preview-meta"></div>
+        <div class="cheat-list" id="bars-list"></div>
+      </div>
+
       <!-- Écarts / Hors plan -->
       <div class="cheat-card">
         <div class="whey-head">
@@ -1936,6 +2012,39 @@
       "Ananas": { p: 0.5, f: 0.1, c: 13.0, kcal: 52 },
       "Banane": { p: 1.1, f: 0.3, c: 23.0, kcal: 92 }
     };
+
+    const PROTEIN_BARS = [
+      // Barebells
+      { id: "bb_wca", brand: "Barebells", name: "White Chocolate Almond (55g)", kcal: 200, p: 20, c: 19, f: 8 },
+      { id: "bb_cc", brand: "Barebells", name: "Creamy Crisp (55g)", kcal: 195, p: 20, c: 18, f: 7.6 },
+      { id: "bb_coco", brand: "Barebells", name: "Soft Coco Choco (55g)", kcal: 217, p: 16, c: 20, f: 11 },
+      { id: "bb_spread", brand: "Barebells", name: "Chocolate Spread (45g)", kcal: 161, p: 15, c: 14, f: 6.4 },
+
+      // ESN
+      { id: "esn_spec", brand: "ESN", name: "Designer Bar Speculoos (45g)", kcal: 175, p: 15, c: 15, f: 7.5 },
+      { id: "esn_almcoco", brand: "ESN", name: "Designer Bar Almond Coconut (45g)", kcal: 182, p: 14, c: 15, f: 8.5 },
+      { id: "esn_haz", brand: "ESN", name: "Designer Bar Hazelnut Nougat (45g)", kcal: 180, p: 14, c: 15, f: 8.5 },
+      { id: "esn_pbp", brand: "ESN", name: "Designer Bar Peanut Butter Pretzel (45g)", kcal: 178, p: 14, c: 15, f: 8 },
+      { id: "esn_leb", brand: "ESN", name: "Designer Bar Lebkuchen (45g)", kcal: 175, p: 14, c: 15, f: 7.5 },
+      { id: "esn_pc", brand: "ESN", name: "Designer Bar Peanut Caramel (45g)", kcal: 182, p: 14, c: 15, f: 8.7 },
+
+      // Quest
+      { id: "q_cccd", brand: "Quest", name: "Chocolate Chip Cookie Dough (60g)", kcal: 190, p: 21, c: 22, f: 9 },
+      { id: "q_cpb", brand: "Quest", name: "Chocolate Peanut Butter (60g)", kcal: 190, p: 20, c: 22, f: 9 },
+      { id: "q_smores", brand: "Quest", name: "S'mores (60g)", kcal: 180, p: 21, c: 23, f: 7 },
+      { id: "q_oat", brand: "Quest", name: "Oatmeal Chocolate Chip (60g)", kcal: 180, p: 20, c: 23, f: 7 },
+      { id: "q_bday", brand: "Quest", name: "Birthday Cake (60g)", kcal: 180, p: 20, c: 25, f: 7 },
+      { id: "q_blue", brand: "Quest", name: "Blueberry Muffin (60g)", kcal: 180, p: 20, c: 23, f: 7 },
+
+      // REDCON1
+      { id: "rc_cc", brand: "REDCON1", name: "MRE Bar Cookies & Cream (55g)", kcal: 220, p: 20, c: 22, f: 7 },
+      { id: "rc_mad", brand: "REDCON1", name: "MRE Bar Maple Almond Donut (55g)", kcal: 230, p: 20, c: 22, f: 8 },
+      { id: "rc_cccd", brand: "REDCON1", name: "MRE Bar Chocolate Chip Cookie Dough (55g)", kcal: 220, p: 20, c: 22, f: 7 }
+    ];
+
+    function getBarById(id) {
+      return PROTEIN_BARS.find(b => b.id === id) || PROTEIN_BARS[0];
+    }
 
     const DEFAULT_PHASE = "priming";
 
@@ -2139,6 +2248,7 @@
         coffee: 0,
         energyDrinks: 0,
         wheyShakes: [],
+        proteinBars: [],
         cheats: [],
         updatedAt: 0,
         meals
@@ -2168,6 +2278,7 @@
       d.coffee = Math.max(0, parseInt(d.coffee, 10) || 0);
       d.energyDrinks = Math.max(0, parseInt(d.energyDrinks, 10) || 0);
       if (!Array.isArray(d.wheyShakes)) d.wheyShakes = [];
+      if (!Array.isArray(d.proteinBars)) d.proteinBars = [];
       if (!Array.isArray(d.cheats)) d.cheats = [];
       if (!d.meals || typeof d.meals !== "object") d.meals = {};
       getPlan(d).meals.forEach(m => {
@@ -2247,6 +2358,15 @@
       valP += wheyMac.p;
       valC += wheyMac.c;
       valF += wheyMac.f;
+
+      day.proteinBars.forEach(entry => {
+        const b = getBarById(entry.id);
+        const q = Math.max(0, Number(entry.qty) || 1);
+        valKcal += b.kcal * q;
+        valP += b.p * q;
+        valC += b.c * q;
+        valF += b.f * q;
+      });
 
       day.cheats.forEach(ch => {
         const cp = Math.max(0, Number(ch.p) || 0);
@@ -2635,6 +2755,12 @@
       if (day.wheyShakes.length) {
         out.push(`Shakers Whey : ${day.wheyShakes.map(s => `${s.qty}g`).join(", ")}`);
       }
+      if (day.proteinBars.length) {
+        out.push(`Barres protéinées : ${day.proteinBars.map(e => {
+          const b = getBarById(e.id);
+          return `${e.qty}x ${b.brand} ${b.name} (${Math.round(b.kcal * e.qty)} kcal)`;
+        }).join(" | ")}`);
+      }
       if (day.cheats.length) {
         out.push(`Écarts : ${day.cheats.map(c => {
           const m = (c.p || c.c || c.f) ? ` [P${c.p || 0}/G${c.c || 0}/L${c.f || 0}]` : "";
@@ -2679,6 +2805,7 @@
         d.coffee > 0 ||
         d.energyDrinks > 0 ||
         (Array.isArray(d.wheyShakes) && d.wheyShakes.length > 0) ||
+        (Array.isArray(d.proteinBars) && d.proteinBars.length > 0) ||
         (Array.isArray(d.cheats) && d.cheats.length > 0)
       );
     }
@@ -2754,6 +2881,72 @@
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delWhey);
           getDay(currentDate).wheyShakes.splice(idx, 1);
+          persistAndSync();
+          renderAll();
+        });
+      });
+    }
+
+    function populateBarSelect() {
+      const sel = document.getElementById("protein-bar-select");
+      if (!sel || sel.options.length > 0) return;
+      const brands = [...new Set(PROTEIN_BARS.map(b => b.brand))];
+      sel.innerHTML = brands.map(brand => {
+        const items = PROTEIN_BARS.filter(b => b.brand === brand);
+        return `<optgroup label="${brand}">${items.map(b => `<option value="${b.id}">${b.name}</option>`).join("")}</optgroup>`;
+      }).join("");
+    }
+
+    function updateBarPreview() {
+      const sel = document.getElementById("protein-bar-select");
+      const qtyEl = document.getElementById("protein-bar-qty");
+      const metaEl = document.getElementById("bar-preview-meta");
+      if (!sel || !metaEl) return;
+      const b = getBarById(sel.value);
+      const q = Math.max(0.5, Number(qtyEl ? qtyEl.value : 1) || 1);
+      metaEl.textContent = `${b.brand} • ${Math.round(b.kcal * q)} kcal • P ${(b.p * q).toFixed(1)}g • G ${(b.c * q).toFixed(1)}g • L ${(b.f * q).toFixed(1)}g`;
+    }
+
+    function renderProteinBars(day) {
+      populateBarSelect();
+      updateBarPreview();
+      const pill = document.getElementById("bars-summary-pill");
+      const listEl = document.getElementById("bars-list");
+      const totalBarKcal = day.proteinBars.reduce((acc, e) => acc + getBarById(e.id).kcal * (Number(e.qty) || 1), 0);
+      const totalBarP = day.proteinBars.reduce((acc, e) => acc + getBarById(e.id).p * (Number(e.qty) || 1), 0);
+      if (pill) {
+        if (!day.proteinBars.length) {
+          pill.textContent = "Aucune barre";
+        } else {
+          pill.textContent = `${day.proteinBars.length} barre${day.proteinBars.length > 1 ? "s" : ""} • ${Math.round(totalBarP)}g P • ${Math.round(totalBarKcal)} kcal`;
+        }
+      }
+      if (!listEl) return;
+      if (!day.proteinBars.length) {
+        listEl.innerHTML = "";
+        return;
+      }
+      listEl.innerHTML = day.proteinBars.map((entry, i) => {
+        const b = getBarById(entry.id);
+        const q = Number(entry.qty) || 1;
+        return `
+          <div class="cheat-item">
+            <div style="min-width:0;">
+              <div style="color:#e2e8f0;word-break:break-word;"><strong>${q}× ${b.brand}</strong> — ${b.name}</div>
+              <div class="cheat-item-sub">P ${(b.p * q).toFixed(1)}g • G ${(b.c * q).toFixed(1)}g • L ${(b.f * q).toFixed(1)}g</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span class="whey-macros-badge">${Math.round(b.kcal * q)} kcal</span>
+              <button class="whey-del-btn" data-del-bar="${i}" type="button" title="Supprimer">×</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      listEl.querySelectorAll("[data-del-bar]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const idx = Number(btn.dataset.delBar);
+          getDay(currentDate).proteinBars.splice(idx, 1);
           persistAndSync();
           renderAll();
         });
@@ -2958,6 +3151,7 @@
       document.getElementById("booster-sub").textContent = day.booster ? "Validé (+200 mg caféine)" : "Prise avant séance";
 
       renderWheyShakes(day);
+      renderProteinBars(day);
       renderCheats(day);
 
       const caf = getCaffeineBreakdown(day);
@@ -3062,7 +3256,7 @@
       const nextPhase = e.target.value;
       const d = getDay(currentDate);
       if (PHASES[nextPhase] && d.phase !== nextPhase) {
-        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
+        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, proteinBars: d.proteinBars, cheats: d.cheats };
         store[currentDate] = Object.assign(defaultDay(d.mode, nextPhase), prev);
         persistAndSync();
         renderAll();
@@ -3073,7 +3267,7 @@
     document.getElementById("btn-mode-training").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "training") {
-        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
+        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, proteinBars: d.proteinBars, cheats: d.cheats };
         store[currentDate] = Object.assign(defaultDay("training", d.phase), prev);
         persistAndSync();
         renderAll();
@@ -3082,7 +3276,7 @@
     document.getElementById("btn-mode-rest").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "rest") {
-        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
+        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, proteinBars: d.proteinBars, cheats: d.cheats };
         store[currentDate] = Object.assign(defaultDay("rest", d.phase), prev);
         persistAndSync();
         renderAll();
@@ -3149,6 +3343,21 @@
       persistAndSync();
       renderAll();
       toast(`Shaker Whey ${qty}g ajouté`);
+    });
+
+    document.getElementById("protein-bar-select").addEventListener("change", updateBarPreview);
+    document.getElementById("protein-bar-qty").addEventListener("change", updateBarPreview);
+    document.getElementById("btn-add-bar").addEventListener("click", () => {
+      const sel = document.getElementById("protein-bar-select");
+      const qtyEl = document.getElementById("protein-bar-qty");
+      if (!sel) return;
+      const b = getBarById(sel.value);
+      const qty = Math.max(0.5, Number(qtyEl ? qtyEl.value : 1) || 1);
+      const d = getDay(currentDate);
+      d.proteinBars.push({ id: b.id, qty });
+      persistAndSync();
+      renderAll();
+      toast(`${qty}× ${b.brand} ajoutée`);
     });
 
     document.getElementById("btn-add-cheat").addEventListener("click", () => {
