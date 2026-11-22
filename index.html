@@ -797,32 +797,40 @@
       border-radius: 11px;
       padding: 8px;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .caf-box-head {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 4px;
+      gap: 6px;
+      min-height: 28px;
     }
 
     .caf-label {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 800;
       color: #f8fafc;
+      line-height: 1.25;
     }
 
     .caf-mg-hint {
       font-size: 9.5px;
       color: #7c879c;
       font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .caf-ctrl-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 7px;
+      margin-top: auto;
+      padding-top: 8px;
       gap: 4px;
     }
 
@@ -879,6 +887,28 @@
       font-size: 11px;
       color: #64748b;
       font-weight: 600;
+    }
+
+    .section-head-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .phase-select {
+      background: #121724;
+      color: #60a5fa;
+      border: 1px solid #23304c;
+      border-radius: 8px;
+      padding: 4px 22px 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
     }
 
     /* Meal Card */
@@ -1428,7 +1458,7 @@
         </div>
       </div>
 
-      <!-- Shaker de Whey rapide (ajoute les macros au total de la journée) -->
+      <!-- Shaker de Whey rapide -->
       <div class="whey-quick-card">
         <div class="whey-head">
           <div class="supp-left">
@@ -1462,7 +1492,7 @@
         <div class="circle-check" id="check-booster">✓</div>
       </div>
 
-      <!-- Caféine : uniquement Café et Boissons énergisantes -->
+      <!-- Caféine : Café et Boissons énergisantes -->
       <div class="caffeine-master-card">
         <div class="caf-master-top">
           <div class="caf-master-title">
@@ -1511,7 +1541,10 @@
       <!-- Repas -->
       <div class="section-head">
         <h2>PLAN ALIMENTAIRE</h2>
-        <span id="plan-mode-caption">Entraînement</span>
+        <div class="section-head-right">
+          <select id="phase-select" class="phase-select" aria-label="Phase alimentaire"></select>
+          <span id="plan-mode-caption">Entraînement</span>
+        </div>
       </div>
       <div id="meals-list"></div>
 
@@ -1677,125 +1710,142 @@
       "Banane": { p: 1.1, f: 0.3, c: 23.0, kcal: 92 }
     };
 
-    const PLANS = {
-      training: {
-        label: "Entraînement",
-        targets: { kcal: 2388, p: 217, c: 255, f: 56 },
-        meals: [
-          {
-            id: "tr_r1",
-            name: "Repas 1",
-            items: [
-              { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }, { food: "Blanc d'oeuf liquide", qty: 301 }] },
-              { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] },
-              { macro: "C", defaultFood: "Flocons d'avoine", defaultQty: 60, options: [{ food: "Flocons d'avoine", qty: 60 }, { food: "Crème de riz", qty: 46 }, { food: "Farine d'avoine aromatisée", qty: 63 }] },
-              { macro: "C", defaultFood: "Myrtilles", defaultQty: 67, options: [{ food: "Myrtilles", qty: 67 }, { food: "Fraises/framboises", qty: 101 }, { food: "Compote sans sucres ajoutés", qty: 84 }, { food: "Pomme", qty: 72 }, { food: "Kiwi", qty: 101 }, { food: "Pastèques", qty: 126 }, { food: "Melon", qty: 126 }, { food: "Ananas", qty: 78 }] }
+    const DEFAULT_PHASE = "priming";
+
+    const PHASES = {
+      priming: {
+        label: "Priming",
+        plans: {
+          training: {
+            label: "Entraînement",
+            targets: { kcal: 2388, p: 217, c: 255, f: 56 },
+            meals: [
+              {
+                id: "tr_r1",
+                name: "Repas 1",
+                items: [
+                  { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }, { food: "Blanc d'oeuf liquide", qty: 301 }] },
+                  { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] },
+                  { macro: "C", defaultFood: "Flocons d'avoine", defaultQty: 60, options: [{ food: "Flocons d'avoine", qty: 60 }, { food: "Crème de riz", qty: 46 }, { food: "Farine d'avoine aromatisée", qty: 63 }] },
+                  { macro: "C", defaultFood: "Myrtilles", defaultQty: 67, options: [{ food: "Myrtilles", qty: 67 }, { food: "Fraises/framboises", qty: 101 }, { food: "Compote sans sucres ajoutés", qty: 84 }, { food: "Pomme", qty: 72 }, { food: "Kiwi", qty: 101 }, { food: "Pastèques", qty: 126 }, { food: "Melon", qty: 126 }, { food: "Ananas", qty: 78 }] }
+                ]
+              },
+              {
+                id: "tr_r2",
+                name: "Repas 2",
+                items: [
+                  { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }] },
+                  { macro: "F", defaultFood: "Noix du Brésil", defaultQty: 20, options: [{ food: "Noix du Brésil", qty: 20 }, { food: "Amandes", qty: 25 }] },
+                  { macro: "C", defaultFood: "Pomme", defaultQty: 86, options: [{ food: "Pomme", qty: 86 }, { food: "Compote sans sucres ajoutés", qty: 100 }, { food: "Kiwi", qty: 120 }, { food: "Fraises/framboises", qty: 120 }, { food: "Pastèques", qty: 150 }, { food: "Melon", qty: 150 }, { food: "Myrtilles", qty: 80 }, { food: "Ananas", qty: 92 }] }
+                ]
+              },
+              {
+                id: "tr_pre",
+                name: "Pré workout",
+                items: [
+                  { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }, { food: "Blanc d'oeuf liquide", qty: 301 }, { food: "Skyr 0%", qty: 301 }, { food: "Lait écrémé", qty: 1003 }, { food: "Hipro (vanille ou myrtille)", qty: 320 }] },
+                  { macro: "C", defaultFood: "Crème de riz", defaultQty: 60, options: [{ food: "Crème de riz", qty: 60 }, { food: "Galettes de riz", qty: 59 }] }
+                ]
+              },
+              {
+                id: "tr_r3",
+                name: "Repas 3",
+                items: [
+                  { macro: "P", defaultFood: "Blanc de poulet cru", defaultQty: 130, options: [{ food: "Blanc de poulet cru", qty: 130 }, { food: "Crevettes crues", qty: 130 }, { food: "Blanc de dinde cru", qty: 150 }, { food: "Poisson blanc maigre cru", qty: 166 }] },
+                  { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
+                  { macro: "C", defaultFood: "Riz cru", defaultQty: 60, options: [{ food: "Riz cru", qty: 60 }, { food: "Pâtes crues", qty: 66 }, { food: "Pommes de terre crues", qty: 246 }, { food: "Patates douces crues", qty: 234 }, { food: "Semoule crue", qty: 64 }] },
+                  { macro: "C", defaultFood: "Compote sans sucres ajoutés", defaultQty: 230, options: [{ food: "Compote sans sucres ajoutés", qty: 230 }, { food: "Banane", qty: 120 }] }
+                ]
+              },
+              {
+                id: "tr_col",
+                name: "Collation",
+                items: [
+                  { macro: "P", defaultFood: "Skyr 0%", defaultQty: 250, options: [{ food: "Skyr 0%", qty: 250 }, { food: "Whey isolat", qty: 29 }] },
+                  { macro: "F", defaultFood: "Graines de lin/chia", defaultQty: 22, options: [{ food: "Graines de lin/chia", qty: 22 }, { food: "Chocolat noir 85%", qty: 20 }, { food: "Poudre de noix de coco", qty: 14 }] },
+                  { macro: "C", defaultFood: "Pomme", defaultQty: 93, options: [{ food: "Pomme", qty: 93 }, { food: "Ananas", qty: 100 }, { food: "Compote sans sucres ajoutés", qty: 108 }, { food: "Kiwi", qty: 130 }, { food: "Fraises/framboises", qty: 130 }, { food: "Pastèques", qty: 163 }, { food: "Melon", qty: 163 }, { food: "Myrtilles", qty: 87 }] }
+                ]
+              },
+              {
+                id: "tr_r4",
+                name: "Repas 4",
+                items: [
+                  { macro: "P", defaultFood: "Blanc de dinde cru", defaultQty: 165, options: [{ food: "Blanc de dinde cru", qty: 165 }, { food: "Boeuf 5% cru", qty: 150 }, { food: "Blanc de poulet cru", qty: 143 }, { food: "Bacon maigre cru", qty: 143 }] },
+                  { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
+                  { macro: "C", defaultFood: "Semoule crue", defaultQty: 55, options: [{ food: "Semoule crue", qty: 55 }, { food: "Patates douces crues", qty: 201 }, { food: "Riz cru", qty: 52 }, { food: "Pâtes crues", qty: 57 }, { food: "Pommes de terre crues", qty: 212 }] },
+                  { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
+                ]
+              }
             ]
           },
-          {
-            id: "tr_r2",
-            name: "Repas 2",
-            items: [
-              { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }] },
-              { macro: "F", defaultFood: "Noix du Brésil", defaultQty: 20, options: [{ food: "Noix du Brésil", qty: 20 }, { food: "Amandes", qty: 25 }] },
-              { macro: "C", defaultFood: "Pomme", defaultQty: 86, options: [{ food: "Pomme", qty: 86 }, { food: "Compote sans sucres ajoutés", qty: 100 }, { food: "Kiwi", qty: 120 }, { food: "Fraises/framboises", qty: 120 }, { food: "Pastèques", qty: 150 }, { food: "Melon", qty: 150 }, { food: "Myrtilles", qty: 80 }, { food: "Ananas", qty: 92 }] }
-            ]
-          },
-          {
-            id: "tr_pre",
-            name: "Pré workout",
-            items: [
-              { macro: "P", defaultFood: "Whey isolat", defaultQty: 35, options: [{ food: "Whey isolat", qty: 35 }, { food: "Blanc d'oeuf liquide", qty: 301 }, { food: "Skyr 0%", qty: 301 }, { food: "Lait écrémé", qty: 1003 }, { food: "Hipro (vanille ou myrtille)", qty: 320 }] },
-              { macro: "C", defaultFood: "Crème de riz", defaultQty: 60, options: [{ food: "Crème de riz", qty: 60 }, { food: "Galettes de riz", qty: 59 }] }
-            ]
-          },
-          {
-            id: "tr_r3",
-            name: "Repas 3",
-            items: [
-              { macro: "P", defaultFood: "Blanc de poulet cru", defaultQty: 130, options: [{ food: "Blanc de poulet cru", qty: 130 }, { food: "Crevettes crues", qty: 130 }, { food: "Blanc de dinde cru", qty: 150 }, { food: "Poisson blanc maigre cru", qty: 166 }] },
-              { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
-              { macro: "C", defaultFood: "Riz cru", defaultQty: 60, options: [{ food: "Riz cru", qty: 60 }, { food: "Pâtes crues", qty: 66 }, { food: "Pommes de terre crues", qty: 246 }, { food: "Patates douces crues", qty: 234 }, { food: "Semoule crue", qty: 64 }] },
-              { macro: "C", defaultFood: "Compote sans sucres ajoutés", defaultQty: 230, options: [{ food: "Compote sans sucres ajoutés", qty: 230 }, { food: "Banane", qty: 120 }] }
-            ]
-          },
-          {
-            id: "tr_col",
-            name: "Collation",
-            items: [
-              { macro: "P", defaultFood: "Skyr 0%", defaultQty: 250, options: [{ food: "Skyr 0%", qty: 250 }, { food: "Whey isolat", qty: 29 }] },
-              { macro: "F", defaultFood: "Graines de lin/chia", defaultQty: 22, options: [{ food: "Graines de lin/chia", qty: 22 }, { food: "Chocolat noir 85%", qty: 20 }, { food: "Poudre de noix de coco", qty: 14 }] },
-              { macro: "C", defaultFood: "Pomme", defaultQty: 93, options: [{ food: "Pomme", qty: 93 }, { food: "Ananas", qty: 100 }, { food: "Compote sans sucres ajoutés", qty: 108 }, { food: "Kiwi", qty: 130 }, { food: "Fraises/framboises", qty: 130 }, { food: "Pastèques", qty: 163 }, { food: "Melon", qty: 163 }, { food: "Myrtilles", qty: 87 }] }
-            ]
-          },
-          {
-            id: "tr_r4",
-            name: "Repas 4",
-            items: [
-              { macro: "P", defaultFood: "Blanc de dinde cru", defaultQty: 165, options: [{ food: "Blanc de dinde cru", qty: 165 }, { food: "Boeuf 5% cru", qty: 150 }, { food: "Blanc de poulet cru", qty: 143 }, { food: "Bacon maigre cru", qty: 143 }] },
-              { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
-              { macro: "C", defaultFood: "Semoule crue", defaultQty: 55, options: [{ food: "Semoule crue", qty: 55 }, { food: "Patates douces crues", qty: 201 }, { food: "Riz cru", qty: 52 }, { food: "Pâtes crues", qty: 57 }, { food: "Pommes de terre crues", qty: 212 }] },
-              { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
+          rest: {
+            label: "Jour de repos",
+            targets: { kcal: 2180, p: 205, c: 198, f: 58 },
+            meals: [
+              {
+                id: "re_r1",
+                name: "Repas 1",
+                items: [
+                  { macro: "P", defaultFood: "Whey isolat", defaultQty: 45, options: [{ food: "Whey isolat", qty: 45 }, { food: "Blanc d'oeuf liquide", qty: 387 }] },
+                  { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] },
+                  { macro: "C", defaultFood: "Flocons d'avoine", defaultQty: 50, options: [{ food: "Flocons d'avoine", qty: 50 }, { food: "Crème de riz", qty: 38 }, { food: "Farine d'avoine aromatisée", qty: 52 }] },
+                  { macro: "C", defaultFood: "Myrtilles", defaultQty: 67, options: [{ food: "Myrtilles", qty: 67 }, { food: "Fraises/framboises", qty: 101 }, { food: "Compote sans sucres ajoutés", qty: 84 }, { food: "Pomme", qty: 72 }, { food: "Kiwi", qty: 101 }, { food: "Pastèques", qty: 126 }, { food: "Melon", qty: 126 }, { food: "Ananas", qty: 78 }] }
+                ]
+              },
+              {
+                id: "re_col1",
+                name: "Collation 1",
+                items: [
+                  { macro: "P", defaultFood: "Whey isolat", defaultQty: 45, options: [{ food: "Whey isolat", qty: 45 }, { food: "Blanc d'oeuf liquide", qty: 387 }, { food: "Skyr 0%", qty: 387 }, { food: "Lait écrémé", qty: 1290 }, { food: "Hipro (vanille ou myrtille)", qty: 412 }] },
+                  { macro: "C", defaultFood: "Crème de riz", defaultQty: 50, options: [{ food: "Crème de riz", qty: 50 }, { food: "Galettes de riz", qty: 49 }] },
+                  { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] }
+                ]
+              },
+              {
+                id: "re_r2",
+                name: "Repas 2",
+                items: [
+                  { macro: "P", defaultFood: "Blanc de poulet cru", defaultQty: 130, options: [{ food: "Blanc de poulet cru", qty: 130 }, { food: "Crevettes crues", qty: 130 }, { food: "Blanc de dinde cru", qty: 150 }, { food: "Poisson blanc maigre cru", qty: 166 }] },
+                  { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
+                  { macro: "C", defaultFood: "Riz cru", defaultQty: 60, options: [{ food: "Riz cru", qty: 60 }, { food: "Pâtes crues", qty: 66 }, { food: "Pommes de terre crues", qty: 246 }, { food: "Patates douces crues", qty: 234 }, { food: "Semoule crue", qty: 64 }] },
+                  { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
+                ]
+              },
+              {
+                id: "re_col2",
+                name: "Collation 2",
+                items: [
+                  { macro: "P", defaultFood: "Skyr 0%", defaultQty: 250, options: [{ food: "Skyr 0%", qty: 250 }, { food: "Whey isolat", qty: 29 }] },
+                  { macro: "F", defaultFood: "Chocolat noir 85%", defaultQty: 20, options: [{ food: "Chocolat noir 85%", qty: 20 }, { food: "Graines de lin/chia", qty: 22 }, { food: "Poudre de noix de coco", qty: 14 }] },
+                  { macro: "C", defaultFood: "Ananas", defaultQty: 100, options: [{ food: "Ananas", qty: 100 }, { food: "Compote sans sucres ajoutés", qty: 108 }, { food: "Pomme", qty: 93 }, { food: "Kiwi", qty: 130 }, { food: "Fraises/framboises", qty: 130 }, { food: "Pastèques", qty: 163 }, { food: "Melon", qty: 163 }, { food: "Myrtilles", qty: 87 }] },
+                  { macro: "P", defaultFood: "Whey isolat", defaultQty: 15, options: [{ food: "Whey isolat", qty: 15 }, { food: "Blanc d'oeuf liquide", qty: 129 }, { food: "Skyr 0%", qty: 129 }, { food: "Lait écrémé", qty: 430 }, { food: "Hipro (vanille ou myrtille)", qty: 137 }] }
+                ]
+              },
+              {
+                id: "re_r3",
+                name: "Repas 3",
+                items: [
+                  { macro: "P", defaultFood: "Sardines au naturel", defaultQty: 150, options: [{ food: "Sardines au naturel", qty: 150 }, { food: "Oeuf entier (100g = 1 oeuf)", qty: 575 }, { food: "Saumon sauvage cru", qty: 173 }, { food: "Maquereaux nature conserve", qty: 173 }, { food: "Cottage cheese", qty: 288 }] },
+                  { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
+                  { macro: "C", defaultFood: "Riz cru", defaultQty: 51, options: [{ food: "Riz cru", qty: 51 }, { food: "Patates douces crues", qty: 199 }, { food: "Pâtes crues", qty: 56 }, { food: "Pommes de terre crues", qty: 209 }, { food: "Semoule crue", qty: 55 }] },
+                  { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
+                ]
+              }
             ]
           }
-        ]
-      },
-      rest: {
-        label: "Jour de repos",
-        targets: { kcal: 2180, p: 205, c: 198, f: 58 },
-        meals: [
-          {
-            id: "re_r1",
-            name: "Repas 1",
-            items: [
-              { macro: "P", defaultFood: "Whey isolat", defaultQty: 45, options: [{ food: "Whey isolat", qty: 45 }, { food: "Blanc d'oeuf liquide", qty: 387 }] },
-              { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] },
-              { macro: "C", defaultFood: "Flocons d'avoine", defaultQty: 50, options: [{ food: "Flocons d'avoine", qty: 50 }, { food: "Crème de riz", qty: 38 }, { food: "Farine d'avoine aromatisée", qty: 52 }] },
-              { macro: "C", defaultFood: "Myrtilles", defaultQty: 67, options: [{ food: "Myrtilles", qty: 67 }, { food: "Fraises/framboises", qty: 101 }, { food: "Compote sans sucres ajoutés", qty: 84 }, { food: "Pomme", qty: 72 }, { food: "Kiwi", qty: 101 }, { food: "Pastèques", qty: 126 }, { food: "Melon", qty: 126 }, { food: "Ananas", qty: 78 }] }
-            ]
-          },
-          {
-            id: "re_col1",
-            name: "Collation 1",
-            items: [
-              { macro: "P", defaultFood: "Whey isolat", defaultQty: 45, options: [{ food: "Whey isolat", qty: 45 }, { food: "Blanc d'oeuf liquide", qty: 387 }, { food: "Skyr 0%", qty: 387 }, { food: "Lait écrémé", qty: 1290 }, { food: "Hipro (vanille ou myrtille)", qty: 412 }] },
-              { macro: "C", defaultFood: "Crème de riz", defaultQty: 50, options: [{ food: "Crème de riz", qty: 50 }, { food: "Galettes de riz", qty: 49 }] },
-              { macro: "F", defaultFood: "Purée d'amandes", defaultQty: 20, options: [{ food: "Purée d'amandes", qty: 20 }, { food: "Amandes", qty: 20 }, { food: "Purée de noisettes", qty: 17 }] }
-            ]
-          },
-          {
-            id: "re_r2",
-            name: "Repas 2",
-            items: [
-              { macro: "P", defaultFood: "Blanc de poulet cru", defaultQty: 130, options: [{ food: "Blanc de poulet cru", qty: 130 }, { food: "Crevettes crues", qty: 130 }, { food: "Blanc de dinde cru", qty: 150 }, { food: "Poisson blanc maigre cru", qty: 166 }] },
-              { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
-              { macro: "C", defaultFood: "Riz cru", defaultQty: 60, options: [{ food: "Riz cru", qty: 60 }, { food: "Pâtes crues", qty: 66 }, { food: "Pommes de terre crues", qty: 246 }, { food: "Patates douces crues", qty: 234 }, { food: "Semoule crue", qty: 64 }] },
-              { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
-            ]
-          },
-          {
-            id: "re_col2",
-            name: "Collation 2",
-            items: [
-              { macro: "P", defaultFood: "Skyr 0%", defaultQty: 250, options: [{ food: "Skyr 0%", qty: 250 }, { food: "Whey isolat", qty: 29 }] },
-              { macro: "F", defaultFood: "Chocolat noir 85%", defaultQty: 20, options: [{ food: "Chocolat noir 85%", qty: 20 }, { food: "Graines de lin/chia", qty: 22 }, { food: "Poudre de noix de coco", qty: 14 }] },
-              { macro: "C", defaultFood: "Ananas", defaultQty: 100, options: [{ food: "Ananas", qty: 100 }, { food: "Compote sans sucres ajoutés", qty: 108 }, { food: "Pomme", qty: 93 }, { food: "Kiwi", qty: 130 }, { food: "Fraises/framboises", qty: 130 }, { food: "Pastèques", qty: 163 }, { food: "Melon", qty: 163 }, { food: "Myrtilles", qty: 87 }] },
-              { macro: "P", defaultFood: "Whey isolat", defaultQty: 15, options: [{ food: "Whey isolat", qty: 15 }, { food: "Blanc d'oeuf liquide", qty: 129 }, { food: "Skyr 0%", qty: 129 }, { food: "Lait écrémé", qty: 430 }, { food: "Hipro (vanille ou myrtille)", qty: 137 }] }
-            ]
-          },
-          {
-            id: "re_r3",
-            name: "Repas 3",
-            items: [
-              { macro: "P", defaultFood: "Sardines au naturel", defaultQty: 150, options: [{ food: "Sardines au naturel", qty: 150 }, { food: "Oeuf entier (100g = 1 oeuf)", qty: 575 }, { food: "Saumon sauvage cru", qty: 173 }, { food: "Maquereaux nature conserve", qty: 173 }, { food: "Cottage cheese", qty: 288 }] },
-              { macro: "F", defaultFood: "Huile d'olive", defaultQty: 5, options: [{ food: "Huile d'olive", qty: 5 }, { food: "Huile de lin", qty: 5 }, { food: "Avocat", qty: 23 }] },
-              { macro: "C", defaultFood: "Riz cru", defaultQty: 51, options: [{ food: "Riz cru", qty: 51 }, { food: "Patates douces crues", qty: 199 }, { food: "Pâtes crues", qty: 56 }, { food: "Pommes de terre crues", qty: 209 }, { food: "Semoule crue", qty: 55 }] },
-              { macro: "C", defaultFood: "Légumes verts cuits", defaultQty: 150, options: [{ food: "Légumes verts cuits", qty: 150 }] }
-            ]
-          }
-        ]
+        }
       }
     };
+
+    function getPhaseObj(phaseId) {
+      return PHASES[phaseId] || PHASES[DEFAULT_PHASE];
+    }
+
+    function getPlan(day) {
+      const ph = getPhaseObj(day && day.phase);
+      const mode = day && day.mode === "rest" ? "rest" : "training";
+      return ph.plans[mode] || ph.plans.training;
+    }
 
     const LOGS_KEY = "macrotrack_ascend_logs_v4";
     const CFG_KEY = "macrotrack_ascend_cfg_v1";
@@ -1840,8 +1890,9 @@
       return dt.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
     }
 
-    function defaultDay(mode = "training") {
-      const plan = PLANS[mode] || PLANS.training;
+    function defaultDay(mode = "training", phase = DEFAULT_PHASE) {
+      const phKey = PHASES[phase] ? phase : DEFAULT_PHASE;
+      const plan = PHASES[phKey].plans[mode] || PHASES[phKey].plans.training;
       const meals = {};
       plan.meals.forEach(m => {
         meals[m.id] = {
@@ -1850,6 +1901,7 @@
         };
       });
       return {
+        phase: phKey,
         mode,
         water: 0,
         salt: 0,
@@ -1871,9 +1923,10 @@
     function getDay(iso) {
       const key = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : todayISO();
       if (!store[key] || typeof store[key] !== "object") {
-        store[key] = defaultDay("training");
+        store[key] = defaultDay("training", DEFAULT_PHASE);
       }
       const d = store[key];
+      d.phase = PHASES[d.phase] ? d.phase : DEFAULT_PHASE;
       d.mode = d.mode === "rest" ? "rest" : "training";
       d.water = Number(d.water) || 0;
       d.salt = Number(d.salt) || 0;
@@ -1885,7 +1938,7 @@
       if (!Array.isArray(d.wheyShakes)) d.wheyShakes = [];
       if (!Array.isArray(d.cheats)) d.cheats = [];
       if (!d.meals || typeof d.meals !== "object") d.meals = {};
-      PLANS[d.mode].meals.forEach(m => {
+      getPlan(d).meals.forEach(m => {
         if (!d.meals[m.id] || !Array.isArray(d.meals[m.id].items) || d.meals[m.id].items.length !== m.items.length) {
           d.meals[m.id] = {
             checked: false,
@@ -1937,7 +1990,7 @@
     }
 
     function getDayStats(day) {
-      const plan = PLANS[day.mode];
+      const plan = getPlan(day);
       let valKcal = 0, valP = 0, valC = 0, valF = 0, checkedMeals = 0, checkedFoods = 0, totalFoods = 0;
       plan.meals.forEach(m => {
         const st = day.meals[m.id];
@@ -2147,11 +2200,11 @@
 
     function buildCoachReport() {
       const day = getDay(currentDate);
-      const plan = PLANS[day.mode];
+      const plan = getPlan(day);
       const caf = getCaffeineBreakdown(day);
       const dayStats = getDayStats(day);
       const out = [];
-      out.push(`MacroTrack — ${formatFrenchDate(currentDate)} (${plan.label})`);
+      out.push(`MacroTrack — ${formatFrenchDate(currentDate)} (${getPhaseObj(day.phase).label} • ${plan.label})`);
       out.push(`Eau : ${day.water.toFixed(2)} L / 4,5 L | Sel : ${day.salt.toFixed(1)} g / 6 g`);
       out.push(`Créatine : ${day.creatine ? "OK" : "Non"} | EAA : ${day.eaa ? "OK" : "Non"} | Booster : ${day.booster ? "OK" : "Non"}`);
       out.push(`Caféine : ${caf.totalMg} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Boissons énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${day.booster ? " | Booster = 200 mg" : ""})`);
@@ -2220,14 +2273,14 @@
       }
       box.innerHTML = keys.map(k => {
         const d = getDay(k);
-        const plan = PLANS[d.mode];
+        const plan = getPlan(d);
         const st = getDayStats(d);
         const caf = getCaffeineBreakdown(d);
         return `
           <div class="history-item">
             <div>
               <strong style="font-size:12.5px;">${formatFrenchDate(k)}</strong>
-              <div style="font-size:10.5px;color:#8b95a8;">${plan.label} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${caf.totalMg}mg caf.</div>
+              <div style="font-size:10.5px;color:#8b95a8;">${getPhaseObj(d.phase).label} • ${plan.label} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${caf.totalMg}mg caf.</div>
               <div style="font-size:10.5px;color:#cbd5e1;margin-top:2px;">P ${Math.round(st.valP)}g • G ${Math.round(st.valC)}g • L ${Math.round(st.valF)}g</div>
             </div>
             <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
@@ -2321,7 +2374,7 @@
     function renderAll() {
       const day = getDay(currentDate);
       const isToday = currentDate === todayISO();
-      const plan = PLANS[day.mode];
+      const plan = getPlan(day);
 
       document.getElementById("date-heading").textContent = isToday ? "Aujourd'hui" : currentDate;
       document.getElementById("date-badge").textContent = isToday ? "EN COURS" : "ARCHIVÉ";
@@ -2331,6 +2384,10 @@
       document.getElementById("btn-mode-training").classList.toggle("active", day.mode === "training");
       document.getElementById("btn-mode-rest").classList.toggle("active", day.mode === "rest");
       document.getElementById("plan-mode-caption").textContent = plan.label;
+      const phaseSel = document.getElementById("phase-select");
+      if (phaseSel) {
+        phaseSel.innerHTML = Object.keys(PHASES).map(k => `<option value="${k}" ${k === day.phase ? "selected" : ""}>${PHASES[k].label}</option>`).join("");
+      }
 
       document.getElementById("hero-kcal-goal").textContent = plan.targets.kcal;
       document.getElementById("hero-p-goal").textContent = plan.targets.p;
@@ -2524,11 +2581,23 @@
       }
     });
 
+    document.getElementById("phase-select").addEventListener("change", e => {
+      const nextPhase = e.target.value;
+      const d = getDay(currentDate);
+      if (PHASES[nextPhase] && d.phase !== nextPhase) {
+        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
+        store[currentDate] = Object.assign(defaultDay(d.mode, nextPhase), prev);
+        persistAndSync();
+        renderAll();
+        toast(`Phase : ${PHASES[nextPhase].label}`);
+      }
+    });
+
     document.getElementById("btn-mode-training").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "training") {
         const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
-        store[currentDate] = Object.assign(defaultDay("training"), prev);
+        store[currentDate] = Object.assign(defaultDay("training", d.phase), prev);
         persistAndSync();
         renderAll();
       }
@@ -2537,7 +2606,7 @@
       const d = getDay(currentDate);
       if (d.mode !== "rest") {
         const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
-        store[currentDate] = Object.assign(defaultDay("rest"), prev);
+        store[currentDate] = Object.assign(defaultDay("rest", d.phase), prev);
         persistAndSync();
         renderAll();
       }
@@ -2669,8 +2738,8 @@
     });
 
     document.getElementById("btn-reset-current").addEventListener("click", () => {
-      const m = getDay(currentDate).mode;
-      store[currentDate] = defaultDay(m);
+      const cur = getDay(currentDate);
+      store[currentDate] = defaultDay(cur.mode, cur.phase);
       persistAndSync();
       renderAll();
       toast("Journée réinitialisée");
