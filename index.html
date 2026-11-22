@@ -2891,7 +2891,7 @@
       const sel = document.getElementById("protein-bar-select");
       if (!sel || sel.options.length > 0) return;
       const brands = [...new Set(PROTEIN_BARS.map(b => b.brand))];
-      sel.innerHTML = brands.map(brand => {
+      sel.innerHTML = `<option value="" selected disabled>Sélectionner une barre...</option>` + brands.map(brand => {
         const items = PROTEIN_BARS.filter(b => b.brand === brand);
         return `<optgroup label="${brand}">${items.map(b => `<option value="${b.id}">${b.name}</option>`).join("")}</optgroup>`;
       }).join("");
@@ -2902,6 +2902,10 @@
       const qtyEl = document.getElementById("protein-bar-qty");
       const metaEl = document.getElementById("bar-preview-meta");
       if (!sel || !metaEl) return;
+      if (!sel.value) {
+        metaEl.textContent = "";
+        return;
+      }
       const b = getBarById(sel.value);
       const q = Math.max(0.5, Number(qtyEl ? qtyEl.value : 1) || 1);
       metaEl.textContent = `${b.brand} • ${Math.round(b.kcal * q)} kcal • P ${(b.p * q).toFixed(1)}g • G ${(b.c * q).toFixed(1)}g • L ${(b.f * q).toFixed(1)}g`;
@@ -3350,11 +3354,16 @@
     document.getElementById("btn-add-bar").addEventListener("click", () => {
       const sel = document.getElementById("protein-bar-select");
       const qtyEl = document.getElementById("protein-bar-qty");
-      if (!sel) return;
+      if (!sel || !sel.value) {
+        toast("Choisis une barre protéinée");
+        return;
+      }
       const b = getBarById(sel.value);
       const qty = Math.max(0.5, Number(qtyEl ? qtyEl.value : 1) || 1);
       const d = getDay(currentDate);
       d.proteinBars.push({ id: b.id, qty });
+      sel.value = "";
+      if (qtyEl) qtyEl.value = "1";
       persistAndSync();
       renderAll();
       toast(`${qty}× ${b.brand} ajoutée`);
