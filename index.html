@@ -1261,7 +1261,6 @@
       </div>
 
       <div class="header-right">
-        <button class="icon-chip" id="btn-icon-info" type="button">↓ Icône</button>
         <button class="icon-chip" id="btn-toggle-cloud" type="button">
           <span class="sync-dot" id="sync-dot"></span>
           <span>Cloud</span>
@@ -1429,7 +1428,7 @@
         </div>
       </div>
 
-      <!-- Shaker de Whey rapide -->
+      <!-- Shaker de Whey rapide (ajoute les macros au total de la journée) -->
       <div class="whey-quick-card">
         <div class="whey-head">
           <div class="supp-left">
@@ -1463,7 +1462,7 @@
         <div class="circle-check" id="check-booster">✓</div>
       </div>
 
-      <!-- Caféine : Café et Boissons énergisantes -->
+      <!-- Caféine : uniquement Café et Boissons énergisantes -->
       <div class="caffeine-master-card">
         <div class="caf-master-top">
           <div class="caf-master-title">
@@ -2188,10 +2187,33 @@
       if (ta) ta.value = out.join("\n");
     }
 
+    function hasDayData(d, st) {
+      if (!d) return false;
+      return (
+        st.checkedFoods > 0 ||
+        d.water > 0 ||
+        d.salt > 0 ||
+        d.creatine ||
+        d.eaa ||
+        d.booster ||
+        d.coffee > 0 ||
+        d.energyDrinks > 0 ||
+        (Array.isArray(d.wheyShakes) && d.wheyShakes.length > 0) ||
+        (Array.isArray(d.cheats) && d.cheats.length > 0)
+      );
+    }
+
     function renderHistory() {
       const box = document.getElementById("history-list");
       if (!box) return;
-      const keys = Object.keys(store).sort().reverse();
+      const keys = Object.keys(store)
+        .filter(k => {
+          const d = getDay(k);
+          const st = getDayStats(d);
+          return hasDayData(d, st);
+        })
+        .sort()
+        .reverse();
       if (!keys.length) {
         box.innerHTML = `<div style="color:#7c879c;font-size:12px;">Aucune journée enregistrée.</div>`;
         return;
@@ -2206,8 +2228,9 @@
             <div>
               <strong style="font-size:12.5px;">${formatFrenchDate(k)}</strong>
               <div style="font-size:10.5px;color:#8b95a8;">${plan.label} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${caf.totalMg}mg caf.</div>
+              <div style="font-size:10.5px;color:#cbd5e1;margin-top:2px;">P ${Math.round(st.valP)}g • G ${Math.round(st.valC)}g • L ${Math.round(st.valF)}g</div>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;">
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
               <span style="font-size:12px;font-weight:700;color:#60a5fa;">${Math.round(st.valKcal)} kcal</span>
               <button class="btn-dark" data-open-date="${k}" type="button" style="padding:5px 8px;font-size:11px;">Ouvrir</button>
             </div>
@@ -2643,10 +2666,6 @@
       writeStore(CFG_KEY, cfg);
       const ok = await pullCloud(true);
       if (ok) document.getElementById("cloud-panel").classList.add("hidden");
-    });
-
-    document.getElementById("btn-icon-info").addEventListener("click", () => {
-      toast("Partager → Sur l'écran d'accueil");
     });
 
     document.getElementById("btn-reset-current").addEventListener("click", () => {
