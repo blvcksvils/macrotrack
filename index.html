@@ -1043,6 +1043,77 @@
       white-space: nowrap;
     }
 
+    /* Écarts / Hors plan */
+    .cheat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 12px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+
+    .cheat-inputs {
+      display: grid;
+      grid-template-columns: 1fr 74px auto;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .cheat-text-input,
+    .cheat-kcal-input {
+      background: #090c13;
+      border: 1px solid #1f283d;
+      color: var(--text);
+      border-radius: 9px;
+      padding: 8px 9px;
+      font-size: 12.5px;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .cheat-kcal-input {
+      text-align: right;
+    }
+
+    .cheat-add-btn {
+      background: #f97316;
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      padding: 0 11px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .cheat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .cheat-item {
+      background: #090c13;
+      border: 1px solid #1e273b;
+      border-radius: 9px;
+      padding: 7px 9px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .cheat-item-kcal {
+      color: #fb923c;
+      font-weight: 700;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
     /* Secondary Panels */
     .panel-card {
       background: var(--card);
@@ -1358,7 +1429,7 @@
         </div>
       </div>
 
-      <!-- Shaker de Whey rapide (ajoute les macros au total de la journée) -->
+      <!-- Shaker de Whey rapide -->
       <div class="whey-quick-card">
         <div class="whey-head">
           <div class="supp-left">
@@ -1392,7 +1463,7 @@
         <div class="circle-check" id="check-booster">✓</div>
       </div>
 
-      <!-- Caféine : uniquement Café et Boissons énergisantes -->
+      <!-- Caféine : Café et Boissons énergisantes -->
       <div class="caffeine-master-card">
         <div class="caf-master-top">
           <div class="caf-master-title">
@@ -1426,7 +1497,7 @@
 
           <div class="caf-box">
             <div class="caf-box-head">
-              <span class="caf-label">Énergisantes</span>
+              <span class="caf-label">Boissons énergisantes</span>
               <span class="caf-mg-hint">150 mg</span>
             </div>
             <div class="caf-ctrl-row">
@@ -1444,6 +1515,23 @@
         <span id="plan-mode-caption">Entraînement</span>
       </div>
       <div id="meals-list"></div>
+
+      <!-- Écarts / Hors plan -->
+      <div class="cheat-card">
+        <div class="whey-head">
+          <div class="supp-left">
+            <span>🍕</span>
+            <strong style="font-size:13px;">Écarts / Hors plan</strong>
+          </div>
+          <span class="tracker-pill pill-salt" id="cheat-summary-pill">Aucun écart</span>
+        </div>
+        <div class="cheat-inputs">
+          <input type="text" id="cheat-text-input" class="cheat-text-input" placeholder="Ex : 2 carrés de chocolat, pizza..." />
+          <input type="number" id="cheat-kcal-input" class="cheat-kcal-input" inputmode="decimal" min="0" step="10" placeholder="kcal" />
+          <button class="cheat-add-btn" id="btn-add-cheat" type="button">+ Ajouter</button>
+        </div>
+        <div class="cheat-list" id="cheat-list"></div>
+      </div>
     </div>
 
     <!-- VUE 2 : RADAR & STATS -->
@@ -1457,7 +1545,7 @@
           <span class="status-pill" id="radar-score-pill">0%</span>
         </div>
         <div class="radar-wrap">
-          <div id="radar-svg-box" style="width:100%;max-width:320px;"></div>
+          <div id="radar-svg-box" style="width:100%;max-width:360px;"></div>
           <div class="radar-legend-grid" id="radar-legend"></div>
         </div>
       </div>
@@ -1772,7 +1860,8 @@
         coffee: 0,
         energyDrinks: 0,
         wheyShakes: [],
-        updatedAt: Date.now(),
+        cheats: [],
+        updatedAt: 0,
         meals
       };
     }
@@ -1795,6 +1884,7 @@
       d.coffee = Math.max(0, parseInt(d.coffee, 10) || 0);
       d.energyDrinks = Math.max(0, parseInt(d.energyDrinks, 10) || 0);
       if (!Array.isArray(d.wheyShakes)) d.wheyShakes = [];
+      if (!Array.isArray(d.cheats)) d.cheats = [];
       if (!d.meals || typeof d.meals !== "object") d.meals = {};
       PLANS[d.mode].meals.forEach(m => {
         if (!d.meals[m.id] || !Array.isArray(d.meals[m.id].items) || d.meals[m.id].items.length !== m.items.length) {
@@ -1873,6 +1963,10 @@
       valP += wheyMac.p;
       valC += wheyMac.c;
       valF += wheyMac.f;
+
+      day.cheats.forEach(ch => {
+        valKcal += Math.max(0, Number(ch.kcal) || 0);
+      });
 
       return { valKcal, valP, valC, valF, checkedMeals, checkedFoods, totalFoods, totalMeals: plan.meals.length, targets: plan.targets };
     }
@@ -1992,10 +2086,11 @@
       const pill = document.getElementById("radar-score-pill");
       if (pill) pill.textContent = `${avgScore}% GLOBAL`;
 
-      const size = 300;
-      const cx = size / 2;
-      const cy = size / 2;
-      const maxR = 92;
+      const w = 360;
+      const h = 280;
+      const cx = w / 2;
+      const cy = h / 2;
+      const maxR = 80;
       const n = axes.length;
 
       function polar(angleIdx, radius) {
@@ -2017,11 +2112,11 @@
       axes.forEach((ax, i) => {
         const outer = polar(i, maxR);
         spokesSvg += `<line x1="${cx}" y1="${cy}" x2="${outer.x.toFixed(1)}" y2="${outer.y.toFixed(1)}" stroke="#1e293b" stroke-width="1" />`;
-        const lblPos = polar(i, maxR + 22);
+        const lblPos = polar(i, maxR + 18);
         let anchor = "middle";
         if (lblPos.x < cx - 10) anchor = "end";
         else if (lblPos.x > cx + 10) anchor = "start";
-        labelsSvg += `<text x="${lblPos.x.toFixed(1)}" y="${(lblPos.y + 3).toFixed(1)}" fill="#cbd5e1" font-size="9.5" font-weight="700" text-anchor="${anchor}">${ax.label}</text>`;
+        labelsSvg += `<text x="${lblPos.x.toFixed(1)}" y="${(lblPos.y + 3.5).toFixed(1)}" fill="#cbd5e1" font-size="10" font-weight="700" text-anchor="${anchor}">${ax.label}</text>`;
       });
 
       const dataPoints = axes.map((ax, i) => {
@@ -2037,7 +2132,7 @@
 
       const svgBox = document.getElementById("radar-svg-box");
       if (svgBox) {
-        svgBox.innerHTML = `<svg viewBox="0 0 ${size} ${size}" width="100%" style="display:block;overflow:visible;">${gridSvg}${spokesSvg}<polygon points="${dataPoints}" fill="rgba(56, 189, 248, 0.24)" stroke="#38bdf8" stroke-width="2" />${dotsSvg}${labelsSvg}</svg>`;
+        svgBox.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" style="display:block;">${gridSvg}${spokesSvg}<polygon points="${dataPoints}" fill="rgba(56, 189, 248, 0.24)" stroke="#38bdf8" stroke-width="2" />${dotsSvg}${labelsSvg}</svg>`;
       }
 
       const legBox = document.getElementById("radar-legend");
@@ -2060,9 +2155,12 @@
       out.push(`MacroTrack — ${formatFrenchDate(currentDate)} (${plan.label})`);
       out.push(`Eau : ${day.water.toFixed(2)} L / 4,5 L | Sel : ${day.salt.toFixed(1)} g / 6 g`);
       out.push(`Créatine : ${day.creatine ? "OK" : "Non"} | EAA : ${day.eaa ? "OK" : "Non"} | Booster : ${day.booster ? "OK" : "Non"}`);
-      out.push(`Caféine : ${caf.totalMg} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${day.booster ? " | Booster = 200 mg" : ""})`);
+      out.push(`Caféine : ${caf.totalMg} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Boissons énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${day.booster ? " | Booster = 200 mg" : ""})`);
       if (day.wheyShakes.length) {
         out.push(`Shakers Whey : ${day.wheyShakes.map(s => `${s.qty}g`).join(", ")}`);
+      }
+      if (day.cheats.length) {
+        out.push(`Écarts : ${day.cheats.map(c => c.kcal > 0 ? `${c.text} (${c.kcal} kcal)` : c.text).join(" | ")}`);
       }
       out.push("");
 
@@ -2153,6 +2251,44 @@
         btn.addEventListener("click", () => {
           const idx = Number(btn.dataset.delWhey);
           getDay(currentDate).wheyShakes.splice(idx, 1);
+          persistAndSync();
+          renderAll();
+        });
+      });
+    }
+
+    function renderCheats(day) {
+      const pill = document.getElementById("cheat-summary-pill");
+      const listEl = document.getElementById("cheat-list");
+      const totalCheatKcal = day.cheats.reduce((acc, c) => acc + (Number(c.kcal) || 0), 0);
+      if (pill) {
+        if (!day.cheats.length) {
+          pill.textContent = "Aucun écart";
+        } else {
+          pill.textContent = totalCheatKcal > 0
+            ? `${day.cheats.length} écart${day.cheats.length > 1 ? "s" : ""} • +${Math.round(totalCheatKcal)} kcal`
+            : `${day.cheats.length} écart${day.cheats.length > 1 ? "s" : ""}`;
+        }
+      }
+      if (!listEl) return;
+      if (!day.cheats.length) {
+        listEl.innerHTML = "";
+        return;
+      }
+      listEl.innerHTML = day.cheats.map((ch, i) => `
+        <div class="cheat-item">
+          <span style="color:#e2e8f0;word-break:break-word;">${ch.text}</span>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            ${ch.kcal > 0 ? `<span class="cheat-item-kcal">+${Math.round(ch.kcal)} kcal</span>` : ""}
+            <button class="whey-del-btn" data-del-cheat="${i}" type="button" title="Supprimer">×</button>
+          </div>
+        </div>
+      `).join("");
+
+      listEl.querySelectorAll("[data-del-cheat]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const idx = Number(btn.dataset.delCheat);
+          getDay(currentDate).cheats.splice(idx, 1);
           persistAndSync();
           renderAll();
         });
@@ -2267,13 +2403,14 @@
       document.getElementById("booster-sub").textContent = day.booster ? "Validé (+200 mg caféine)" : "Prise avant séance";
 
       renderWheyShakes(day);
+      renderCheats(day);
 
       const caf = getCaffeineBreakdown(day);
       document.getElementById("coffee-count").textContent = day.coffee;
       document.getElementById("energy-count").textContent = day.energyDrinks;
       document.getElementById("caffeine-total-pill").textContent = `${caf.totalMg} / 400 mg`;
       document.getElementById("caf-coffee-summary").textContent = `Café : ${caf.coffeeMg} mg`;
-      document.getElementById("caf-energy-summary").textContent = `Énergisantes : ${caf.energyMg} mg`;
+      document.getElementById("caf-energy-summary").textContent = `Boissons énergisantes : ${caf.energyMg} mg`;
       document.getElementById("caffeine-bar").style.width = `${Math.min(100, (caf.totalMg / 400) * 100)}%`;
 
       mealsEl.querySelectorAll(".meal-checkbox").forEach(cb => {
@@ -2367,7 +2504,7 @@
     document.getElementById("btn-mode-training").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "training") {
-        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes };
+        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
         store[currentDate] = Object.assign(defaultDay("training"), prev);
         persistAndSync();
         renderAll();
@@ -2376,7 +2513,7 @@
     document.getElementById("btn-mode-rest").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "rest") {
-        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes };
+        const prev = { water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, cheats: d.cheats };
         store[currentDate] = Object.assign(defaultDay("rest"), prev);
         persistAndSync();
         renderAll();
@@ -2443,6 +2580,24 @@
       persistAndSync();
       renderAll();
       toast(`Shaker Whey ${qty}g ajouté`);
+    });
+
+    document.getElementById("btn-add-cheat").addEventListener("click", () => {
+      const txtEl = document.getElementById("cheat-text-input");
+      const kcalEl = document.getElementById("cheat-kcal-input");
+      const text = (txtEl ? txtEl.value : "").trim();
+      const kcal = Math.max(0, Number(kcalEl ? kcalEl.value : 0) || 0);
+      if (!text) {
+        toast("Indique un écart à ajouter");
+        return;
+      }
+      const d = getDay(currentDate);
+      d.cheats.push({ text, kcal });
+      if (txtEl) txtEl.value = "";
+      if (kcalEl) kcalEl.value = "";
+      persistAndSync();
+      renderAll();
+      toast("Écart ajouté");
     });
 
     document.getElementById("coffee-minus").addEventListener("click", () => {
