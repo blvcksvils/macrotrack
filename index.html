@@ -442,6 +442,7 @@
       color: #64748b;
     }
 
+    /* Two-col Trackers */
     .two-col-trackers {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -481,8 +482,15 @@
       white-space: nowrap;
     }
 
-    .pill-water { background: rgba(14, 165, 233, 0.16); color: #38bdf8; }
-    .pill-salt { background: rgba(245, 158, 11, 0.16); color: #fbbf24; }
+    .pill-water {
+      background: rgba(14, 165, 233, 0.16);
+      color: #38bdf8;
+    }
+
+    .pill-salt {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fbbf24;
+    }
 
     .tracker-val-line {
       margin: 6px 0;
@@ -492,8 +500,17 @@
       flex-wrap: wrap;
     }
 
-    .tracker-big { font-size: 18px; font-weight: 800; color: #ffffff; }
-    .tracker-goal { font-size: 10.5px; color: #64748b; font-weight: 600; }
+    .tracker-big {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .tracker-goal {
+      font-size: 10.5px;
+      color: #64748b;
+      font-weight: 600;
+    }
 
     .mini-track {
       height: 4px;
@@ -526,9 +543,19 @@
       white-space: nowrap;
     }
 
-    .step-btn.accent-water { background: #0284c7; border-color: #0284c7; color: #ffffff; }
-    .step-btn.accent-salt { background: #d97706; border-color: #d97706; color: #ffffff; }
+    .step-btn.accent-water {
+      background: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
+    }
 
+    .step-btn.accent-salt {
+      background: #d97706;
+      border-color: #d97706;
+      color: #ffffff;
+    }
+
+    /* Créatine & EAA */
     .supp-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -561,8 +588,18 @@
       min-width: 0;
     }
 
-    .supp-name { font-size: 12.5px; font-weight: 700; color: #f8fafc; line-height: 1.2; }
-    .supp-sub { font-size: 10.5px; color: #7c879c; margin-top: 2px; }
+    .supp-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #f8fafc;
+      line-height: 1.2;
+    }
+
+    .supp-sub {
+      font-size: 10.5px;
+      color: #7c879c;
+      margin-top: 2px;
+    }
 
     .circle-check {
       width: 22px;
@@ -585,6 +622,7 @@
       color: #04130d;
     }
 
+    /* Booster pré workout */
     .booster-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -614,6 +652,7 @@
       white-space: nowrap;
     }
 
+    /* Shaker Whey rapide (ajoute aux macros de la journée) */
     .whey-quick-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -710,6 +749,7 @@
       font-size: 12px;
     }
 
+    /* Tuile Caféine : Café vs Boissons énergisantes */
     .caffeine-master-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -766,8 +806,17 @@
       gap: 4px;
     }
 
-    .caf-label { font-size: 11.5px; font-weight: 800; color: #f8fafc; }
-    .caf-mg-hint { font-size: 9.5px; color: #7c879c; font-weight: 600; }
+    .caf-label {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+
+    .caf-mg-hint {
+      font-size: 9.5px;
+      color: #7c879c;
+      font-weight: 600;
+    }
 
     .caf-ctrl-row {
       display: flex;
@@ -793,11 +842,23 @@
       flex-shrink: 0;
     }
 
-    .cnt-btn.plus-coffee { background: #b45309; border-color: #b45309; }
-    .cnt-btn.plus-energy { background: #e11d48; border-color: #e11d48; }
+    .cnt-btn.plus-coffee {
+      background: #b45309;
+      border-color: #b45309;
+    }
 
-    .cnt-val { font-size: 13.5px; font-weight: 800; color: #ffffff; }
+    .cnt-btn.plus-energy {
+      background: #e11d48;
+      border-color: #e11d48;
+    }
 
+    .cnt-val {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* Section Header */
     .section-head {
       display: flex;
       align-items: center;
@@ -814,8 +875,13 @@
       color: #94a3b8;
     }
 
-    .section-head span { font-size: 11px; color: #64748b; font-weight: 600; }
+    .section-head span {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 600;
+    }
 
+    /* Meal Card */
     .meal-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -824,7 +890,9 @@
       margin-bottom: 10px;
     }
 
-    .meal-card.validated { border-color: rgba(16, 185, 129, 0.4); }
+    .meal-card.validated {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
 
     .meal-head {
       display: flex;
@@ -849,7 +917,12 @@
       flex-shrink: 0;
     }
 
-    .meal-name { margin: 0; font-size: 14.5px; font-weight: 800; color: #60a5fa; }
+    .meal-name {
+      margin: 0;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #60a5fa;
+    }
 
     .meal-kcal-pill {
       background: #090c13;
@@ -870,7 +943,9 @@
       flex-shrink: 0;
     }
 
-    .item-row.unchecked { opacity: 0.48; }
+    .item-row.unchecked {
+      opacity: 0.48;
+    }
 
     .item-row {
       display: grid;
@@ -881,7 +956,9 @@
       border-top: 1px solid rgba(255, 255, 255, 0.04);
     }
 
-    .item-row:first-of-type { border-top: none; }
+    .item-row:first-of-type {
+      border-top: none;
+    }
 
     .item-select {
       width: 100%;
@@ -943,7 +1020,10 @@
       font-family: inherit;
     }
 
-    .qty-u { font-size: 10.5px; color: #64748b; }
+    .qty-u {
+      font-size: 10.5px;
+      color: #64748b;
+    }
 
     .meal-summary-bar {
       display: grid;
@@ -963,6 +1043,7 @@
       white-space: nowrap;
     }
 
+    /* Secondary Panels */
     .panel-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -971,7 +1052,12 @@
       margin-bottom: 10px;
     }
 
-    .radar-wrap { display: flex; flex-direction: column; align-items: center; margin-top: 8px; }
+    .radar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 8px;
+    }
 
     .radar-legend-grid {
       display: grid;
@@ -1016,8 +1102,11 @@
       gap: 8px;
     }
 
-    .history-item:last-child { border-bottom: none; }
+    .history-item:last-child {
+      border-bottom: none;
+    }
 
+    /* Bottom Navigation */
     .bottom-bar {
       position: fixed;
       bottom: 0;
@@ -1780,48 +1869,72 @@
     }
 
     async function pushCloud() {
-      if (!cfg.url || !cfg.uid) return;
-      setSyncState("syncing", "Synchronisation...");
+      const baseUrl = (cfg.url || "").trim().replace(/\/+$/, "");
+      const uid = (cfg.uid || "").trim();
+      if (!baseUrl || !uid) {
+        setSyncState("err", "URL Firebase ou UID manquant");
+        return false;
+      }
+      setSyncState("syncing", "Envoi vers Firebase...");
       try {
-        const res = await fetch(`${cfg.url}/users/${encodeURIComponent(cfg.uid)}/logs.json`, {
+        const endpoint = `${baseUrl}/users/${encodeURIComponent(uid)}/logs.json`;
+        const res = await fetch(endpoint, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(store)
         });
         if (!res.ok) throw new Error("HTTP " + res.status);
         setSyncState("ok", "Synchronisé à " + new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
+        return true;
       } catch (e) {
-        setSyncState("err", "Hors-ligne (sauvegarde locale active)");
+        setSyncState("err", "Erreur envoi : " + (e && e.message ? e.message : "réseau"));
+        return false;
       }
     }
 
-    async function pullCloud() {
+    async function pullCloud(showFeedback = false) {
       const btn = document.getElementById("btn-force-sync");
-      if (!cfg.url || !cfg.uid) return;
+      const baseUrl = (cfg.url || "").trim().replace(/\/+$/, "");
+      const uid = (cfg.uid || "").trim();
+      if (!baseUrl || !uid) {
+        setSyncState("err", "URL Firebase ou UID manquant");
+        if (showFeedback) toast("URL Firebase ou UID manquant");
+        return false;
+      }
       if (btn) btn.disabled = true;
-      setSyncState("syncing", "Lecture cloud...");
+      setSyncState("syncing", "Synchronisation cloud...");
       try {
-        const res = await fetch(`${cfg.url}/users/${encodeURIComponent(cfg.uid)}/logs.json`);
+        const endpoint = `${baseUrl}/users/${encodeURIComponent(uid)}/logs.json`;
+        const res = await fetch(endpoint, { cache: "no-store" });
         if (!res.ok) throw new Error("HTTP " + res.status);
         const remote = await res.json();
+        let updated = false;
         if (remote && typeof remote === "object") {
-          let updated = false;
           Object.keys(remote).forEach(k => {
             const loc = store[k];
             const rem = remote[k];
-            if (rem && typeof rem === "object" && (!loc || (rem.updatedAt || 0) > (loc.updatedAt || 0))) {
-              store[k] = rem;
-              updated = true;
+            if (rem && typeof rem === "object") {
+              const locTime = (loc && loc.updatedAt) || 0;
+              const remTime = rem.updatedAt || 0;
+              if (!loc || remTime > locTime) {
+                store[k] = rem;
+                getDay(k);
+                updated = true;
+              }
             }
           });
-          writeStore(LOGS_KEY, store);
-          if (updated) renderAll();
-          await pushCloud();
-        } else {
-          await pushCloud();
         }
+        getDay(currentDate);
+        writeStore(LOGS_KEY, store);
+        const pushed = await pushCloud();
+        if (updated) renderAll();
+        if (showFeedback) toast(pushed ? "Synchronisation réussie" : "Erreur d'envoi Firebase");
+        return pushed;
       } catch (e) {
-        setSyncState("err", "Hors-ligne (sauvegarde locale active)");
+        const msg = "Erreur sync : " + (e && e.message ? e.message : "réseau");
+        setSyncState("err", msg);
+        if (showFeedback) toast(msg);
+        return false;
       } finally {
         if (btn) btn.disabled = false;
       }
@@ -2195,11 +2308,14 @@
       document.getElementById("nav-today").classList.toggle("active", tab === "today");
       document.getElementById("nav-radar").classList.toggle("active", tab === "radar");
       document.getElementById("nav-history").classList.toggle("active", tab === "history");
-      if (tab === "radar") {
+      if (tab === "today") {
+        renderAll();
+      } else if (tab === "radar") {
         renderRadarChart();
         buildCoachReport();
+      } else if (tab === "history") {
+        renderHistory();
       }
-      if (tab === "history") renderHistory();
     }
 
     document.getElementById("nav-today").addEventListener("click", () => switchMainTab("today"));
@@ -2337,8 +2453,8 @@
       document.getElementById("cloud-panel").classList.add("hidden");
     });
     document.getElementById("btn-force-sync").addEventListener("click", async () => {
-      await pullCloud();
-      document.getElementById("cloud-panel").classList.add("hidden");
+      const ok = await pullCloud(true);
+      if (ok) document.getElementById("cloud-panel").classList.add("hidden");
     });
     document.getElementById("btn-save-cloud").addEventListener("click", async () => {
       cfg = {
@@ -2346,8 +2462,8 @@
         uid: document.getElementById("sync-uid-input").value.trim() || DEFAULT_UID
       };
       writeStore(CFG_KEY, cfg);
-      await pullCloud();
-      document.getElementById("cloud-panel").classList.add("hidden");
+      const ok = await pullCloud(true);
+      if (ok) document.getElementById("cloud-panel").classList.add("hidden");
     });
 
     document.getElementById("btn-icon-info").addEventListener("click", () => {
@@ -2372,6 +2488,12 @@
         el.focus(); el.select();
         try { document.execCommand("copy"); } catch (_) {}
         toast("Bilan coach copié");
+      }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        pullCloud();
       }
     });
 
