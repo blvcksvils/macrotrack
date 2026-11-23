@@ -1380,6 +1380,85 @@
       margin-top: 2px;
     }
 
+    /* Assistant IA */
+    .ai-bar-card {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(14, 18, 29, 0.96));
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .ai-input-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      margin-top: 7px;
+    }
+
+    .ai-input {
+      background: #07090f;
+      border: 1px solid #23304c;
+      color: var(--text);
+      border-radius: 9px;
+      padding: 8px 10px;
+      font-size: 12.5px;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .ai-btn {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      padding: 7px 11px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ai-btn:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    .ai-result-box {
+      background: #07090f;
+      border: 1px solid #23304c;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+    }
+
+    .ai-sub-drawer {
+      background: var(--card);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 14px;
+      padding: 11px;
+      margin-bottom: 10px;
+    }
+
+    .photo-ai-btn {
+      background: rgba(124, 58, 237, 0.18);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.38);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
     /* Secondary Panels */
     .panel-card {
       background: var(--card);
@@ -1543,6 +1622,10 @@
         <label>Identifiant (UID)</label>
         <input type="text" id="sync-uid-input" placeholder="maxime-macrotrack" />
       </div>
+      <div class="field-group">
+        <label>URL Worker IA (Cloudflare)</label>
+        <input type="url" id="ai-worker-url-input" placeholder="https://macrotrack-ai.ton-compte.workers.dev" />
+      </div>
       <div class="btn-row">
         <button class="btn-blue" id="btn-force-sync" type="button">Forcer sync</button>
         <button class="btn-dark" id="btn-save-cloud" type="button">Enregistrer</button>
@@ -1634,6 +1717,21 @@
         <div class="weight-input-wrap">
           <input type="number" id="weight-input" class="weight-input" inputmode="decimal" step="0.1" min="30" max="250" placeholder="—" />
           <span class="qty-u">kg</span>
+        </div>
+      </div>
+
+      <!-- Saisie rapide IA -->
+      <div class="ai-bar-card">
+        <div class="whey-head">
+          <div class="supp-left">
+            <span>✨</span>
+            <strong style="font-size:12.5px;">Saisie rapide IA</strong>
+          </div>
+          <span style="font-size:10px;color:#8b95a8;">Eau, suppléments, barres, repas...</span>
+        </div>
+        <div class="ai-input-row">
+          <input type="text" id="ai-nlp-input" class="ai-input" placeholder="Ex : +50cl eau, créatine OK, 1 Quest S'mores..." />
+          <button class="ai-btn" id="btn-ai-nlp" type="button">✨ Go</button>
         </div>
       </div>
 
@@ -1794,11 +1892,23 @@
         <div style="display:flex;align-items:center;gap:6px;">
           <h2>PLAN ALIMENTAIRE</h2>
           <button class="reuse-btn" id="btn-reuse-choices" type="button" title="Reprendre les aliments de la dernière journée similaire">↺ Précédent</button>
+          <button class="reuse-btn" id="btn-toggle-sub" type="button" style="color:#60a5fa;" title="Demander une substitution équivalente en macros">✨ Substituer</button>
         </div>
         <div class="section-head-right">
           <select id="phase-select" class="phase-select" aria-label="Phase alimentaire"></select>
           <span id="plan-mode-caption">Entraînement</span>
         </div>
+      </div>
+      <div class="ai-sub-drawer hidden" id="ai-sub-drawer">
+        <div class="whey-head">
+          <strong style="font-size:12.5px;color:#93c5fd;">✨ Substitution intelligente</strong>
+          <button class="whey-del-btn" id="btn-close-sub" type="button" style="color:#94a3b8;">×</button>
+        </div>
+        <div class="ai-input-row">
+          <input type="text" id="ai-sub-input" class="ai-input" placeholder="Ex : Plus de poulet, remplacer 130g par du thon..." />
+          <button class="ai-btn" id="btn-ai-sub" type="button">Calculer</button>
+        </div>
+        <div class="ai-result-box hidden" id="ai-sub-result"></div>
       </div>
       <div id="meals-list"></div>
 
@@ -1832,7 +1942,11 @@
             <span>🍕</span>
             <strong style="font-size:13px;">Écarts / Hors plan</strong>
           </div>
-          <span class="tracker-pill pill-salt" id="cheat-summary-pill">Aucun écart</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button class="photo-ai-btn" id="btn-cheat-photo" type="button">📷 Photo IA</button>
+            <input type="file" id="cheat-photo-input" accept="image/*" class="hidden" />
+            <span class="tracker-pill pill-salt" id="cheat-summary-pill">Aucun écart</span>
+          </div>
         </div>
         <div class="cheat-inputs">
           <input type="text" id="cheat-text-input" class="cheat-text-input" placeholder="Ex : 2 carrés de chocolat, pizza..." />
@@ -1894,6 +2008,17 @@
           </div>
         </div>
         <textarea class="report-area" id="coach-summary-text" readonly></textarea>
+      </div>
+
+      <div class="panel-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div>
+            <div class="eyebrow">ANALYSE IA</div>
+            <strong style="font-size:15px;">Pré-check-in 7 jours</strong>
+          </div>
+          <button class="ai-btn" id="btn-ai-weekly" type="button">✨ Analyser 7j</button>
+        </div>
+        <div class="ai-result-box hidden" id="ai-weekly-result"></div>
       </div>
     </div>
 
@@ -2203,7 +2328,8 @@
       } catch (e) {}
     }
 
-    let cfg = readStore(CFG_KEY, null) || { url: DEFAULT_URL, uid: DEFAULT_UID };
+    let cfg = readStore(CFG_KEY, null) || { url: DEFAULT_URL, uid: DEFAULT_UID, aiUrl: "" };
+    if (typeof cfg.aiUrl !== "string") cfg.aiUrl = "";
     let store = readStore(LOGS_KEY, {});
     if (!store || typeof store !== "object") store = {};
 
@@ -3423,6 +3549,7 @@
 
     document.getElementById("firebase-url-input").value = cfg.url;
     document.getElementById("sync-uid-input").value = cfg.uid;
+    document.getElementById("ai-worker-url-input").value = cfg.aiUrl || "";
 
     document.getElementById("btn-toggle-cloud").addEventListener("click", () => {
       document.getElementById("cloud-panel").classList.toggle("hidden");
@@ -3437,7 +3564,8 @@
     document.getElementById("btn-save-cloud").addEventListener("click", async () => {
       cfg = {
         url: document.getElementById("firebase-url-input").value.trim().replace(/\/+$/, "") || DEFAULT_URL,
-        uid: document.getElementById("sync-uid-input").value.trim() || DEFAULT_UID
+        uid: document.getElementById("sync-uid-input").value.trim() || DEFAULT_UID,
+        aiUrl: document.getElementById("ai-worker-url-input").value.trim().replace(/\/+$/, "")
       };
       writeStore(CFG_KEY, cfg);
       const ok = await pullCloud(true);
@@ -3556,6 +3684,250 @@
         navigator.serviceWorker.register("./sw.js").catch(() => {});
       });
     }
+
+    async function callAI(contents, jsonMode = false) {
+      const workerUrl = (cfg.aiUrl || "").trim().replace(/\/+$/, "");
+      if (!workerUrl) {
+        toast("Ajoute l'URL du Worker IA dans Cloud");
+        document.getElementById("cloud-panel").classList.remove("hidden");
+        return null;
+      }
+      const payload = { contents };
+      if (jsonMode) {
+        payload.generationConfig = { responseMimeType: "application/json" };
+      }
+      const res = await fetch(workerUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        const errTxt = await res.text().catch(() => "");
+        throw new Error(`HTTP ${res.status} ${errTxt.slice(0, 80)}`);
+      }
+      const data = await res.json();
+      const text = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts
+        ? data.candidates[0].content.parts.map(p => p.text || "").join("")
+        : "";
+      if (!text) throw new Error("Réponse IA vide");
+      return text;
+    }
+
+    function compressImageToBase64(file, maxSide = 900) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error("Lecture image impossible"));
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = () => reject(new Error("Format image non supporté"));
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (w > maxSide || h > maxSide) {
+              if (w >= h) { h = Math.round(h * (maxSide / w)); w = maxSide; }
+              else { w = Math.round(w * (maxSide / h)); h = maxSide; }
+            }
+            const c = document.createElement("canvas");
+            c.width = w; c.height = h;
+            c.getContext("2d").drawImage(img, 0, 0, w, h);
+            const dataUrl = c.toDataURL("image/jpeg", 0.82);
+            resolve({ base64: dataUrl.split(",")[1], mimeType: "image/jpeg" });
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // 1. Scan Photo IA (Écarts)
+    document.getElementById("btn-cheat-photo").addEventListener("click", () => {
+      document.getElementById("cheat-photo-input").click();
+    });
+
+    document.getElementById("cheat-photo-input").addEventListener("change", async e => {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      const btn = document.getElementById("btn-cheat-photo");
+      btn.disabled = true;
+      btn.textContent = "⏳ Analyse...";
+      try {
+        const { base64, mimeType } = await compressImageToBase64(file);
+        const prompt = `Analyse cette photo (repas, aliment ou étiquette nutritionnelle). Estime la portion visible (ou 1 portion standard si c'est une étiquette) et renvoie UNIQUEMENT un objet JSON valide avec ces clés exactes :
+{"text":"nom court en français","kcal":0,"p":0,"c":0,"f":0}
+Les valeurs kcal, p (protéines g), c (glucides g), f (lipides g) doivent être des nombres entiers.`;
+        const raw = await callAI([{ parts: [{ text: prompt }, { inlineData: { mimeType, data: base64 } }] }], true);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        document.getElementById("cheat-text-input").value = parsed.text || "Écart scanné";
+        document.getElementById("cheat-kcal-input").value = Math.round(Number(parsed.kcal) || 0);
+        document.getElementById("cheat-p-input").value = Math.round(Number(parsed.p) || 0);
+        document.getElementById("cheat-c-input").value = Math.round(Number(parsed.c) || 0);
+        document.getElementById("cheat-f-input").value = Math.round(Number(parsed.f) || 0);
+        toast("Champs remplis — vérifie et clique + Ajouter");
+      } catch (err) {
+        toast("Erreur photo IA : " + (err.message || "échec"));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "📷 Photo IA";
+      }
+    });
+
+    // 2. Saisie en langage naturel
+    async function runAiNlp() {
+      const inp = document.getElementById("ai-nlp-input");
+      const btn = document.getElementById("btn-ai-nlp");
+      const txt = (inp ? inp.value : "").trim();
+      if (!txt) return;
+      btn.disabled = true;
+      btn.textContent = "⏳...";
+      try {
+        const day = getDay(currentDate);
+        const plan = getPlan(day);
+        const mealsCtx = plan.meals.map(m => `${m.id}:${m.name}`).join(", ");
+        const barsCtx = PROTEIN_BARS.map(b => `${b.id}:${b.brand} ${b.name}`).join(", ");
+        const prompt = `Tu es l'assistant de l'app MacroTrack. Transforme la phrase utilisateur en actions JSON pour mettre à jour sa journée.
+Repas disponibles (id:nom) : ${mealsCtx}
+Barres protéinées disponibles (id:nom) : ${barsCtx}
+Phrase : "${txt}"
+
+Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/null/[] si non mentionné) :
+{
+  "waterDeltaL": 0,
+  "saltDeltaG": 0,
+  "creatine": null,
+  "eaa": null,
+  "booster": null,
+  "coffeeDelta": 0,
+  "energyDelta": 0,
+  "weightKg": null,
+  "wheyShakesG": [],
+  "proteinBars": [{"id":"bb_wca","qty":1}],
+  "cheats": [{"text":"","kcal":0,"p":0,"c":0,"f":0}],
+  "checkMealIds": [],
+  "reply": "résumé court en français (max 60 caractères)"
+}`;
+        const raw = await callAI([{ parts: [{ text: prompt }] }], true);
+        if (!raw) return;
+        const a = JSON.parse(raw);
+        if (Number(a.waterDeltaL)) day.water = Math.max(0, Number((day.water + Number(a.waterDeltaL)).toFixed(2)));
+        if (Number(a.saltDeltaG)) day.salt = Math.max(0, Number((day.salt + Number(a.saltDeltaG)).toFixed(1)));
+        if (typeof a.creatine === "boolean") day.creatine = a.creatine;
+        if (typeof a.eaa === "boolean") day.eaa = a.eaa;
+        if (typeof a.booster === "boolean") day.booster = a.booster;
+        if (Number(a.coffeeDelta)) day.coffee = Math.max(0, day.coffee + Math.round(Number(a.coffeeDelta)));
+        if (Number(a.energyDelta)) day.energyDrinks = Math.max(0, day.energyDrinks + Math.round(Number(a.energyDelta)));
+        if (a.weightKg && Number(a.weightKg) > 0) day.weight = Number(Number(a.weightKg).toFixed(1));
+        if (Array.isArray(a.wheyShakesG)) {
+          a.wheyShakesG.forEach(g => { if (Number(g) > 0) day.wheyShakes.push({ qty: Math.round(Number(g)) }); });
+        }
+        if (Array.isArray(a.proteinBars)) {
+          a.proteinBars.forEach(pb => {
+            if (pb && PROTEIN_BARS.some(b => b.id === pb.id)) {
+              day.proteinBars.push({ id: pb.id, qty: Math.max(0.5, Number(pb.qty) || 1) });
+            }
+          });
+        }
+        if (Array.isArray(a.cheats)) {
+          a.cheats.forEach(ch => {
+            if (ch && ch.text) {
+              const p = Math.max(0, Number(ch.p) || 0);
+              const c = Math.max(0, Number(ch.c) || 0);
+              const f = Math.max(0, Number(ch.f) || 0);
+              const kcal = Math.max(0, Number(ch.kcal) || 0) || Math.round(p * 4 + c * 4 + f * 9);
+              day.cheats.push({ text: ch.text, kcal, p, c, f });
+            }
+          });
+        }
+        if (Array.isArray(a.checkMealIds)) {
+          a.checkMealIds.forEach(mid => {
+            if (day.meals[mid]) {
+              day.meals[mid].checked = true;
+              day.meals[mid].items.forEach(it => { it.checked = true; });
+            }
+          });
+        }
+        inp.value = "";
+        persistAndSync();
+        renderAll();
+        toast(a.reply || "Journée mise à jour");
+      } catch (err) {
+        toast("Erreur IA : " + (err.message || "échec"));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "✨ Go";
+      }
+    }
+
+    document.getElementById("btn-ai-nlp").addEventListener("click", runAiNlp);
+    document.getElementById("ai-nlp-input").addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); runAiNlp(); }
+    });
+
+    // 3. Substitutions intelligentes
+    document.getElementById("btn-toggle-sub").addEventListener("click", () => {
+      document.getElementById("ai-sub-drawer").classList.toggle("hidden");
+    });
+    document.getElementById("btn-close-sub").addEventListener("click", () => {
+      document.getElementById("ai-sub-drawer").classList.add("hidden");
+    });
+
+    async function runAiSub() {
+      const inp = document.getElementById("ai-sub-input");
+      const btn = document.getElementById("btn-ai-sub");
+      const resBox = document.getElementById("ai-sub-result");
+      const q = (inp ? inp.value : "").trim();
+      if (!q) return;
+      btn.disabled = true;
+      btn.textContent = "⏳...";
+      resBox.classList.remove("hidden");
+      resBox.textContent = "Calcul de l'équivalence...";
+      try {
+        const prompt = `Tu es un coach nutrition musculation précis et concis. L'utilisateur demande une substitution alimentaire : "${q}".
+Donne le grammage exact de remplacement pour matcher au mieux les macros principales (protéines ou glucides ou lipides selon l'aliment), avec le comparatif rapide (Original vs Remplacement : kcal, P, G, L) en 4 à 6 lignes maximum, sans blabla.`;
+        const reply = await callAI([{ parts: [{ text: prompt }] }], false);
+        if (!reply) { resBox.classList.add("hidden"); return; }
+        resBox.textContent = reply.trim();
+      } catch (err) {
+        resBox.textContent = "Erreur : " + (err.message || "échec");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Calculer";
+      }
+    }
+
+    document.getElementById("btn-ai-sub").addEventListener("click", runAiSub);
+    document.getElementById("ai-sub-input").addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); runAiSub(); }
+    });
+
+    // 4. Analyse hebdomadaire IA (Pré-check-in)
+    document.getElementById("btn-ai-weekly").addEventListener("click", async () => {
+      const btn = document.getElementById("btn-ai-weekly");
+      const resBox = document.getElementById("ai-weekly-result");
+      btn.disabled = true;
+      btn.textContent = "⏳ Analyse...";
+      resBox.classList.remove("hidden");
+      resBox.textContent = "Analyse de tes 7 derniers jours...";
+      try {
+        const weeklyText = buildWeeklyCoachReport();
+        const prompt = `Tu es un coach musculation/nutrition direct et factuel. Voici le bilan 7 jours de ton athlète :
+${weeklyText}
+
+Fais un pré-check-in clair et structuré en français (max 12 lignes) :
+1. Tendance poids vs apports caloriques
+2. Régularité (hydratation objectif 4,5L, sel objectif 6g, caféine max 400mg, suppléments)
+3. Impact des écarts éventuels
+4. 2 recommandations concrètes pour la semaine prochaine.`;
+        const reply = await callAI([{ parts: [{ text: prompt }] }], false);
+        if (!reply) { resBox.classList.add("hidden"); return; }
+        resBox.textContent = reply.trim();
+      } catch (err) {
+        resBox.textContent = "Erreur : " + (err.message || "échec");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "✨ Analyser 7j";
+      }
+    });
 
     renderAll();
     autoSync();
