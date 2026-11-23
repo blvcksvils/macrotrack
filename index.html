@@ -23,6 +23,8 @@
       --muted: #8b95a8;
       --blue: #2563eb;
       --blue-bright: #3b82f6;
+      --purple: #a855f7;
+      --indigo: #818cf8;
       --orange: #f97316;
       --amber: #f59e0b;
       --emerald: #10b981;
@@ -476,45 +478,56 @@
       color: #64748b;
     }
 
-    /* Poids à jeun (compact) */
-    .weight-bar-card {
+    /* Mensurations (Poids & Tour de taille) */
+    .body-metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .metric-card-compact {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 9px 12px;
-      margin-bottom: 8px;
+      padding: 9px 10px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
-      gap: 8px;
-    }
-
-    .weight-left {
-      display: flex;
-      align-items: center;
       gap: 7px;
       min-width: 0;
     }
 
+    .metric-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
     .weight-meta {
-      font-size: 10.5px;
+      font-size: 10px;
       color: #7c879c;
       margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .weight-input-wrap {
-      display: inline-flex;
+      display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 4px;
       background: #090c13;
       border: 1px solid #1f283d;
       border-radius: 9px;
       padding: 5px 8px;
-      flex-shrink: 0;
+      width: 100%;
     }
 
     .weight-input {
-      width: 54px;
+      width: 100%;
       background: transparent;
       border: none;
       color: #ffffff;
@@ -522,11 +535,81 @@
       font-weight: 800;
       text-align: right;
       font-family: inherit;
+      min-width: 0;
     }
 
     .weight-input::placeholder {
       color: #475569;
       font-weight: 600;
+    }
+
+    /* Tuile Sommeil (Apple Santé) */
+    .sleep-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+
+    .sleep-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .pill-sleep {
+      background: rgba(129, 140, 248, 0.16);
+      color: #a5b4fc;
+    }
+
+    .sleep-inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .sleep-field-box {
+      background: #090c13;
+      border: 1px solid #1f283d;
+      border-radius: 9px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .sleep-field-lbl {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #8b95a8;
+      white-space: nowrap;
+    }
+
+    .sleep-text-input {
+      width: 58px;
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: right;
+      font-family: inherit;
+    }
+
+    .sleep-text-input::placeholder {
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .mini-fill-sleep {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+      border-radius: 999px;
+      transition: width 0.25s ease;
     }
 
     /* Two-col Trackers */
@@ -1392,7 +1475,7 @@
       margin-top: 2px;
     }
 
-    /* Segmented mini switch & Weight stats */
+    /* Segmented mini switch & Stats */
     .seg-mini {
       display: inline-flex;
       background: #090c13;
@@ -1418,33 +1501,73 @@
       color: #ffffff;
     }
 
+    .evo-series-block {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .evo-series-block:first-of-type {
+      margin-top: 8px;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .evo-series-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    .evo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+      flex-shrink: 0;
+    }
+
     .weight-stats-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .weight-stat-box {
       background: #090c13;
       border: 1px solid #181f30;
       border-radius: 8px;
-      padding: 6px;
+      padding: 5px;
       text-align: center;
     }
 
     .weight-stat-lbl {
-      font-size: 9.5px;
+      font-size: 9px;
       color: #7c879c;
       font-weight: 700;
       text-transform: uppercase;
     }
 
     .weight-stat-val {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       color: #f8fafc;
       margin-top: 2px;
+    }
+
+    .macro-bar-legend {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-top: 4px;
     }
 
     /* Assistant IA */
@@ -1817,18 +1940,68 @@
         </div>
       </div>
 
-      <!-- Poids à jeun -->
-      <div class="weight-bar-card">
-        <div class="weight-left">
-          <span style="font-size:15px;">⚖️</span>
-          <div>
-            <div class="supp-name">Poids à jeun</div>
-            <div class="weight-meta" id="weight-avg-caption">Moy. 7j : —</div>
+      <!-- Poids à jeun & Tour de taille -->
+      <div class="body-metrics-grid">
+        <div class="metric-card-compact">
+          <div class="metric-card-top">
+            <div class="supp-left">
+              <span style="font-size:14px;">⚖️</span>
+              <div style="min-width:0;">
+                <div class="supp-name">Poids à jeun</div>
+                <div class="weight-meta" id="weight-avg-caption">Moy. 7j : —</div>
+              </div>
+            </div>
+          </div>
+          <div class="weight-input-wrap">
+            <input type="number" id="weight-input" class="weight-input" inputmode="decimal" step="0.1" min="30" max="250" placeholder="—" />
+            <span class="qty-u">kg</span>
           </div>
         </div>
-        <div class="weight-input-wrap">
-          <input type="number" id="weight-input" class="weight-input" inputmode="decimal" step="0.1" min="30" max="250" placeholder="—" />
-          <span class="qty-u">kg</span>
+
+        <div class="metric-card-compact">
+          <div class="metric-card-top">
+            <div class="supp-left">
+              <span style="font-size:14px;">📏</span>
+              <div style="min-width:0;">
+                <div class="supp-name">Tour de taille</div>
+                <div class="weight-meta" id="waist-avg-caption">Moy. 7j : —</div>
+              </div>
+            </div>
+          </div>
+          <div class="weight-input-wrap">
+            <input type="number" id="waist-input" class="weight-input" inputmode="decimal" step="0.1" min="40" max="200" placeholder="—" />
+            <span class="qty-u">cm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sommeil (Apple Santé) -->
+      <div class="sleep-card">
+        <div class="sleep-top">
+          <div class="tracker-title-wrap">
+            <span>🌙</span>
+            <span>Sommeil (Apple Santé)</span>
+          </div>
+          <span class="tracker-pill pill-sleep" id="sleep-status-pill">Objectif 8h</span>
+        </div>
+        <div class="sleep-inputs-grid">
+          <div class="sleep-field-box">
+            <span class="sleep-field-lbl">Durée</span>
+            <div style="display:inline-flex;align-items:center;gap:4px;">
+              <input type="text" id="sleep-duration-input" class="sleep-text-input" placeholder="7h30" />
+              <span class="qty-u">h</span>
+            </div>
+          </div>
+          <div class="sleep-field-box">
+            <span class="sleep-field-lbl">Qualité</span>
+            <div style="display:inline-flex;align-items:center;gap:4px;">
+              <input type="number" id="sleep-quality-input" class="sleep-text-input" inputmode="numeric" min="0" max="100" step="1" placeholder="—" />
+              <span class="qty-u">/100</span>
+            </div>
+          </div>
+        </div>
+        <div class="mini-track" style="margin:8px 0 0;">
+          <div class="mini-fill-sleep" id="sleep-bar" style="width:0%"></div>
         </div>
       </div>
 
@@ -1839,10 +2012,10 @@
             <span>✨</span>
             <strong style="font-size:12.5px;">Saisie rapide IA</strong>
           </div>
-          <span style="font-size:10px;color:#8b95a8;">Eau, suppléments, barres, repas...</span>
+          <span style="font-size:10px;color:#8b95a8;">Eau, sommeil, suppléments, repas...</span>
         </div>
         <div class="ai-input-row">
-          <input type="text" id="ai-nlp-input" class="ai-input" placeholder="Ex : +50cl eau, créatine OK, 1 Quest S'mores..." />
+          <input type="text" id="ai-nlp-input" class="ai-input" placeholder="Ex : +50cl eau, sommeil 7h45 score 88, taille 85.5..." />
           <button class="ai-btn" id="btn-ai-nlp" type="button">✨ Go</button>
         </div>
       </div>
@@ -2116,19 +2289,86 @@
         </div>
       </div>
 
+      <!-- Évolution : Poids, Tour de taille, Sommeil -->
       <div class="panel-card">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
           <div>
-            <div class="eyebrow">SUIVI DU POIDS</div>
-            <strong style="font-size:15px;">Évolution à jeun</strong>
+            <div class="eyebrow">ÉVOLUTION</div>
+            <strong style="font-size:15px;">Poids, Taille & Sommeil</strong>
           </div>
           <div class="seg-mini">
             <button class="seg-mini-btn active" id="btn-weight-7d" type="button">7j</button>
             <button class="seg-mini-btn" id="btn-weight-30d" type="button">30j</button>
           </div>
         </div>
-        <div id="weight-chart-box" style="width:100%;margin-top:8px;"></div>
-        <div class="weight-stats-row" id="weight-stats-row"></div>
+
+        <div class="evo-series-block">
+          <div class="evo-series-head">
+            <span><span class="evo-dot" style="background:#38bdf8;"></span><strong>Poids</strong> <span style="color:#7c879c;">(kg)</span></span>
+            <span id="weight-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
+          </div>
+          <div id="weight-chart-box" style="width:100%;"></div>
+          <div class="weight-stats-row" id="weight-stats-row"></div>
+        </div>
+
+        <div class="evo-series-block">
+          <div class="evo-series-head">
+            <span><span class="evo-dot" style="background:#a855f7;"></span><strong>Tour de taille</strong> <span style="color:#7c879c;">(cm)</span></span>
+            <span id="waist-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
+          </div>
+          <div id="waist-chart-box" style="width:100%;"></div>
+          <div class="weight-stats-row" id="waist-stats-row"></div>
+        </div>
+
+        <div class="evo-series-block">
+          <div class="evo-series-head">
+            <span><span class="evo-dot" style="background:#818cf8;"></span><strong>Sommeil</strong> <span style="color:#7c879c;">(obj. 8h)</span></span>
+            <span id="sleep-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
+          </div>
+          <div id="sleep-chart-box" style="width:100%;"></div>
+          <div class="weight-stats-row" id="sleep-stats-row"></div>
+        </div>
+      </div>
+
+      <!-- Hydratation (barres) -->
+      <div class="panel-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div>
+            <div class="eyebrow" style="color:#38bdf8;">OBJECTIF 4,5 L</div>
+            <strong style="font-size:15px;">Hydratation</strong>
+          </div>
+          <span id="hydration-chart-avg" style="font-size:11px;color:#8b95a8;font-weight:700;">Moy. : —</span>
+        </div>
+        <div id="hydration-bars-box" style="width:100%;margin-top:8px;"></div>
+      </div>
+
+      <!-- Sel (barres) -->
+      <div class="panel-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div>
+            <div class="eyebrow" style="color:#fbbf24;">OBJECTIF 6 G</div>
+            <strong style="font-size:15px;">Sel</strong>
+          </div>
+          <span id="salt-chart-avg" style="font-size:11px;color:#8b95a8;font-weight:700;">Moy. : —</span>
+        </div>
+        <div id="salt-bars-box" style="width:100%;margin-top:8px;"></div>
+      </div>
+
+      <!-- Macros P, G, L (barres groupées) -->
+      <div class="panel-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div>
+            <div class="eyebrow">MACRONUTRIMENTS</div>
+            <strong style="font-size:15px;">Protéines, Glucides, Lipides</strong>
+          </div>
+          <span id="macros-chart-avg" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
+        </div>
+        <div class="macro-bar-legend">
+          <span><span class="evo-dot" style="background:#3b82f6;"></span>P (g)</span>
+          <span><span class="evo-dot" style="background:#f97316;"></span>G (g)</span>
+          <span><span class="evo-dot" style="background:#06b6d4;"></span>L (g)</span>
+        </div>
+        <div id="macros-bars-box" style="width:100%;margin-top:6px;"></div>
       </div>
 
       <div class="panel-card">
@@ -2656,6 +2896,30 @@
       return new Date(y, m - 1, d, hh || 0, mm || 0, 0).getTime();
     }
 
+    function parseSleepHours(raw) {
+      if (raw === null || raw === undefined) return null;
+      const s = String(raw).trim().toLowerCase().replace(",", ".");
+      if (!s) return null;
+      const hm = s.match(/^(\d{1,2})\s*[h:]\s*(\d{1,2})?$/);
+      if (hm) {
+        const h = Number(hm[1]) || 0;
+        const m = Number(hm[2]) || 0;
+        const tot = h + m / 60;
+        return tot > 0 && tot <= 24 ? Number(tot.toFixed(2)) : null;
+      }
+      const num = parseFloat(s);
+      if (!isNaN(num) && num > 0 && num <= 24) return Number(num.toFixed(2));
+      return null;
+    }
+
+    function formatSleepHours(hours) {
+      if (hours === null || hours === undefined || !(Number(hours) > 0)) return "";
+      const totMin = Math.round(Number(hours) * 60);
+      const h = Math.floor(totMin / 60);
+      const m = totMin % 60;
+      return `${h}h${String(m).padStart(2, "0")}`;
+    }
+
     function defaultDay(mode = "training", phase = DEFAULT_PHASE) {
       const phKey = PHASES[phase] ? phase : DEFAULT_PHASE;
       const plan = PHASES[phKey].plans[mode] || PHASES[phKey].plans.training;
@@ -2670,6 +2934,9 @@
         phase: phKey,
         mode,
         weight: null,
+        waist: null,
+        sleepHours: null,
+        sleepQuality: null,
         water: 0,
         salt: 0,
         creatine: false,
@@ -2696,6 +2963,9 @@
       const fresh = defaultDay(targetMode, targetPhase);
 
       fresh.weight = d.weight;
+      fresh.waist = d.waist;
+      fresh.sleepHours = d.sleepHours;
+      fresh.sleepQuality = d.sleepQuality;
       fresh.water = d.water;
       fresh.salt = d.salt;
       fresh.creatine = d.creatine;
@@ -2777,6 +3047,9 @@
       d.phase = PHASES[d.phase] ? d.phase : DEFAULT_PHASE;
       d.mode = d.mode === "rest" ? "rest" : "training";
       d.weight = (d.weight !== null && d.weight !== undefined && d.weight !== "" && Number(d.weight) > 0) ? Number(d.weight) : null;
+      d.waist = (d.waist !== null && d.waist !== undefined && d.waist !== "" && Number(d.waist) > 0) ? Number(d.waist) : null;
+      d.sleepHours = (d.sleepHours !== null && d.sleepHours !== undefined && d.sleepHours !== "" && Number(d.sleepHours) > 0) ? Number(d.sleepHours) : null;
+      d.sleepQuality = (d.sleepQuality !== null && d.sleepQuality !== undefined && d.sleepQuality !== "" && !isNaN(Number(d.sleepQuality))) ? Math.min(100, Math.max(0, Math.round(Number(d.sleepQuality)))) : null;
       d.water = Number(d.water) || 0;
       d.salt = Number(d.salt) || 0;
       d.creatine = Boolean(d.creatine);
@@ -2857,7 +3130,6 @@
       };
     }
 
-    // Pharmacocinétique de la caféine : absorption sur ~30 min, demi-vie ~5h
     function calcCaffeineStimulation(mg, elapsedMs) {
       if (mg <= 0 || elapsedMs < 0) return 0;
       const hours = elapsedMs / 3600000;
@@ -3095,7 +3367,11 @@
     function renderRadarChart() {
       const day = getDay(currentDate);
       const stats = getDayStats(day);
-      const caf = getCaffeineBreakdown(day);
+
+      const sleepPct = day.sleepHours ? Math.min(100, Math.round((day.sleepHours / 8.0) * 100)) : 0;
+      const sleepRaw = day.sleepHours
+        ? `${formatSleepHours(day.sleepHours)}/8h${day.sleepQuality !== null ? ` • ${day.sleepQuality}/100` : ""}`
+        : "Non renseigné";
 
       const axes = [
         { label: "Calories", pct: Math.min(100, Math.round((stats.valKcal / stats.targets.kcal) * 100)), raw: `${Math.round(stats.valKcal)}/${stats.targets.kcal} kcal` },
@@ -3104,8 +3380,8 @@
         { label: "Lipides", pct: Math.min(100, Math.round((stats.valF / stats.targets.f) * 100)), raw: `${Math.round(stats.valF)}/${stats.targets.f} g` },
         { label: "Eau", pct: Math.min(100, Math.round((day.water / 4.5) * 100)), raw: `${day.water.toFixed(2)}/4,5 L` },
         { label: "Sel", pct: Math.min(100, Math.round((day.salt / 6.0) * 100)), raw: `${day.salt.toFixed(1)}/6 g` },
-        { label: "Créatine + EAA", pct: (day.creatine ? 50 : 0) + (day.eaa ? 50 : 0), raw: `Créa ${day.creatine ? "OK" : "Non"} • EAA ${day.eaa ? "OK" : "Non"}` },
-        { label: "Booster & Caféine", pct: day.booster ? 100 : 0, raw: `${Math.round(caf.totalMg)} mg • Booster ${day.booster ? "OK" : "Non"}` }
+        { label: "Sommeil", pct: sleepPct, raw: sleepRaw },
+        { label: "Créatine + EAA", pct: (day.creatine ? 50 : 0) + (day.eaa ? 50 : 0), raw: `Créa ${day.creatine ? "OK" : "Non"} • EAA ${day.eaa ? "OK" : "Non"}` }
       ];
 
       const avgScore = Math.round(axes.reduce((acc, a) => acc + a.pct, 0) / axes.length);
@@ -3172,41 +3448,39 @@
       }
     }
 
-    function getWeightSeries(endIso, numDays) {
-      const pts = [];
+    function getRangeSeries(endIso, numDays) {
+      const list = [];
       for (let i = numDays - 1; i >= 0; i--) {
         const iso = addDaysISO(endIso, -i);
-        const d = store[iso];
-        const w = (d && d.weight !== null && d.weight !== undefined && Number(d.weight) > 0) ? Number(d.weight) : null;
-        pts.push({ iso, weight: w });
+        const d = store[iso] ? getDay(iso) : null;
+        const st = d ? getDayStats(d) : { valP: 0, valC: 0, valF: 0, valKcal: 0 };
+        list.push({
+          iso,
+          weight: (d && d.weight !== null && Number(d.weight) > 0) ? Number(d.weight) : null,
+          waist: (d && d.waist !== null && Number(d.waist) > 0) ? Number(d.waist) : null,
+          sleepHours: (d && d.sleepHours !== null && Number(d.sleepHours) > 0) ? Number(d.sleepHours) : null,
+          sleepQuality: (d && d.sleepQuality !== null) ? Number(d.sleepQuality) : null,
+          water: d ? Number(d.water) || 0 : 0,
+          salt: d ? Number(d.salt) || 0 : 0,
+          p: Math.round(st.valP),
+          c: Math.round(st.valC),
+          f: Math.round(st.valF),
+          kcal: Math.round(st.valKcal)
+        });
       }
-      return pts;
+      return list;
     }
 
-    function renderWeightChart() {
-      const pts = getWeightSeries(currentDate, weightRangeDays);
-      const valid = pts.filter(p => p.weight !== null);
-      const box = document.getElementById("weight-chart-box");
-      const statsRow = document.getElementById("weight-stats-row");
-      const btn7 = document.getElementById("btn-weight-7d");
-      const btn30 = document.getElementById("btn-weight-30d");
-      if (btn7) btn7.classList.toggle("active", weightRangeDays === 7);
-      if (btn30) btn30.classList.toggle("active", weightRangeDays === 30);
-
-      const last7 = getWeightSeries(currentDate, 7).filter(p => p.weight !== null);
-      const cap = document.getElementById("weight-avg-caption");
-      if (cap) {
-        if (last7.length) {
-          const avg7 = last7.reduce((a, b) => a + b.weight, 0) / last7.length;
-          cap.textContent = `Moy. 7j : ${avg7.toFixed(1)} kg (${last7.length} pesée${last7.length > 1 ? "s" : ""})`;
-        } else {
-          cap.textContent = "Moy. 7j : —";
-        }
-      }
+    function renderLineEvolutionBlock({ pts, field, unit, color, targetVal, boxId, statsId, minmaxId, formatFn }) {
+      const box = document.getElementById(boxId);
+      const statsRow = document.getElementById(statsId);
+      const mmEl = document.getElementById(minmaxId);
+      const valid = pts.filter(p => p[field] !== null && p[field] !== undefined);
 
       if (!box || !statsRow) return;
       if (!valid.length) {
-        box.innerHTML = `<div style="color:#7c879c;font-size:12px;text-align:center;padding:18px 0;">Aucune pesée enregistrée sur les ${weightRangeDays} derniers jours.</div>`;
+        if (mmEl) mmEl.textContent = "—";
+        box.innerHTML = `<div style="color:#7c879c;font-size:11.5px;text-align:center;padding:12px 0;">Aucune donnée sur ${weightRangeDays}j.</div>`;
         statsRow.innerHTML = `
           <div class="weight-stat-box"><div class="weight-stat-lbl">Moyenne</div><div class="weight-stat-val">—</div></div>
           <div class="weight-stat-box"><div class="weight-stat-lbl">Dernier</div><div class="weight-stat-val">—</div></div>
@@ -3215,35 +3489,56 @@
         return;
       }
 
-      const avg = valid.reduce((a, b) => a + b.weight, 0) / valid.length;
-      const first = valid[0].weight;
-      const last = valid[valid.length - 1].weight;
+      const fmt = formatFn || (v => `${v.toFixed(1)} ${unit}`);
+      const vals = valid.map(p => p[field]);
+      const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+      const first = vals[0];
+      const last = vals[vals.length - 1];
       const diff = last - first;
-      const diffStr = valid.length > 1 ? `${diff > 0 ? "+" : ""}${diff.toFixed(1)} kg` : "—";
-      const diffColor = valid.length > 1 ? (diff <= 0 ? "#34d399" : "#fb923c") : "#f8fafc";
+      const minRaw = Math.min(...vals);
+      const maxRaw = Math.max(...vals);
+
+      if (mmEl) {
+        mmEl.textContent = formatFn
+          ? `${formatFn(minRaw)} — ${formatFn(maxRaw)}`
+          : `${minRaw.toFixed(1)}–${maxRaw.toFixed(1)} ${unit}`;
+      }
+
+      const diffStr = valid.length > 1
+        ? (formatFn ? `${diff >= 0 ? "+" : "-"}${formatFn(Math.abs(diff))}` : `${diff > 0 ? "+" : ""}${diff.toFixed(1)} ${unit}`)
+        : "—";
+
+      let diffColor = "#f8fafc";
+      if (valid.length > 1) {
+        if (field === "sleepHours") diffColor = diff >= 0 ? "#34d399" : "#fb923c";
+        else diffColor = diff <= 0 ? "#34d399" : "#fb923c";
+      }
 
       statsRow.innerHTML = `
-        <div class="weight-stat-box"><div class="weight-stat-lbl">Moy. ${weightRangeDays}j</div><div class="weight-stat-val">${avg.toFixed(1)} kg</div></div>
-        <div class="weight-stat-box"><div class="weight-stat-lbl">Dernier</div><div class="weight-stat-val">${last.toFixed(1)} kg</div></div>
+        <div class="weight-stat-box"><div class="weight-stat-lbl">Moy. ${weightRangeDays}j</div><div class="weight-stat-val">${fmt(avg)}</div></div>
+        <div class="weight-stat-box"><div class="weight-stat-lbl">Dernier</div><div class="weight-stat-val">${fmt(last)}</div></div>
         <div class="weight-stat-box"><div class="weight-stat-lbl">Variation</div><div class="weight-stat-val" style="color:${diffColor};">${diffStr}</div></div>
       `;
 
-      const W = 340, H = 135, padL = 34, padR = 12, padT = 14, padB = 22;
-      const minW = Math.min(...valid.map(p => p.weight)) - 0.5;
-      const maxW = Math.max(...valid.map(p => p.weight)) + 0.5;
+      const W = 340, H = 115, padL = 36, padR = 12, padT = 12, padB = 20;
+      const allForBounds = targetVal ? [...vals, targetVal] : vals;
+      const padBound = field === "sleepHours" ? 0.5 : 0.4;
+      const minW = Math.max(0, Math.min(...allForBounds) - padBound);
+      const maxW = Math.max(...allForBounds) + padBound;
       const span = Math.max(0.5, maxW - minW);
 
       const xPos = idx => padL + (pts.length > 1 ? (idx / (pts.length - 1)) * (W - padL - padR) : (W - padL - padR) / 2);
       const yPos = val => padT + (1 - (val - minW) / span) * (H - padT - padB);
 
-      const avgY = yPos(avg);
+      const refVal = targetVal || avg;
+      const refY = yPos(refVal);
       const polyPts = [];
       let dots = "";
       pts.forEach((p, idx) => {
-        if (p.weight !== null) {
-          const x = xPos(idx), y = yPos(p.weight);
+        if (p[field] !== null && p[field] !== undefined) {
+          const x = xPos(idx), y = yPos(p[field]);
           polyPts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
-          dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.6" fill="#38bdf8" stroke="#0f172a" stroke-width="1.5" />`;
+          dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.4" fill="${color}" stroke="#0f172a" stroke-width="1.4" />`;
         }
       });
 
@@ -3254,15 +3549,224 @@
         <svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;">
           <line x1="${padL}" y1="${padT}" x2="${W - padR}" y2="${padT}" stroke="#182032" stroke-width="1" />
           <line x1="${padL}" y1="${(H - padB).toFixed(1)}" x2="${W - padR}" y2="${(H - padB).toFixed(1)}" stroke="#182032" stroke-width="1" />
-          <line x1="${padL}" y1="${avgY.toFixed(1)}" x2="${W - padR}" y2="${avgY.toFixed(1)}" stroke="#10b981" stroke-width="1.2" stroke-dasharray="4 3" />
-          <text x="${padL - 5}" y="${(padT + 4).toFixed(1)}" fill="#64748b" font-size="9" text-anchor="end">${maxW.toFixed(1)}</text>
-          <text x="${padL - 5}" y="${(H - padB + 3).toFixed(1)}" fill="#64748b" font-size="9" text-anchor="end">${minW.toFixed(1)}</text>
-          <text x="${padL}" y="${H - 4}" fill="#64748b" font-size="9" text-anchor="start">${lblStart}</text>
-          <text x="${W - padR}" y="${H - 4}" fill="#64748b" font-size="9" text-anchor="end">${lblEnd}</text>
-          ${polyPts.length > 1 ? `<polyline points="${polyPts.join(" ")}" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />` : ""}
+          <line x1="${padL}" y1="${refY.toFixed(1)}" x2="${W - padR}" y2="${refY.toFixed(1)}" stroke="${targetVal ? "#818cf8" : "#10b981"}" stroke-width="1.1" stroke-dasharray="4 3" />
+          <text x="${padL - 5}" y="${(padT + 4).toFixed(1)}" fill="#64748b" font-size="8.5" text-anchor="end">${maxW.toFixed(1)}</text>
+          <text x="${padL - 5}" y="${(H - padB + 3).toFixed(1)}" fill="#64748b" font-size="8.5" text-anchor="end">${minW.toFixed(1)}</text>
+          <text x="${padL}" y="${H - 4}" fill="#64748b" font-size="8.5" text-anchor="start">${lblStart}</text>
+          <text x="${W - padR}" y="${H - 4}" fill="#64748b" font-size="8.5" text-anchor="end">${lblEnd}</text>
+          ${polyPts.length > 1 ? `<polyline points="${polyPts.join(" ")}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />` : ""}
           ${dots}
         </svg>
       `;
+    }
+
+    function renderSingleBarChart({ pts, field, goal, maxScale, barColor, boxId, avgId, formatAvg }) {
+      const box = document.getElementById(boxId);
+      const avgEl = document.getElementById(avgId);
+      if (!box) return;
+
+      const activeDays = pts.filter(p => p[field] > 0);
+      if (avgEl) {
+        if (activeDays.length) {
+          const avg = activeDays.reduce((a, b) => a + b[field], 0) / activeDays.length;
+          avgEl.textContent = `Moy. : ${formatAvg(avg)}`;
+        } else {
+          avgEl.textContent = "Moy. : —";
+        }
+      }
+
+      const W = 340, H = 128, padL = 30, padR = 10, padT = 14, padB = 20;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+      const maxVal = Math.max(maxScale, ...pts.map(p => p[field]));
+      const goalY = padT + (1 - goal / maxVal) * plotH;
+
+      const slotW = plotW / pts.length;
+      const barW = Math.max(3, Math.min(20, slotW * 0.62));
+
+      let barsSvg = "";
+      let labelsSvg = "";
+      const stepLabel = pts.length <= 7 ? 1 : Math.ceil(pts.length / 6);
+
+      pts.forEach((p, i) => {
+        const val = p[field];
+        const barH = Math.max(val > 0 ? 2 : 0, (val / maxVal) * plotH);
+        const x = padL + i * slotW + (slotW - barW) / 2;
+        const y = padT + plotH - barH;
+        const fill = val >= goal ? barColor : `${barColor}bb`;
+        barsSvg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="2.5" fill="${fill}" />`;
+
+        if (i % stepLabel === 0 || i === pts.length - 1) {
+          const lbl = p.iso.slice(8) + "/" + p.iso.slice(5, 7);
+          const cx = padL + i * slotW + slotW / 2;
+          labelsSvg += `<text x="${cx.toFixed(1)}" y="${H - 4}" fill="#64748b" font-size="8.5" text-anchor="middle">${lbl}</text>`;
+        }
+      });
+
+      box.innerHTML = `
+        <svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;">
+          <line x1="${padL}" y1="${(padT + plotH).toFixed(1)}" x2="${W - padR}" y2="${(padT + plotH).toFixed(1)}" stroke="#182032" stroke-width="1" />
+          <line x1="${padL}" y1="${goalY.toFixed(1)}" x2="${W - padR}" y2="${goalY.toFixed(1)}" stroke="${barColor}" stroke-width="1.1" stroke-dasharray="3 3" opacity="0.75" />
+          <text x="${padL - 4}" y="${(goalY + 3).toFixed(1)}" fill="#8b95a8" font-size="8.5" text-anchor="end">${goal}</text>
+          ${barsSvg}
+          ${labelsSvg}
+        </svg>
+      `;
+    }
+
+    function renderMacrosBarChart(pts) {
+      const box = document.getElementById("macros-bars-box");
+      const avgEl = document.getElementById("macros-chart-avg");
+      if (!box) return;
+
+      const activeDays = pts.filter(p => p.p > 0 || p.c > 0 || p.f > 0);
+      if (avgEl) {
+        if (activeDays.length) {
+          const avgP = Math.round(activeDays.reduce((a, b) => a + b.p, 0) / activeDays.length);
+          const avgC = Math.round(activeDays.reduce((a, b) => a + b.c, 0) / activeDays.length);
+          const avgF = Math.round(activeDays.reduce((a, b) => a + b.f, 0) / activeDays.length);
+          avgEl.textContent = `Moy. P${avgP} • G${avgC} • L${avgF}g`;
+        } else {
+          avgEl.textContent = "—";
+        }
+      }
+
+      const W = 340, H = 135, padL = 30, padR = 10, padT = 12, padB = 20;
+      const plotW = W - padL - padR;
+      const plotH = H - padT - padB;
+      const maxVal = Math.max(260, ...pts.map(p => Math.max(p.p, p.c, p.f)));
+
+      const slotW = plotW / pts.length;
+      const subW = Math.max(1.5, Math.min(6, (slotW * 0.72) / 3));
+      const groupW = subW * 3 + 2;
+
+      let barsSvg = "";
+      let labelsSvg = "";
+      const stepLabel = pts.length <= 7 ? 1 : Math.ceil(pts.length / 6);
+
+      pts.forEach((d, i) => {
+        const startX = padL + i * slotW + (slotW - groupW) / 2;
+        const series = [
+          { val: d.p, color: "#3b82f6" },
+          { val: d.c, color: "#f97316" },
+          { val: d.f, color: "#06b6d4" }
+        ];
+        series.forEach((s, idx) => {
+          const h = Math.max(s.val > 0 ? 2 : 0, (s.val / maxVal) * plotH);
+          const x = startX + idx * (subW + 1);
+          const y = padT + plotH - h;
+          barsSvg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${subW.toFixed(1)}" height="${h.toFixed(1)}" rx="1.5" fill="${s.color}" />`;
+        });
+
+        if (i % stepLabel === 0 || i === pts.length - 1) {
+          const lbl = d.iso.slice(8) + "/" + d.iso.slice(5, 7);
+          const cx = padL + i * slotW + slotW / 2;
+          labelsSvg += `<text x="${cx.toFixed(1)}" y="${H - 4}" fill="#64748b" font-size="8.5" text-anchor="middle">${lbl}</text>`;
+        }
+      });
+
+      box.innerHTML = `
+        <svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;">
+          <line x1="${padL}" y1="${padT}" x2="${W - padR}" y2="${padT}" stroke="#182032" stroke-width="1" />
+          <line x1="${padL}" y1="${(padT + plotH / 2).toFixed(1)}" x2="${W - padR}" y2="${(padT + plotH / 2).toFixed(1)}" stroke="#182032" stroke-width="1" stroke-dasharray="3 3" />
+          <line x1="${padL}" y1="${(padT + plotH).toFixed(1)}" x2="${W - padR}" y2="${(padT + plotH).toFixed(1)}" stroke="#182032" stroke-width="1" />
+          <text x="${padL - 4}" y="${padT + 4}" fill="#64748b" font-size="8.5" text-anchor="end">${Math.round(maxVal)}</text>
+          <text x="${padL - 4}" y="${(padT + plotH / 2 + 3).toFixed(1)}" fill="#64748b" font-size="8.5" text-anchor="end">${Math.round(maxVal / 2)}</text>
+          ${barsSvg}
+          ${labelsSvg}
+        </svg>
+      `;
+    }
+
+    function renderWeightChart() {
+      const btn7 = document.getElementById("btn-weight-7d");
+      const btn30 = document.getElementById("btn-weight-30d");
+      if (btn7) btn7.classList.toggle("active", weightRangeDays === 7);
+      if (btn30) btn30.classList.toggle("active", weightRangeDays === 30);
+
+      // Moyennes 7j pour les cartes de l'accueil
+      const last7 = getRangeSeries(currentDate, 7);
+      const validW7 = last7.filter(p => p.weight !== null);
+      const capW = document.getElementById("weight-avg-caption");
+      if (capW) {
+        if (validW7.length) {
+          const avg7 = validW7.reduce((a, b) => a + b.weight, 0) / validW7.length;
+          capW.textContent = `Moy. 7j : ${avg7.toFixed(1)} kg`;
+        } else {
+          capW.textContent = "Moy. 7j : —";
+        }
+      }
+
+      const validWaist7 = last7.filter(p => p.waist !== null);
+      const capWaist = document.getElementById("waist-avg-caption");
+      if (capWaist) {
+        if (validWaist7.length) {
+          const avgWaist = validWaist7.reduce((a, b) => a + b.waist, 0) / validWaist7.length;
+          capWaist.textContent = `Moy. 7j : ${avgWaist.toFixed(1)} cm`;
+        } else {
+          capWaist.textContent = "Moy. 7j : —";
+        }
+      }
+
+      const pts = getRangeSeries(currentDate, weightRangeDays);
+
+      renderLineEvolutionBlock({
+        pts,
+        field: "weight",
+        unit: "kg",
+        color: "#38bdf8",
+        targetVal: null,
+        boxId: "weight-chart-box",
+        statsId: "weight-stats-row",
+        minmaxId: "weight-range-minmax"
+      });
+
+      renderLineEvolutionBlock({
+        pts,
+        field: "waist",
+        unit: "cm",
+        color: "#a855f7",
+        targetVal: null,
+        boxId: "waist-chart-box",
+        statsId: "waist-stats-row",
+        minmaxId: "waist-range-minmax"
+      });
+
+      renderLineEvolutionBlock({
+        pts,
+        field: "sleepHours",
+        unit: "h",
+        color: "#818cf8",
+        targetVal: 8.0,
+        boxId: "sleep-chart-box",
+        statsId: "sleep-stats-row",
+        minmaxId: "sleep-range-minmax",
+        formatFn: v => formatSleepHours(v) || "—"
+      });
+
+      renderSingleBarChart({
+        pts,
+        field: "water",
+        goal: 4.5,
+        maxScale: 5.0,
+        barColor: "#38bdf8",
+        boxId: "hydration-bars-box",
+        avgId: "hydration-chart-avg",
+        formatAvg: v => `${v.toFixed(2)} L/j`
+      });
+
+      renderSingleBarChart({
+        pts,
+        field: "salt",
+        goal: 6.0,
+        maxScale: 7.0,
+        barColor: "#f59e0b",
+        boxId: "salt-bars-box",
+        avgId: "salt-chart-avg",
+        formatAvg: v => `${v.toFixed(1)} g/j`
+      });
+
+      renderMacrosBarChart(pts);
     }
 
     function buildRangeCoachReport(startIso, endIso) {
@@ -3298,6 +3802,9 @@
       const avgCaf = days.reduce((a, x) => a + x.caf.totalMg, 0) / n;
 
       const weights = days.filter(x => x.d.weight && x.d.weight > 0).map(x => x.d.weight);
+      const waists = days.filter(x => x.d.waist && x.d.waist > 0).map(x => x.d.waist);
+      const sleeps = days.filter(x => x.d.sleepHours && x.d.sleepHours > 0).map(x => x.d.sleepHours);
+      const sleepQuals = days.filter(x => x.d.sleepQuality !== null).map(x => x.d.sleepQuality);
       const creaCount = days.filter(x => x.d.creatine).length;
       const eaaCount = days.filter(x => x.d.eaa).length;
       const boostCount = days.filter(x => x.d.booster).length;
@@ -3307,6 +3814,16 @@
         const avgW = weights.reduce((a, b) => a + b, 0) / weights.length;
         const deltaW = weights.length > 1 ? weights[weights.length - 1] - weights[0] : 0;
         out.push(`Poids à jeun : moy. ${avgW.toFixed(1)} kg (${weights.length} pesées${weights.length > 1 ? `, var. ${deltaW > 0 ? "+" : ""}${deltaW.toFixed(1)} kg` : ""})`);
+      }
+      if (waists.length) {
+        const avgWaist = waists.reduce((a, b) => a + b, 0) / waists.length;
+        const deltaWaist = waists.length > 1 ? waists[waists.length - 1] - waists[0] : 0;
+        out.push(`Tour de taille : moy. ${avgWaist.toFixed(1)} cm (${waists.length} mesures${waists.length > 1 ? `, var. ${deltaWaist > 0 ? "+" : ""}${deltaWaist.toFixed(1)} cm` : ""})`);
+      }
+      if (sleeps.length) {
+        const avgSlp = sleeps.reduce((a, b) => a + b, 0) / sleeps.length;
+        const qTxt = sleepQuals.length ? ` • qualité moy. ${Math.round(sleepQuals.reduce((a, b) => a + b, 0) / sleepQuals.length)}/100` : "";
+        out.push(`Sommeil : moy. ${formatSleepHours(avgSlp)}/nuit (obj. 8h${qTxt})`);
       }
       out.push("");
       out.push(`MOYENNES JOURNALIÈRES :`);
@@ -3337,7 +3854,9 @@
       out.push("DÉTAIL PAR JOUR :");
       days.forEach(x => {
         const wTxt = x.d.weight ? ` | ${x.d.weight.toFixed(1)}kg` : "";
-        out.push(`• ${x.iso.slice(8)}/${x.iso.slice(5, 7)} (${x.d.mode === "training" ? "TR" : "RE"}) : ${Math.round(x.st.valKcal)} kcal (P${Math.round(x.st.valP)} G${Math.round(x.st.valC)} L${Math.round(x.st.valF)}) | ${x.d.water.toFixed(1)}L${wTxt}`);
+        const waistTxt = x.d.waist ? ` | ${x.d.waist.toFixed(1)}cm` : "";
+        const slpTxt = x.d.sleepHours ? ` | 🌙 ${formatSleepHours(x.d.sleepHours)}${x.d.sleepQuality !== null ? ` (${x.d.sleepQuality}/100)` : ""}` : "";
+        out.push(`• ${x.iso.slice(8)}/${x.iso.slice(5, 7)} (${x.d.mode === "training" ? "TR" : "RE"}) : ${Math.round(x.st.valKcal)} kcal (P${Math.round(x.st.valP)} G${Math.round(x.st.valC)} L${Math.round(x.st.valF)}) | ${x.d.water.toFixed(1)}L${wTxt}${waistTxt}${slpTxt}`);
       });
 
       return out.join("\n");
@@ -3369,6 +3888,10 @@
       const out = [];
       out.push(`MacroTrack — ${formatFrenchDate(currentDate)} (${getPhaseObj(day.phase).label} • ${plan.label})`);
       if (day.weight && day.weight > 0) out.push(`Poids à jeun : ${day.weight.toFixed(1)} kg`);
+      if (day.waist && day.waist > 0) out.push(`Tour de taille : ${day.waist.toFixed(1)} cm`);
+      if (day.sleepHours && day.sleepHours > 0) {
+        out.push(`Sommeil : ${formatSleepHours(day.sleepHours)} / 8h${day.sleepQuality !== null ? ` (Qualité Apple Santé : ${day.sleepQuality}/100)` : ""}`);
+      }
       out.push(`Eau : ${day.water.toFixed(2)} L / 4,5 L | Sel : ${day.salt.toFixed(1)} g / 6 g`);
       out.push(`Créatine : ${day.creatine ? "OK" : "Non"} | EAA : ${day.eaa ? "OK" : "Non"} | Booster : ${day.booster ? "OK" : "Non"}`);
       if (day.boosters && day.boosters.length) {
@@ -3424,6 +3947,9 @@
       return (
         st.checkedFoods > 0 ||
         (d.weight && d.weight > 0) ||
+        (d.waist && d.waist > 0) ||
+        (d.sleepHours && d.sleepHours > 0) ||
+        d.sleepQuality !== null ||
         d.water > 0 ||
         d.salt > 0 ||
         d.creatine ||
@@ -3458,11 +3984,16 @@
         const plan = getPlan(d);
         const st = getDayStats(d);
         const caf = getCaffeineBreakdown(d);
+        const extra = [
+          d.weight ? `${d.weight.toFixed(1)}kg` : "",
+          d.waist ? `${d.waist.toFixed(1)}cm` : "",
+          d.sleepHours ? `🌙 ${formatSleepHours(d.sleepHours)}` : ""
+        ].filter(Boolean).join(" • ");
         return `
           <div class="history-item">
             <div>
               <strong style="font-size:12.5px;">${formatFrenchDate(k)}</strong>
-              <div style="font-size:10.5px;color:#8b95a8;">${getPhaseObj(d.phase).label} • ${plan.label}${d.weight ? ` • ${d.weight.toFixed(1)}kg` : ``} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${Math.round(caf.totalMg)}mg caf.</div>
+              <div style="font-size:10.5px;color:#8b95a8;">${getPhaseObj(d.phase).label} • ${plan.label}${extra ? ` • ${extra}` : ``} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${Math.round(caf.totalMg)}mg caf.</div>
               <div style="font-size:10.5px;color:#cbd5e1;margin-top:2px;">P ${Math.round(st.valP)}g • G ${Math.round(st.valC)}g • L ${Math.round(st.valF)}g</div>
             </div>
             <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
@@ -3839,6 +4370,35 @@
       });
     }
 
+    function renderSleepCard(day) {
+      const durInp = document.getElementById("sleep-duration-input");
+      const qualInp = document.getElementById("sleep-quality-input");
+      const pill = document.getElementById("sleep-status-pill");
+      const bar = document.getElementById("sleep-bar");
+
+      if (durInp && document.activeElement !== durInp) {
+        durInp.value = day.sleepHours !== null ? formatSleepHours(day.sleepHours) : "";
+      }
+      if (qualInp && document.activeElement !== qualInp) {
+        qualInp.value = day.sleepQuality !== null ? day.sleepQuality : "";
+      }
+
+      const pct = day.sleepHours ? Math.min(100, Math.round((day.sleepHours / 8.0) * 100)) : 0;
+      if (bar) bar.style.width = `${pct}%`;
+
+      if (pill) {
+        if (day.sleepHours && day.sleepQuality !== null) {
+          pill.textContent = `${formatSleepHours(day.sleepHours)} / 8h • ${day.sleepQuality}/100`;
+        } else if (day.sleepHours) {
+          pill.textContent = `${formatSleepHours(day.sleepHours)} / 8h (${pct}%)`;
+        } else if (day.sleepQuality !== null) {
+          pill.textContent = `Qualité ${day.sleepQuality}/100`;
+        } else {
+          pill.textContent = "Objectif 8h";
+        }
+      }
+    }
+
     function renderAll() {
       const day = getDay(currentDate);
       const isToday = currentDate === todayISO();
@@ -3971,6 +4531,13 @@
       if (wInp && document.activeElement !== wInp) {
         wInp.value = day.weight !== null ? day.weight : "";
       }
+
+      const waistInp = document.getElementById("waist-input");
+      if (waistInp && document.activeElement !== waistInp) {
+        waistInp.value = day.waist !== null ? day.waist : "";
+      }
+
+      renderSleepCard(day);
 
       const pct = plan.targets.kcal > 0 ? Math.min(100, Math.round((dayStats.valKcal / plan.targets.kcal) * 100)) : 0;
       document.getElementById("hero-pct").textContent = `${pct}% complété`;
@@ -4397,6 +4964,39 @@
       if (d.weight !== null) toast(`Poids enregistré : ${d.weight.toFixed(1)} kg`);
     });
 
+    document.getElementById("waist-input").addEventListener("change", e => {
+      const raw = e.target.value.trim().replace(",", ".");
+      const val = parseFloat(raw);
+      const d = getDay(currentDate);
+      d.waist = (!isNaN(val) && val > 0) ? Number(val.toFixed(1)) : null;
+      persistAndSync();
+      renderAll();
+      if (d.waist !== null) toast(`Tour de taille : ${d.waist.toFixed(1)} cm`);
+    });
+
+    document.getElementById("sleep-duration-input").addEventListener("change", e => {
+      const d = getDay(currentDate);
+      const parsed = parseSleepHours(e.target.value);
+      d.sleepHours = parsed;
+      persistAndSync();
+      renderAll();
+      if (d.sleepHours !== null) toast(`Sommeil : ${formatSleepHours(d.sleepHours)}`);
+    });
+
+    document.getElementById("sleep-quality-input").addEventListener("change", e => {
+      const raw = e.target.value.trim();
+      const d = getDay(currentDate);
+      if (!raw) {
+        d.sleepQuality = null;
+      } else {
+        const val = parseInt(raw, 10);
+        d.sleepQuality = !isNaN(val) ? Math.min(100, Math.max(0, val)) : null;
+      }
+      persistAndSync();
+      renderAll();
+      if (d.sleepQuality !== null) toast(`Qualité sommeil : ${d.sleepQuality}/100`);
+    });
+
     document.getElementById("btn-reuse-choices").addEventListener("click", () => {
       const cur = getDay(currentDate);
       const candidates = Object.keys(store)
@@ -4592,6 +5192,9 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
   "coffeeDelta": 0,
   "energyDelta": 0,
   "weightKg": null,
+  "waistCm": null,
+  "sleepHours": null,
+  "sleepQuality": null,
   "wheyShakes": [{"id":"bt_iso_clear_mango","qty":25}],
   "proteinBars": [{"id":"bb_wca","qty":1}],
   "cheats": [{"text":"","kcal":0,"p":0,"c":0,"f":0}],
@@ -4633,6 +5236,11 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
           }
         }
         if (a.weightKg && Number(a.weightKg) > 0) day.weight = Number(Number(a.weightKg).toFixed(1));
+        if (a.waistCm && Number(a.waistCm) > 0) day.waist = Number(Number(a.waistCm).toFixed(1));
+        if (a.sleepHours && Number(a.sleepHours) > 0) day.sleepHours = Number(Number(a.sleepHours).toFixed(2));
+        if (a.sleepQuality !== null && a.sleepQuality !== undefined && !isNaN(Number(a.sleepQuality))) {
+          day.sleepQuality = Math.min(100, Math.max(0, Math.round(Number(a.sleepQuality))));
+        }
         if (Array.isArray(a.wheyShakes)) {
           a.wheyShakes.forEach(sh => {
             if (sh && Number(sh.qty) > 0) {
@@ -4784,8 +5392,8 @@ Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros appo
 ${rangeText}
 
 Fais un pré-check-in clair et structuré en français (max 12 lignes) :
-1. Tendance poids vs apports caloriques sur la période du ${start} au ${end}
-2. Régularité (hydratation objectif 4,5L, sel objectif 6g, caféine consommée, suppléments)
+1. Tendance poids / tour de taille vs apports caloriques sur la période du ${start} au ${end}
+2. Régularité (hydratation objectif 4,5L, sel objectif 6g, sommeil objectif 8h, suppléments)
 3. Impact des écarts éventuels
 4. 2 recommandations concrètes pour la suite.`;
         const reply = await callAI([{ parts: [{ text: prompt }] }], false);
