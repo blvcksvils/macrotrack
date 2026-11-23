@@ -733,6 +733,18 @@
       white-space: nowrap;
     }
 
+    .time-edit-input {
+      background: #121724;
+      border: 1px solid #26314a;
+      color: #cbd5e1;
+      border-radius: 6px;
+      padding: 2px 5px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
     /* Shaker Whey rapide */
     .whey-quick-card {
       background: var(--card);
@@ -962,6 +974,26 @@
       font-size: 13.5px;
       font-weight: 800;
       color: #ffffff;
+    }
+
+    .caf-logs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .caf-log-row {
+      background: #090c13;
+      border: 1px solid #181f30;
+      border-radius: 8px;
+      padding: 5px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 11px;
+      color: #cbd5e1;
     }
 
     /* Section Header */
@@ -1887,12 +1919,12 @@
         </div>
       </div>
 
-      <!-- Shaker de Whey par marque -->
+      <!-- Shaker de Whey & RTD par marque -->
       <div class="whey-quick-card">
         <div class="whey-head">
           <div class="supp-left">
             <span>🥤</span>
-            <strong style="font-size:13px;">Shaker Whey</strong>
+            <strong style="font-size:13px;">Shaker Whey & RTD</strong>
           </div>
           <span class="whey-macros-badge" id="whey-preview-macros"></span>
         </div>
@@ -1901,8 +1933,8 @@
         </div>
         <div class="whey-controls">
           <div class="whey-qty-wrap">
-            <input type="number" id="whey-shake-qty" class="whey-qty-input" inputmode="decimal" min="1" step="1" placeholder="g" />
-            <span class="qty-u">g</span>
+            <input type="number" id="whey-shake-qty" class="whey-qty-input" inputmode="decimal" min="1" step="1" placeholder="g/ml" />
+            <span class="qty-u" id="whey-qty-unit">g</span>
           </div>
           <button class="whey-add-btn" id="btn-add-whey-shake" type="button">+ Ajouter shaker</button>
         </div>
@@ -1984,6 +2016,8 @@
             </div>
           </div>
         </div>
+
+        <div class="caf-logs-list" id="caffeine-logs-list"></div>
       </div>
 
       <!-- Repas -->
@@ -2264,6 +2298,7 @@
         brand: "BioTechUSA",
         name: "Iso Whey Clear Mango (25g)",
         servingG: 25,
+        unit: "g",
         kcal: 350,
         p: 84.0,
         c: 1.6,
@@ -2274,6 +2309,7 @@
         brand: "Ronnie Coleman",
         name: "King Whey Sport Chocolate Milk (45g)",
         servingG: 45,
+        unit: "g",
         kcal: 333,
         p: 51.1,
         c: 26.7,
@@ -2284,6 +2320,7 @@
         brand: "ESN",
         name: "Designer Whey Stracciatella (30g)",
         servingG: 30,
+        unit: "g",
         kcal: 376,
         p: 76.0,
         c: 6.9,
@@ -2294,10 +2331,55 @@
         brand: "ESN",
         name: "Designer Whey Dark Cookies & Cream (30g)",
         servingG: 30,
+        unit: "g",
         kcal: 383,
         p: 71.0,
         c: 9.8,
         f: 5.8
+      },
+      {
+        id: "bb_rtd_choco",
+        brand: "Barebells (RTD)",
+        name: "Milkshake Chocolat (330ml)",
+        servingG: 330,
+        unit: "ml",
+        kcal: 57,
+        p: 7.3,
+        c: 3.6,
+        f: 1.3
+      },
+      {
+        id: "bb_rtd_cookies",
+        brand: "Barebells (RTD)",
+        name: "Milkshake Cookies & Cream (330ml)",
+        servingG: 330,
+        unit: "ml",
+        kcal: 58,
+        p: 7.3,
+        c: 3.8,
+        f: 1.4
+      },
+      {
+        id: "bb_rtd_vanilla",
+        brand: "Barebells (RTD)",
+        name: "Milkshake Vanille (330ml)",
+        servingG: 330,
+        unit: "ml",
+        kcal: 58,
+        p: 7.3,
+        c: 3.5,
+        f: 1.4
+      },
+      {
+        id: "bb_rtd_strawberry",
+        brand: "Barebells (RTD)",
+        name: "Milkshake Fraise (330ml)",
+        servingG: 330,
+        unit: "ml",
+        kcal: 58,
+        p: 7.3,
+        c: 3.5,
+        f: 1.4
       }
     ];
 
@@ -2563,6 +2645,17 @@
       return dt.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
     }
 
+    function tsToTimeInput(ts) {
+      const d = ts ? new Date(ts) : new Date();
+      return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+    }
+
+    function timeInputToTs(iso, hhmm) {
+      const [y, m, d] = iso.split("-").map(Number);
+      const [hh, mm] = (hhmm || "12:00").split(":").map(Number);
+      return new Date(y, m - 1, d, hh || 0, mm || 0, 0).getTime();
+    }
+
     function defaultDay(mode = "training", phase = DEFAULT_PHASE) {
       const phKey = PHASES[phase] ? phase : DEFAULT_PHASE;
       const plan = PHASES[phKey].plans[mode] || PHASES[phKey].plans.training;
@@ -2694,6 +2787,14 @@
       d.energyDrinks = Math.max(0, parseInt(d.energyDrinks, 10) || 0);
       if (!Array.isArray(d.coffeeLogs)) d.coffeeLogs = [];
       if (!Array.isArray(d.energyLogs)) d.energyLogs = [];
+
+      const [yy, mm, dd] = key.split("-").map(Number);
+      const defaultTs = new Date(yy, mm - 1, dd, 12, 0, 0).getTime();
+      while (d.coffeeLogs.length < d.coffee) d.coffeeLogs.push(defaultTs);
+      if (d.coffeeLogs.length > d.coffee) d.coffeeLogs.length = d.coffee;
+      while (d.energyLogs.length < d.energyDrinks) d.energyLogs.push(defaultTs);
+      if (d.energyLogs.length > d.energyDrinks) d.energyLogs.length = d.energyDrinks;
+
       if (!Array.isArray(d.wheyShakes)) d.wheyShakes = [];
       if (!Array.isArray(d.proteinBars)) d.proteinBars = [];
       if (!Array.isArray(d.cheats)) d.cheats = [];
@@ -2811,12 +2912,14 @@
       const ratio = qty / 100;
       if (entry && entry.id) {
         const w = getWheyById(entry.id);
+        const u = w.unit || "g";
         return {
           p: w.p * ratio,
           c: w.c * ratio,
           f: w.f * ratio,
           kcal: w.kcal * ratio,
-          label: `${w.brand} — ${w.name.replace(/\s*\(\d+g\)$/, "")} (${qty}g)`
+          unit: u,
+          label: `${w.brand} — ${w.name.replace(/\s*\([^)]+\)$/, "")} (${qty}${u})`
         };
       }
       return {
@@ -2824,6 +2927,7 @@
         c: 0,
         f: 0,
         kcal: qty * 4,
+        unit: "g",
         label: `Whey isolat (${qty}g)`
       };
     }
@@ -3270,12 +3374,13 @@
       if (day.boosters && day.boosters.length) {
         out.push(`Boosters pris : ${day.boosters.map(b => {
           const st = boosterEntryStats(b);
-          return `${st.label}${st.caffeineMg ? ` (${Math.round(st.caffeineMg)} mg caf.)` : ""}`;
+          const tm = b.ts ? ` à ${tsToTimeInput(b.ts)}` : "";
+          return `${st.label}${tm}${st.caffeineMg ? ` (${Math.round(st.caffeineMg)} mg caf.)` : ""}`;
         }).join(" | ")}`);
       }
       out.push(`Caféine : ${Math.round(caf.totalMg)} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Boissons énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${caf.boosterMg ? ` | Boosters = ${Math.round(caf.boosterMg)} mg` : ""})`);
       if (day.wheyShakes.length) {
-        out.push(`Shakers Whey : ${day.wheyShakes.map(s => shakerMacros(s).label).join(" | ")}`);
+        out.push(`Shakers Whey & RTD : ${day.wheyShakes.map(s => shakerMacros(s).label).join(" | ")}`);
       }
       if (day.proteinBars.length) {
         out.push(`Barres protéinées : ${day.proteinBars.map(e => {
@@ -3430,20 +3535,34 @@
 
       listEl.innerHTML = day.boosters.map((entry, i) => {
         const st = boosterEntryStats(entry);
-        const timeStr = entry.ts ? ` • ${new Date(entry.ts).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}` : "";
+        const timeVal = tsToTimeInput(entry.ts);
         return `
           <div class="cheat-item">
             <div style="min-width:0;">
               <div style="color:#e2e8f0;word-break:break-word;"><strong>${st.label}</strong></div>
-              <div class="cheat-item-sub">${Math.round(st.caffeineMg)} mg caféine • ${Math.round(st.kcal)} kcal${timeStr}</div>
+              <div class="cheat-item-sub">${Math.round(st.caffeineMg)} mg caféine • ${Math.round(st.kcal)} kcal</div>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+              <input type="time" class="time-edit-input" data-time-booster="${i}" value="${timeVal}" aria-label="Heure de prise" />
               <span class="caffeine-pill">${Math.round(st.caffeineMg)} mg</span>
               <button class="whey-del-btn" data-del-booster="${i}" type="button" title="Supprimer">×</button>
             </div>
           </div>
         `;
       }).join("");
+
+      listEl.querySelectorAll("[data-time-booster]").forEach(inp => {
+        inp.addEventListener("change", () => {
+          const idx = Number(inp.dataset.timeBooster);
+          const d = getDay(currentDate);
+          if (d.boosters[idx] && inp.value) {
+            d.boosters[idx].ts = timeInputToTs(currentDate, inp.value);
+            persistAndSync();
+            renderCaffeineEnergy(d);
+            buildCoachReport();
+          }
+        });
+      });
 
       listEl.querySelectorAll("[data-del-booster]").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -3471,17 +3590,21 @@
       const sel = document.getElementById("whey-protein-select");
       const qtyInput = document.getElementById("whey-shake-qty");
       const badge = document.getElementById("whey-preview-macros");
+      const unitEl = document.getElementById("whey-qty-unit");
 
       if (!sel || !sel.value) {
         if (badge) badge.textContent = "Aucune choisie";
+        if (unitEl) unitEl.textContent = "g";
         return;
       }
 
       const qty = Math.max(0, Number(qtyInput ? qtyInput.value : 0) || 0);
       const selectedWhey = getWheyById(sel.value);
+      const u = selectedWhey.unit || "g";
+      if (unitEl) unitEl.textContent = u;
       const prevMac = shakerMacros({ id: selectedWhey.id, qty });
       if (badge) {
-        badge.textContent = `${qty}g • ${prevMac.p.toFixed(1).replace(/\.0$/, "")}g P • ${Math.round(prevMac.kcal)} kcal`;
+        badge.textContent = `${qty}${u} • ${prevMac.p.toFixed(1).replace(/\.0$/, "")}g P • ${Math.round(prevMac.kcal)} kcal`;
       }
     }
 
@@ -3659,6 +3782,61 @@
       }
       if (activeMgEl) activeMgEl.textContent = `~${energy.activeMg} mg actifs`;
       if (barEl) barEl.style.width = `${energy.pct}%`;
+
+      const logsBox = document.getElementById("caffeine-logs-list");
+      if (!logsBox) return;
+      const rows = [];
+      for (let i = 0; i < day.coffee; i++) {
+        rows.push({ type: "coffee", idx: i, label: `☕ Café #${i + 1} (80 mg)`, ts: day.coffeeLogs[i] });
+      }
+      for (let i = 0; i < day.energyDrinks; i++) {
+        rows.push({ type: "energy", idx: i, label: `⚡ Boisson énergisante #${i + 1} (150 mg)`, ts: day.energyLogs[i] });
+      }
+      if (!rows.length) {
+        logsBox.innerHTML = "";
+        return;
+      }
+      logsBox.innerHTML = rows.map(r => `
+        <div class="caf-log-row">
+          <span>${r.label}</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="time" class="time-edit-input" data-caf-type="${r.type}" data-caf-idx="${r.idx}" value="${tsToTimeInput(r.ts)}" aria-label="Heure de prise" />
+            <button class="whey-del-btn" data-del-caf-type="${r.type}" data-del-caf-idx="${r.idx}" type="button" title="Supprimer">×</button>
+          </div>
+        </div>
+      `).join("");
+
+      logsBox.querySelectorAll("[data-caf-type]").forEach(inp => {
+        inp.addEventListener("change", () => {
+          const d = getDay(currentDate);
+          const idx = Number(inp.dataset.cafIdx);
+          if (!inp.value) return;
+          const newTs = timeInputToTs(currentDate, inp.value);
+          if (inp.dataset.cafType === "coffee" && d.coffeeLogs[idx] !== undefined) {
+            d.coffeeLogs[idx] = newTs;
+          } else if (inp.dataset.cafType === "energy" && d.energyLogs[idx] !== undefined) {
+            d.energyLogs[idx] = newTs;
+          }
+          persistAndSync();
+          renderCaffeineEnergy(d);
+        });
+      });
+
+      logsBox.querySelectorAll("[data-del-caf-type]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const d = getDay(currentDate);
+          const idx = Number(btn.dataset.delCafIdx);
+          if (btn.dataset.delCafType === "coffee") {
+            d.coffeeLogs.splice(idx, 1);
+            d.coffee = Math.max(0, d.coffee - 1);
+          } else {
+            d.energyLogs.splice(idx, 1);
+            d.energyDrinks = Math.max(0, d.energyDrinks - 1);
+          }
+          persistAndSync();
+          renderAll();
+        });
+      });
     }
 
     function renderAll() {
@@ -4028,13 +4206,14 @@
       }
       const w = getWheyById(sel.value);
       const qty = Math.max(1, Number(inp ? inp.value : w.servingG) || w.servingG);
+      const u = w.unit || "g";
       const d = getDay(currentDate);
       d.wheyShakes.push({ id: w.id, qty });
       sel.value = "";
       if (inp) inp.value = "";
       persistAndSync();
       renderAll();
-      toast(`${w.brand} ${qty}g ajouté`);
+      toast(`${w.brand} ${qty}${u} ajouté`);
     });
 
     document.getElementById("protein-bar-select").addEventListener("change", updateBarPreview);
@@ -4397,7 +4576,7 @@ Les valeurs kcal, p (protéines g), c (glucides g), f (lipides g) doivent être 
         const boostersCtx = BOOSTERS.map(b => `${b.id}:${b.brand} ${b.name}`).join(", ");
         const prompt = `Tu es l'assistant de l'app MacroTrack. Transforme la phrase utilisateur en actions JSON pour mettre à jour sa journée.
 Repas disponibles (id:nom) : ${mealsCtx}
-Protéines shaker disponibles (id:nom) : ${wheyCtx}
+Protéines shaker/RTD disponibles (id:nom) : ${wheyCtx}
 Boosters disponibles (id:nom) : ${boostersCtx}
 Barres protéinées disponibles (id:nom) : ${barsCtx}
 Phrase : "${txt}"
