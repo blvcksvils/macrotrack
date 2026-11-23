@@ -126,6 +126,12 @@
       gap: 6px;
       cursor: pointer;
       color: #f8fafc;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .activity-rings-btn.active-radar {
+      border-color: #3b82f6;
+      background: rgba(37, 99, 235, 0.16);
     }
 
     .rings-meta {
@@ -300,6 +306,18 @@
       border-radius: 6px;
     }
 
+    .status-pill.locked-training {
+      background: rgba(37, 99, 235, 0.26);
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.55);
+    }
+
+    .status-pill.locked-rest {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+
     .date-sub-label {
       font-size: 11.5px;
       color: var(--muted);
@@ -314,16 +332,22 @@
       height: 1px;
     }
 
-    /* Day Type Toggle */
-    .mode-switch {
+    /* Day Type Toggle + Verrouillage */
+    .mode-switch-wrap {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 4px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr auto;
       gap: 5px;
       margin-bottom: 10px;
+      align-items: stretch;
+    }
+
+    .mode-switch-wrap.is-locked .mode-btn:not(.active) {
+      opacity: 0.38;
+      cursor: not-allowed;
     }
 
     .mode-btn {
@@ -332,7 +356,7 @@
       color: #94a3b8;
       border-radius: 10px;
       padding: 9px 6px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -340,12 +364,40 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 4px;
+      white-space: nowrap;
     }
 
     .mode-btn.active {
       background: var(--blue);
       color: #ffffff;
+    }
+
+    .mode-btn.rest-active.active {
+      background: #059669;
+      color: #ffffff;
+    }
+
+    .lock-day-btn {
+      background: #131926;
+      border: 1px solid #222d44;
+      color: #94a3b8;
+      border-radius: 10px;
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .lock-day-btn.locked {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
     }
 
     /* Hero Calories & Macros (Sticky) */
@@ -520,8 +572,8 @@
       color: #64748b;
     }
 
-    /* Accordéon Routine Matin & Santé */
-    .morning-accordion {
+    /* Accordéons persistants génériques */
+    .accordion-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -529,7 +581,7 @@
       margin-bottom: 8px;
     }
 
-    .morning-head {
+    .accordion-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -538,7 +590,7 @@
       user-select: none;
     }
 
-    .morning-summary-chips {
+    .accordion-summary-chips {
       display: flex;
       align-items: center;
       gap: 5px;
@@ -557,7 +609,14 @@
       white-space: nowrap;
     }
 
-    .morning-body {
+    .acc-chevron {
+      font-size: 11px;
+      color: #60a5fa;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .accordion-body {
       margin-top: 10px;
       padding-top: 10px;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -670,7 +729,7 @@
       transition: width 0.25s ease;
     }
 
-    /* Two-col Trackers */
+    /* Two-col Trackers (dans accordéon) */
     .two-col-trackers {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -679,10 +738,10 @@
     }
 
     .tracker-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px;
+      background: #090c13;
+      border: 1px solid #181f30;
+      border-radius: 12px;
+      padding: 9px;
       min-width: 0;
     }
 
@@ -793,14 +852,13 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      margin-bottom: 8px;
     }
 
     .supp-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px;
+      background: #090c13;
+      border: 1px solid #181f30;
+      border-radius: 12px;
+      padding: 9px 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -811,7 +869,7 @@
 
     .supp-card.done {
       border-color: rgba(16, 185, 129, 0.45);
-      background: rgba(16, 185, 129, 0.06);
+      background: rgba(16, 185, 129, 0.08);
     }
 
     .supp-left {
@@ -854,16 +912,20 @@
       color: #04130d;
     }
 
-    /* Booster pré workout par marque */
-    .booster-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 11px 12px;
+    /* Sous-blocs dans l'accordéon Shakers, Booster & Caféine */
+    .sub-block-dark {
+      background: #090c13;
+      border: 1px solid #181f30;
+      border-radius: 12px;
+      padding: 10px;
       margin-bottom: 8px;
     }
 
-    .booster-card.done {
+    .sub-block-dark:last-child {
+      margin-bottom: 0;
+    }
+
+    .sub-block-dark.done {
       border-color: rgba(249, 115, 22, 0.45);
     }
 
@@ -878,46 +940,18 @@
       white-space: nowrap;
     }
 
-    /* Raccourcis horaires 1-tap */
-    .time-chip-btn {
-      background: #141b2b;
-      border: 1px solid #26334d;
-      color: #e2e8f0;
-      border-radius: 7px;
-      padding: 4px 7px;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .time-step-pill {
-      background: #121724;
-      border: 1px solid #222d44;
-      color: #94a3b8;
-      border-radius: 6px;
-      padding: 3px 6px;
-      font-size: 10px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .time-step-pill:active {
-      background: var(--blue);
-      color: #ffffff;
-    }
-
-    .caf-log-card {
-      background: #090c13;
-      border: 1px solid #181f30;
-      border-radius: 9px;
-      padding: 7px 9px;
+    /* Roue horizontale de temps + saisie directe */
+    .booster-log-card {
+      background: #0e131f;
+      border: 1px solid #1e273b;
+      border-radius: 10px;
+      padding: 8px 9px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
 
-    .caf-log-top {
+    .booster-log-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -926,20 +960,123 @@
       color: #e2e8f0;
     }
 
-    .caf-time-quick-row {
-      display: flex;
+    .time-wheel-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    /* Shaker Whey rapide */
-    .whey-quick-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 11px 12px;
-      margin-bottom: 8px;
+    .time-direct-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #161f33;
+      border: 1px solid #2d3c5e;
+      color: #f8fafc;
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .time-direct-badge input[type="time"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .h-wheel-wrap {
+      position: relative;
+      height: 32px;
+      background: #080b12;
+      border: 1px solid #1e273b;
+      border-radius: 8px;
+      overflow: hidden;
+      touch-action: pan-y;
+      cursor: ew-resize;
+      user-select: none;
+    }
+
+    .h-wheel-wrap::before,
+    .h-wheel-wrap::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 24px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .h-wheel-wrap::before {
+      left: 0;
+      background: linear-gradient(90deg, #080b12, transparent);
+    }
+
+    .h-wheel-wrap::after {
+      right: 0;
+      background: linear-gradient(270deg, #080b12, transparent);
+    }
+
+    .h-wheel-pointer {
+      position: absolute;
+      left: 50%;
+      top: 2px;
+      bottom: 2px;
+      width: 2px;
+      background: #f97316;
+      transform: translateX(-50%);
+      z-index: 3;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+
+    .h-wheel-track {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      will-change: transform;
+    }
+
+    .h-wheel-tick {
+      flex: 0 0 44px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .h-wheel-tick.active {
+      color: #fb923c;
+      font-weight: 800;
+    }
+
+    .h-wheel-tick-bar {
+      width: 1.5px;
+      height: 6px;
+      background: #334155;
+      border-radius: 1px;
+    }
+
+    .h-wheel-tick.major .h-wheel-tick-bar {
+      height: 10px;
+      background: #64748b;
+    }
+
+    .h-wheel-tick.active .h-wheel-tick-bar {
+      background: #f97316;
     }
 
     .whey-head {
@@ -961,7 +1098,7 @@
     }
 
     .whey-select-row {
-      margin-top: 9px;
+      margin-top: 8px;
     }
 
     .whey-controls {
@@ -976,7 +1113,7 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      background: #090c13;
+      background: #0e131f;
       border: 1px solid #1f283d;
       border-radius: 9px;
       padding: 6px 8px;
@@ -1023,31 +1160,6 @@
       font-size: 14px;
     }
 
-    /* Tuile Caféine & Jauge d'énergie */
-    .caffeine-master-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 11px 12px;
-      margin-bottom: 12px;
-    }
-
-    .caf-master-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .caf-master-title {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 800;
-      color: #f8fafc;
-    }
-
     .energy-gauge-head {
       display: flex;
       align-items: center;
@@ -1062,8 +1174,8 @@
     .bedtime-forecast {
       font-size: 10.5px;
       color: #94a3b8;
-      background: #090c13;
-      border: 1px solid #181f30;
+      background: #0e131f;
+      border: 1px solid #1e273b;
       border-radius: 8px;
       padding: 5px 8px;
       margin-bottom: 8px;
@@ -1080,9 +1192,9 @@
     }
 
     .caf-box {
-      background: #090c13;
-      border: 1px solid #181f30;
-      border-radius: 11px;
+      background: #0e131f;
+      border: 1px solid #1e273b;
+      border-radius: 10px;
       padding: 8px;
       min-width: 0;
       display: flex;
@@ -1095,7 +1207,7 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 6px;
-      min-height: 28px;
+      min-height: 24px;
     }
 
     .caf-label {
@@ -1111,6 +1223,24 @@
       font-weight: 600;
       white-space: nowrap;
       flex-shrink: 0;
+    }
+
+    .coffee-type-select {
+      width: 100%;
+      background: #141a29;
+      color: #e2e8f0;
+      border: 1px solid #222c42;
+      border-radius: 7px;
+      padding: 4px 18px 4px 6px;
+      font-size: 10.5px;
+      font-weight: 600;
+      font-family: inherit;
+      margin-top: 5px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 5px center;
+      text-overflow: ellipsis;
     }
 
     .caf-ctrl-row {
@@ -1152,13 +1282,6 @@
       font-size: 13.5px;
       font-weight: 800;
       color: #ffffff;
-    }
-
-    .caf-logs-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 8px;
     }
 
     /* Section Header */
@@ -1561,7 +1684,7 @@
     }
 
     .cheat-item {
-      background: #090c13;
+      background: #0e131f;
       border: 1px solid #1e273b;
       border-radius: 9px;
       padding: 7px 9px;
@@ -1636,7 +1759,7 @@
     }
 
     .evo-series-block:first-of-type {
-      margin-top: 8px;
+      margin-top: 0;
       padding-top: 0;
       border-top: none;
     }
@@ -1720,6 +1843,50 @@
       justify-content: space-between;
       gap: 6px;
       margin-top: 8px;
+    }
+
+    /* Historique avec code couleur Entraînement vs Repos */
+    .history-card-item {
+      background: #090c13;
+      border: 1px solid #181f30;
+      border-left: 3.5px solid #3b82f6;
+      border-radius: 11px;
+      padding: 9px 10px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .history-card-item.mode-rest {
+      border-left-color: #10b981;
+    }
+
+    .mode-tag-tr {
+      display: inline-block;
+      background: rgba(37, 99, 235, 0.2);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    .mode-tag-re {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      vertical-align: middle;
     }
 
     /* Assistant IA */
@@ -1896,19 +2063,6 @@
       resize: vertical;
     }
 
-    .history-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 9px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      gap: 8px;
-    }
-
-    .history-item:last-child {
-      border-bottom: none;
-    }
-
     /* Bottom Navigation */
     .bottom-bar {
       position: fixed;
@@ -1993,7 +2147,7 @@
       </div>
 
       <div class="header-right">
-        <button class="activity-rings-btn" id="btn-header-rings" type="button" title="Objectifs du jour (Calories, Eau, Sel & Suppléments)">
+        <button class="activity-rings-btn" id="btn-header-rings" type="button" title="Basculer Radar & Stats / Aujourd'hui">
           <div id="header-rings-svg" style="width:32px;height:32px;flex-shrink:0;"></div>
           <div class="rings-meta">
             <span class="rings-pct" id="header-rings-pct">0%</span>
@@ -2029,7 +2183,7 @@
       <div id="sync-msg" style="font-size:11px;color:#8b95a8;margin-top:8px;"></div>
     </div>
 
-    <div class="date-bar">
+    <div class="date-bar" id="global-date-bar">
       <button class="arrow-btn" id="btn-prev-date" type="button">‹</button>
       <div class="date-center">
         <div class="date-top-line">
@@ -2042,14 +2196,18 @@
       <button class="arrow-btn" id="btn-next-date" type="button">›</button>
     </div>
 
-    <div class="mode-switch">
+    <div class="mode-switch-wrap" id="global-mode-bar">
       <button class="mode-btn active" id="btn-mode-training" type="button">
         <span>⚡</span>
         <span>ENTRAÎNEMENT</span>
       </button>
-      <button class="mode-btn" id="btn-mode-rest" type="button">
+      <button class="mode-btn rest-active" id="btn-mode-rest" type="button">
         <span>🔋</span>
         <span>JOUR DE REPOS</span>
+      </button>
+      <button class="lock-day-btn" id="btn-lock-day" type="button" title="Valider et figer le type de journée">
+        <span id="lock-day-icon">🔓</span>
+        <span id="lock-day-text">Figer</span>
       </button>
     </div>
 
@@ -2100,22 +2258,22 @@
         </div>
       </div>
 
-      <!-- Accordéon Routine Matin & Santé (Poids, Taille, Sommeil) -->
-      <div class="morning-accordion">
-        <div class="morning-head" id="btn-toggle-morning">
+      <!-- Accordéon 1 : Routine Matin & Santé (Poids, Taille, Sommeil) -->
+      <div class="accordion-card">
+        <div class="accordion-head" data-acc-key="today_morning">
           <div class="supp-left">
             <span style="font-size:15px;">🌅</span>
             <strong style="font-size:12.5px;">Routine Matin & Santé</strong>
           </div>
-          <div class="morning-summary-chips">
+          <div class="accordion-summary-chips">
             <span class="mini-badge" id="morning-chip-weight">⚖️ —</span>
             <span class="mini-badge" id="morning-chip-waist">📏 —</span>
             <span class="mini-badge" id="morning-chip-sleep">🌙 —</span>
-            <span id="morning-chevron" style="font-size:11px;color:#60a5fa;font-weight:800;">▼</span>
+            <span class="acc-chevron" data-acc-chev="today_morning">▼</span>
           </div>
         </div>
 
-        <div class="morning-body" id="morning-body">
+        <div class="accordion-body" data-acc-body="today_morning">
           <div class="body-metrics-grid">
             <div class="metric-box-inner">
               <div>
@@ -2186,177 +2344,217 @@
         </div>
       </div>
 
-      <!-- Eau & Sel -->
-      <div class="two-col-trackers">
-        <div class="tracker-card">
-          <div class="tracker-top">
-            <div class="tracker-title-wrap">
-              <span>💧</span>
-              <span>Eau</span>
-            </div>
-            <span class="tracker-pill pill-water">4,5 L</span>
+      <!-- Accordéon 2 : Eau, Sel & Suppléments -->
+      <div class="accordion-card">
+        <div class="accordion-head" data-acc-key="today_hydration_supp">
+          <div class="supp-left">
+            <span style="font-size:15px;">💧</span>
+            <strong style="font-size:12.5px;">Eau, Sel & Suppléments</strong>
           </div>
-          <div class="tracker-val-line">
-            <span class="tracker-big" id="water-val">0.00</span>
-            <span class="tracker-goal">/ 4,5 L</span>
-          </div>
-          <div class="mini-track">
-            <div class="mini-fill-water" id="water-bar" style="width:0%"></div>
-          </div>
-          <div class="step-btns">
-            <button class="step-btn" id="water-minus" type="button">-0.25</button>
-            <button class="step-btn" id="water-plus-25" type="button">+0.25</button>
-            <button class="step-btn accent-water" id="water-plus-50" type="button">+0.5L</button>
+          <div class="accordion-summary-chips">
+            <span class="mini-badge" id="sum-chip-water">0.0/4.5L</span>
+            <span class="mini-badge" id="sum-chip-salt">0/6g</span>
+            <span class="mini-badge" id="sum-chip-supps">Supp 0/2</span>
+            <span class="acc-chevron" data-acc-chev="today_hydration_supp">▼</span>
           </div>
         </div>
 
-        <div class="tracker-card">
-          <div class="tracker-top">
-            <div class="tracker-title-wrap">
-              <span>🧂</span>
-              <span>Sel</span>
+        <div class="accordion-body" data-acc-body="today_hydration_supp">
+          <div class="two-col-trackers">
+            <div class="tracker-card">
+              <div class="tracker-top">
+                <div class="tracker-title-wrap">
+                  <span>💧</span>
+                  <span>Eau</span>
+                </div>
+                <span class="tracker-pill pill-water">4,5 L</span>
+              </div>
+              <div class="tracker-val-line">
+                <span class="tracker-big" id="water-val">0.00</span>
+                <span class="tracker-goal">/ 4,5 L</span>
+              </div>
+              <div class="mini-track">
+                <div class="mini-fill-water" id="water-bar" style="width:0%"></div>
+              </div>
+              <div class="step-btns">
+                <button class="step-btn" id="water-minus" type="button">-0.25</button>
+                <button class="step-btn" id="water-plus-25" type="button">+0.25</button>
+                <button class="step-btn accent-water" id="water-plus-50" type="button">+0.5L</button>
+              </div>
             </div>
-            <span class="tracker-pill pill-salt">6 g</span>
+
+            <div class="tracker-card">
+              <div class="tracker-top">
+                <div class="tracker-title-wrap">
+                  <span>🧂</span>
+                  <span>Sel</span>
+                </div>
+                <span class="tracker-pill pill-salt">6 g</span>
+              </div>
+              <div class="tracker-val-line">
+                <span class="tracker-big" id="salt-val">0.0</span>
+                <span class="tracker-goal">/ 6 g</span>
+              </div>
+              <div class="mini-track">
+                <div class="mini-fill-salt" id="salt-bar" style="width:0%"></div>
+              </div>
+              <div class="step-btns">
+                <button class="step-btn" id="salt-minus" type="button">-0.5g</button>
+                <button class="step-btn" id="salt-plus-05" type="button">+0.5g</button>
+                <button class="step-btn accent-salt" id="salt-plus-1" type="button">+1g</button>
+              </div>
+            </div>
           </div>
-          <div class="tracker-val-line">
-            <span class="tracker-big" id="salt-val">0.0</span>
-            <span class="tracker-goal">/ 6 g</span>
-          </div>
-          <div class="mini-track">
-            <div class="mini-fill-salt" id="salt-bar" style="width:0%"></div>
-          </div>
-          <div class="step-btns">
-            <button class="step-btn" id="salt-minus" type="button">-0.5g</button>
-            <button class="step-btn" id="salt-plus-05" type="button">+0.5g</button>
-            <button class="step-btn accent-salt" id="salt-plus-1" type="button">+1g</button>
+
+          <div class="supp-grid-2">
+            <div class="supp-card" id="card-creatine">
+              <div class="supp-left">
+                <span style="font-size:15px;">⚡</span>
+                <div>
+                  <div class="supp-name">Créatine</div>
+                  <div class="supp-sub" id="creatine-sub">5 g / jour</div>
+                </div>
+              </div>
+              <div class="circle-check" id="check-creatine">✓</div>
+            </div>
+
+            <div class="supp-card" id="card-eaa">
+              <div class="supp-left">
+                <span style="font-size:15px;">🧪</span>
+                <div>
+                  <div class="supp-name">EAA</div>
+                  <div class="supp-sub" id="eaa-sub">15 g / jour</div>
+                </div>
+              </div>
+              <div class="circle-check" id="check-eaa">✓</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Créatine & EAA -->
-      <div class="supp-grid-2">
-        <div class="supp-card" id="card-creatine">
+      <!-- Accordéon 3 : Shakers, Booster & Caféine -->
+      <div class="accordion-card">
+        <div class="accordion-head" data-acc-key="today_shakers_caf">
           <div class="supp-left">
-            <span style="font-size:15px;">⚡</span>
-            <div>
-              <div class="supp-name">Créatine</div>
-              <div class="supp-sub" id="creatine-sub">5 g / jour</div>
+            <span style="font-size:15px;">🥤</span>
+            <strong style="font-size:12.5px;">Shakers, Booster & Caféine</strong>
+          </div>
+          <div class="accordion-summary-chips">
+            <span class="mini-badge" id="sum-chip-whey">0 shaker</span>
+            <span class="mini-badge" id="sum-chip-caf">☕ 0 mg</span>
+            <span class="acc-chevron" data-acc-chev="today_shakers_caf">▼</span>
+          </div>
+        </div>
+
+        <div class="accordion-body" data-acc-body="today_shakers_caf">
+          <!-- Shaker de Whey & RTD -->
+          <div class="sub-block-dark">
+            <div class="whey-head">
+              <div class="supp-left">
+                <span>🥤</span>
+                <strong style="font-size:12.5px;">Shaker Whey & RTD</strong>
+              </div>
+              <span class="whey-macros-badge" id="whey-preview-macros"></span>
+            </div>
+            <div class="whey-select-row">
+              <select id="whey-protein-select" class="bar-select" aria-label="Choisir une protéine"></select>
+            </div>
+            <div class="whey-controls">
+              <div class="whey-qty-wrap">
+                <input type="number" id="whey-shake-qty" class="whey-qty-input" inputmode="decimal" min="1" step="1" placeholder="g/ml" />
+                <span class="qty-u" id="whey-qty-unit">g</span>
+              </div>
+              <button class="whey-add-btn" id="btn-add-whey-shake" type="button">+ Ajouter shaker</button>
+            </div>
+            <div class="whey-shakers-list" id="whey-shakers-list"></div>
+          </div>
+
+          <!-- Booster pré workout -->
+          <div class="sub-block-dark" id="card-booster">
+            <div class="whey-head">
+              <div class="supp-left">
+                <span>🔥</span>
+                <strong style="font-size:12.5px;">Booster pré workout</strong>
+              </div>
+              <span class="caffeine-pill" id="booster-preview-pill"></span>
+            </div>
+            <div class="whey-select-row">
+              <select id="booster-select" class="bar-select" aria-label="Choisir un booster"></select>
+            </div>
+            <div class="bar-controls">
+              <select id="booster-dose-select" class="bar-qty-select" aria-label="Dose">
+                <option value="0.5">0.5</option>
+                <option value="1" selected>1</option>
+                <option value="1.5">1.5</option>
+                <option value="2">2</option>
+              </select>
+              <span class="qty-u" style="align-self:center;text-align:center;">dose</span>
+              <button class="bar-add-btn" id="btn-add-booster" type="button">+ Ajouter</button>
+            </div>
+            <div class="bar-preview" id="booster-preview-meta"></div>
+            <div class="whey-shakers-list" id="boosters-list"></div>
+          </div>
+
+          <!-- Caféine & Jauge d'énergie -->
+          <div class="sub-block-dark">
+            <div class="whey-head">
+              <div class="supp-left">
+                <span>☕</span>
+                <strong style="font-size:12.5px;">Caféine & Énergie</strong>
+              </div>
+              <span class="caffeine-pill" id="caffeine-total-pill">Total : 0 mg</span>
+            </div>
+
+            <div class="energy-gauge-head">
+              <span id="energy-gauge-label">⚡ Énergie active : 0%</span>
+              <span id="energy-active-mg" style="color:#94a3b8;font-size:10px;">0 mg actifs</span>
+            </div>
+
+            <div class="mini-track">
+              <div class="mini-fill-caffeine" id="caffeine-bar" style="width:0%"></div>
+            </div>
+
+            <div class="bedtime-forecast">
+              <span>🛏️ Résiduel estimé au coucher (22h30)</span>
+              <strong id="bedtime-caffeine-val" style="color:#e2e8f0;">0 mg</strong>
+            </div>
+
+            <div class="caf-two-grid">
+              <div class="caf-box">
+                <div class="caf-box-head">
+                  <span class="caf-label">Café</span>
+                  <span class="caf-mg-hint" id="coffee-unit-mg-hint">80 mg</span>
+                </div>
+                <select id="coffee-type-select" class="coffee-type-select" aria-label="Type de café">
+                  <option value="80" data-name="Espresso">Espresso (80 mg)</option>
+                  <option value="160" data-name="Double Espresso">Double Espresso (160 mg)</option>
+                  <option value="120" data-name="Café filtre / Mug">Café filtre / Mug (120 mg)</option>
+                  <option value="95" data-name="Allongé / Americano">Allongé / Americano (95 mg)</option>
+                  <option value="80" data-name="Cappuccino / Latte">Cappuccino / Latte (80 mg)</option>
+                  <option value="5" data-name="Décaféiné">Décaféiné (5 mg)</option>
+                </select>
+                <div class="caf-ctrl-row">
+                  <button class="cnt-btn" id="coffee-minus" type="button">−</button>
+                  <span class="cnt-val" id="coffee-count">0</span>
+                  <button class="cnt-btn plus-coffee" id="coffee-plus" type="button">+</button>
+                </div>
+              </div>
+
+              <div class="caf-box">
+                <div class="caf-box-head">
+                  <span class="caf-label">Boissons énergisantes</span>
+                  <span class="caf-mg-hint">150 mg</span>
+                </div>
+                <div style="font-size:10px;color:#64748b;margin-top:6px;">Canette 500 ml</div>
+                <div class="caf-ctrl-row">
+                  <button class="cnt-btn" id="energy-minus" type="button">−</button>
+                  <span class="cnt-val" id="energy-count">0</span>
+                  <button class="cnt-btn plus-energy" id="energy-plus" type="button">+</button>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="circle-check" id="check-creatine">✓</div>
         </div>
-
-        <div class="supp-card" id="card-eaa">
-          <div class="supp-left">
-            <span style="font-size:15px;">🧪</span>
-            <div>
-              <div class="supp-name">EAA</div>
-              <div class="supp-sub" id="eaa-sub">15 g / jour</div>
-            </div>
-          </div>
-          <div class="circle-check" id="check-eaa">✓</div>
-        </div>
-      </div>
-
-      <!-- Shaker de Whey & RTD par marque -->
-      <div class="whey-quick-card">
-        <div class="whey-head">
-          <div class="supp-left">
-            <span>🥤</span>
-            <strong style="font-size:13px;">Shaker Whey & RTD</strong>
-          </div>
-          <span class="whey-macros-badge" id="whey-preview-macros"></span>
-        </div>
-        <div class="whey-select-row">
-          <select id="whey-protein-select" class="bar-select" aria-label="Choisir une protéine"></select>
-        </div>
-        <div class="whey-controls">
-          <div class="whey-qty-wrap">
-            <input type="number" id="whey-shake-qty" class="whey-qty-input" inputmode="decimal" min="1" step="1" placeholder="g/ml" />
-            <span class="qty-u" id="whey-qty-unit">g</span>
-          </div>
-          <button class="whey-add-btn" id="btn-add-whey-shake" type="button">+ Ajouter shaker</button>
-        </div>
-        <div class="whey-shakers-list" id="whey-shakers-list"></div>
-      </div>
-
-      <!-- Booster pré workout par marque -->
-      <div class="booster-card" id="card-booster">
-        <div class="whey-head">
-          <div class="supp-left">
-            <span>🔥</span>
-            <strong style="font-size:13px;">Booster pré workout</strong>
-          </div>
-          <span class="caffeine-pill" id="booster-preview-pill"></span>
-        </div>
-        <div class="whey-select-row">
-          <select id="booster-select" class="bar-select" aria-label="Choisir un booster"></select>
-        </div>
-        <div class="bar-controls">
-          <select id="booster-dose-select" class="bar-qty-select" aria-label="Dose">
-            <option value="0.5">0.5</option>
-            <option value="1" selected>1</option>
-            <option value="1.5">1.5</option>
-            <option value="2">2</option>
-          </select>
-          <span class="qty-u" style="align-self:center;text-align:center;">dose</span>
-          <button class="bar-add-btn" id="btn-add-booster" type="button">+ Ajouter</button>
-        </div>
-        <div class="bar-preview" id="booster-preview-meta"></div>
-        <div class="whey-shakers-list" id="boosters-list"></div>
-      </div>
-
-      <!-- Caféine & Jauge d'énergie -->
-      <div class="caffeine-master-card">
-        <div class="caf-master-top">
-          <div class="caf-master-title">
-            <span>☕</span>
-            <span>Caféine & Énergie</span>
-          </div>
-          <span class="caffeine-pill" id="caffeine-total-pill">Total : 0 mg</span>
-        </div>
-
-        <div class="energy-gauge-head">
-          <span id="energy-gauge-label">⚡ Énergie active : 0%</span>
-          <span id="energy-active-mg" style="color:#94a3b8;font-size:10px;">0 mg actifs</span>
-        </div>
-
-        <div class="mini-track">
-          <div class="mini-fill-caffeine" id="caffeine-bar" style="width:0%"></div>
-        </div>
-
-        <div class="bedtime-forecast">
-          <span>🛏️ Résiduel estimé au coucher (22h30)</span>
-          <strong id="bedtime-caffeine-val" style="color:#e2e8f0;">0 mg</strong>
-        </div>
-
-        <div class="caf-two-grid">
-          <div class="caf-box">
-            <div class="caf-box-head">
-              <span class="caf-label">Café</span>
-              <span class="caf-mg-hint">80 mg</span>
-            </div>
-            <div class="caf-ctrl-row">
-              <button class="cnt-btn" id="coffee-minus" type="button">−</button>
-              <span class="cnt-val" id="coffee-count">0</span>
-              <button class="cnt-btn plus-coffee" id="coffee-plus" type="button">+</button>
-            </div>
-          </div>
-
-          <div class="caf-box">
-            <div class="caf-box-head">
-              <span class="caf-label">Boissons énergisantes</span>
-              <span class="caf-mg-hint">150 mg</span>
-            </div>
-            <div class="caf-ctrl-row">
-              <button class="cnt-btn" id="energy-minus" type="button">−</button>
-              <span class="cnt-val" id="energy-count">0</span>
-              <button class="cnt-btn plus-energy" id="energy-plus" type="button">+</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="caf-logs-list" id="caffeine-logs-list"></div>
       </div>
 
       <!-- Repas -->
@@ -2458,6 +2656,7 @@
         </div>
       </div>
 
+      <!-- Radar global -->
       <div class="panel-card">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
           <div>
@@ -2472,127 +2671,157 @@
         </div>
       </div>
 
-      <!-- Évolution : Poids, Tour de taille, Sommeil & Calories -->
-      <div class="panel-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-          <div>
-            <div class="eyebrow">ÉVOLUTION</div>
-            <strong style="font-size:15px;">Poids, Taille & Sommeil</strong>
-          </div>
-          <span style="font-size:11px;color:#7c879c;font-weight:700;" id="evo-period-lbl">7 derniers jours</span>
-        </div>
-
-        <div class="evo-series-block">
-          <div class="evo-series-head">
-            <span><span class="evo-dot" style="background:#38bdf8;"></span><strong>Poids</strong> <span style="color:#7c879c;">(kg)</span></span>
-            <span id="weight-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
-          </div>
-          <div id="weight-chart-box" style="width:100%;"></div>
-          <div class="weight-stats-row" id="weight-stats-row"></div>
-        </div>
-
-        <div class="evo-series-block">
-          <div class="evo-series-head">
-            <span><span class="evo-dot" style="background:#a855f7;"></span><strong>Tour de taille</strong> <span style="color:#7c879c;">(cm)</span></span>
-            <span id="waist-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
-          </div>
-          <div id="waist-chart-box" style="width:100%;"></div>
-          <div class="weight-stats-row" id="waist-stats-row"></div>
-        </div>
-
-        <div class="evo-series-block">
-          <div class="evo-series-head">
-            <span><span class="evo-dot" style="background:#818cf8;"></span><strong>Sommeil</strong> <span style="color:#7c879c;">(obj. 8h)</span></span>
-            <span id="sleep-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
-          </div>
-          <div id="sleep-chart-box" style="width:100%;"></div>
-          <div class="weight-stats-row" id="sleep-stats-row"></div>
-        </div>
-      </div>
-
-      <!-- Hydratation (barres) -->
-      <div class="panel-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-          <div>
-            <div class="eyebrow" style="color:#38bdf8;">OBJECTIF 4,5 L</div>
-            <strong style="font-size:15px;">Hydratation</strong>
-          </div>
-          <span id="hydration-chart-avg" style="font-size:11px;color:#8b95a8;font-weight:700;">Moy. : —</span>
-        </div>
-        <div id="hydration-bars-box" style="width:100%;margin-top:8px;"></div>
-      </div>
-
-      <!-- Sel (barres) -->
-      <div class="panel-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-          <div>
-            <div class="eyebrow" style="color:#fbbf24;">OBJECTIF 6 G</div>
-            <strong style="font-size:15px;">Sel</strong>
-          </div>
-          <span id="salt-chart-avg" style="font-size:11px;color:#8b95a8;font-weight:700;">Moy. : —</span>
-        </div>
-        <div id="salt-bars-box" style="width:100%;margin-top:8px;"></div>
-      </div>
-
-      <!-- Macros P, G, L (barres groupées) -->
-      <div class="panel-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-          <div>
-            <div class="eyebrow">MACRONUTRIMENTS</div>
-            <strong style="font-size:15px;">Protéines, Glucides, Lipides</strong>
-          </div>
-          <span id="macros-chart-avg" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
-        </div>
-        <div class="macro-bar-legend">
-          <span><span class="evo-dot" style="background:#3b82f6;"></span>P (g)</span>
-          <span><span class="evo-dot" style="background:#f97316;"></span>G (g)</span>
-          <span><span class="evo-dot" style="background:#06b6d4;"></span>L (g)</span>
-        </div>
-        <div id="macros-bars-box" style="width:100%;margin-top:6px;"></div>
-      </div>
-
-      <div class="panel-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-          <div>
-            <div class="eyebrow">BILAN COACH</div>
-            <strong style="font-size:15px;" id="coach-report-title">Récapitulatif du jour</strong>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <div class="seg-mini">
-              <button class="seg-mini-btn active" id="btn-report-day" type="button">Jour</button>
-              <button class="seg-mini-btn" id="btn-report-week" type="button">7 jours</button>
+      <!-- Accordéon Stats 1 : Évolution Mensurations & Sommeil -->
+      <div class="accordion-card">
+        <div class="accordion-head" data-acc-key="radar_evo">
+          <div class="supp-left">
+            <span style="font-size:15px;">📈</span>
+            <div>
+              <strong style="font-size:13px;">Évolution : Poids, Taille & Sommeil</strong>
+              <div class="weight-meta" id="evo-period-lbl">7 derniers jours</div>
             </div>
-            <button class="btn-blue" id="btn-copy-summary" type="button" style="flex:0 0 auto;">Copier</button>
+          </div>
+          <span class="acc-chevron" data-acc-chev="radar_evo">▼</span>
+        </div>
+
+        <div class="accordion-body" data-acc-body="radar_evo">
+          <div class="evo-series-block">
+            <div class="evo-series-head">
+              <span><span class="evo-dot" style="background:#38bdf8;"></span><strong>Poids</strong> <span style="color:#7c879c;">(kg)</span></span>
+              <span id="weight-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
+            </div>
+            <div id="weight-chart-box" style="width:100%;"></div>
+            <div class="weight-stats-row" id="weight-stats-row"></div>
+          </div>
+
+          <div class="evo-series-block">
+            <div class="evo-series-head">
+              <span><span class="evo-dot" style="background:#a855f7;"></span><strong>Tour de taille</strong> <span style="color:#7c879c;">(cm)</span></span>
+              <span id="waist-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
+            </div>
+            <div id="waist-chart-box" style="width:100%;"></div>
+            <div class="weight-stats-row" id="waist-stats-row"></div>
+          </div>
+
+          <div class="evo-series-block">
+            <div class="evo-series-head">
+              <span><span class="evo-dot" style="background:#818cf8;"></span><strong>Sommeil</strong> <span style="color:#7c879c;">(obj. 8h)</span></span>
+              <span id="sleep-range-minmax" style="font-size:11px;color:#8b95a8;font-weight:700;">—</span>
+            </div>
+            <div id="sleep-chart-box" style="width:100%;"></div>
+            <div class="weight-stats-row" id="sleep-stats-row"></div>
           </div>
         </div>
-        <textarea class="report-area" id="coach-summary-text" readonly></textarea>
       </div>
 
-      <div class="panel-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-          <div>
-            <div class="eyebrow">ANALYSE IA</div>
-            <strong style="font-size:15px;" id="ai-range-title">Pré-check-in sur plage</strong>
+      <!-- Accordéon Stats 2 : Hydratation & Sel -->
+      <div class="accordion-card">
+        <div class="accordion-head" data-acc-key="radar_hydrosalt">
+          <div class="supp-left">
+            <span style="font-size:15px;">💧</span>
+            <div>
+              <strong style="font-size:13px;">Hydratation (4,5 L) & Sel (6 g)</strong>
+              <div class="weight-meta">Objectifs quotidiens</div>
+            </div>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button class="btn-dark" id="btn-copy-ai-weekly" type="button" style="padding:6px 10px;">Copier</button>
-            <button class="ai-btn" id="btn-ai-weekly" type="button">✨ Analyser</button>
+          <span class="acc-chevron" data-acc-chev="radar_hydrosalt">▼</span>
+        </div>
+
+        <div class="accordion-body" data-acc-body="radar_hydrosalt">
+          <div class="evo-series-block">
+            <div class="evo-series-head">
+              <span><span class="evo-dot" style="background:#38bdf8;"></span><strong>Hydratation</strong> <span style="color:#7c879c;">(obj. 4,5 L)</span></span>
+              <span id="hydration-chart-avg" style="font-size:11px;color:#8b95a8;font-weight:700;">Moy. : —</span>
+            </div>
+            <div id="hydration-bars-box" style="width:100%;margin-top:4px;"></div>
+          </div>
+
+          <div class="evo-series-block">
+            <div class="evo-series-head">
+              <span><span class="evo-dot" style="background:#f59e0b;"></span><strong>Sel</strong> <span style="color:#7c879c;">(obj. 6 g)</span></span>
+              <span id="salt-chart-avg" style="font-size:11px;color:#8b95a8;font-weight:700;">Moy. : —</span>
+            </div>
+            <div id="salt-bars-box" style="width:100%;margin-top:4px;"></div>
           </div>
         </div>
-        <div class="ai-range-row">
-          <div class="ai-range-inputs">
-            <label class="ai-date-lbl">
-              Du
-              <input type="date" id="ai-date-from" class="ai-date-input" />
-            </label>
-            <label class="ai-date-lbl">
-              Au
-              <input type="date" id="ai-date-to" class="ai-date-input" />
-            </label>
+      </div>
+
+      <!-- Accordéon Stats 3 : Macronutriments P, G, L -->
+      <div class="accordion-card">
+        <div class="accordion-head" data-acc-key="radar_macros">
+          <div class="supp-left">
+            <span style="font-size:15px;">📊</span>
+            <div>
+              <strong style="font-size:13px;">Macronutriments (P, G, L)</strong>
+              <div class="weight-meta" id="macros-chart-avg">—</div>
+            </div>
           </div>
-          <button class="reuse-btn" id="btn-ai-range-7d" type="button">7 derniers jours</button>
+          <span class="acc-chevron" data-acc-chev="radar_macros">▼</span>
         </div>
-        <div class="ai-result-box hidden" id="ai-weekly-result"></div>
+
+        <div class="accordion-body" data-acc-body="radar_macros">
+          <div class="macro-bar-legend">
+            <span><span class="evo-dot" style="background:#3b82f6;"></span>P (g)</span>
+            <span><span class="evo-dot" style="background:#f97316;"></span>G (g)</span>
+            <span><span class="evo-dot" style="background:#06b6d4;"></span>L (g)</span>
+          </div>
+          <div id="macros-bars-box" style="width:100%;margin-top:6px;"></div>
+        </div>
+      </div>
+
+      <!-- Accordéon Stats 4 : Bilan Coach & Analyse IA -->
+      <div class="accordion-card">
+        <div class="accordion-head" data-acc-key="radar_coach">
+          <div class="supp-left">
+            <span style="font-size:15px;">📋</span>
+            <div>
+              <strong style="font-size:13px;">Bilan Coach & Analyse IA</strong>
+              <div class="weight-meta">Export texte & pré-check-in</div>
+            </div>
+          </div>
+          <span class="acc-chevron" data-acc-chev="radar_coach">▼</span>
+        </div>
+
+        <div class="accordion-body" data-acc-body="radar_coach">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+            <strong style="font-size:13.5px;" id="coach-report-title">Récapitulatif du jour</strong>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="seg-mini">
+                <button class="seg-mini-btn active" id="btn-report-day" type="button">Jour</button>
+                <button class="seg-mini-btn" id="btn-report-week" type="button">7 jours</button>
+              </div>
+              <button class="btn-blue" id="btn-copy-summary" type="button" style="flex:0 0 auto;">Copier</button>
+            </div>
+          </div>
+          <textarea class="report-area" id="coach-summary-text" readonly></textarea>
+
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+              <div>
+                <div class="eyebrow">ANALYSE IA</div>
+                <strong style="font-size:13.5px;" id="ai-range-title">Pré-check-in sur plage</strong>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button class="btn-dark" id="btn-copy-ai-weekly" type="button" style="padding:6px 10px;">Copier</button>
+                <button class="ai-btn" id="btn-ai-weekly" type="button">✨ Analyser</button>
+              </div>
+            </div>
+            <div class="ai-range-row">
+              <div class="ai-range-inputs">
+                <label class="ai-date-lbl">
+                  Du
+                  <input type="date" id="ai-date-from" class="ai-date-input" />
+                </label>
+                <label class="ai-date-lbl">
+                  Au
+                  <input type="date" id="ai-date-to" class="ai-date-input" />
+                </label>
+              </div>
+              <button class="reuse-btn" id="btn-ai-range-7d" type="button">7 derniers jours</button>
+            </div>
+            <div class="ai-result-box hidden" id="ai-weekly-result"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2613,12 +2842,15 @@
     <!-- VUE 4 : HISTORIQUE -->
     <div id="tab-history-view" class="hidden">
       <div class="panel-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
           <div>
             <div class="eyebrow">HISTORIQUE</div>
             <strong style="font-size:15px;">Journées</strong>
           </div>
-          <button class="btn-dark" id="btn-reset-current" type="button">Reset jour</button>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span class="mode-tag-tr">Entraînement</span>
+            <span class="mode-tag-re">Repos</span>
+          </div>
         </div>
         <div id="history-list"></div>
       </div>
@@ -3046,6 +3278,7 @@
     const LOGS_KEY = "macrotrack_ascend_logs_v4";
     const CFG_KEY = "macrotrack_ascend_cfg_v1";
     const STOCK_KEY = "macrotrack_ascend_stock_v1";
+    const UI_COLLAPSE_KEY = "macrotrack_ui_collapse_v1";
     const DEFAULT_URL = "https://macrotrack-sync-default-rtdb.firebaseio.com";
     const DEFAULT_UID = "maxime-macrotrack";
 
@@ -3070,6 +3303,36 @@
     if (!store || typeof store !== "object") store = {};
     let stockMeta = readStore(STOCK_KEY, {});
     if (!stockMeta || typeof stockMeta !== "object") stockMeta = {};
+
+    let collapsedSections = readStore(UI_COLLAPSE_KEY, {
+      today_morning: false,
+      today_hydration_supp: false,
+      today_shakers_caf: false,
+      radar_evo: false,
+      radar_hydrosalt: false,
+      radar_macros: false,
+      radar_coach: false
+    });
+    if (!collapsedSections || typeof collapsedSections !== "object") collapsedSections = {};
+
+    function applyAccordionStates() {
+      document.querySelectorAll("[data-acc-body]").forEach(body => {
+        const key = body.dataset.accBody;
+        const isClosed = Boolean(collapsedSections[key]);
+        body.classList.toggle("hidden", isClosed);
+      });
+      document.querySelectorAll("[data-acc-chev]").forEach(chev => {
+        const key = chev.dataset.accChev;
+        const isClosed = Boolean(collapsedSections[key]);
+        chev.textContent = isClosed ? "▶" : "▼";
+      });
+    }
+
+    function toggleAccordion(key) {
+      collapsedSections[key] = !Boolean(collapsedSections[key]);
+      writeStore(UI_COLLAPSE_KEY, collapsedSections);
+      applyAccordionStates();
+    }
 
     function todayISO() {
       const d = new Date();
@@ -3109,9 +3372,17 @@
       return new Date(y, m - 1, d, hh || 0, mm || 0, 0).getTime();
     }
 
-    function setMorningHourTs(iso) {
+    function tsToMinutesOfDay(ts) {
+      const d = ts ? new Date(ts) : new Date();
+      return d.getHours() * 60 + d.getMinutes();
+    }
+
+    function minutesOfDayToTs(iso, totalMin) {
+      const clamped = Math.max(300, Math.min(1425, Math.round(totalMin / 15) * 15));
       const [y, m, d] = iso.split("-").map(Number);
-      return new Date(y, m - 1, d, 7, 30, 0).getTime();
+      const hh = Math.floor(clamped / 60);
+      const mm = clamped % 60;
+      return new Date(y, m - 1, d, hh, mm, 0).getTime();
     }
 
     function parseSleepHours(raw) {
@@ -3151,6 +3422,7 @@
       return {
         phase: phKey,
         mode,
+        dayLocked: false,
         weight: null,
         waist: null,
         sleepHours: null,
@@ -3163,6 +3435,7 @@
         boosters: [],
         coffee: 0,
         coffeeLogs: [],
+        coffeeItems: [],
         energyDrinks: 0,
         energyLogs: [],
         wheyShakes: [],
@@ -3180,6 +3453,7 @@
       const oldMeals = d.meals || {};
       const fresh = defaultDay(targetMode, targetPhase);
 
+      fresh.dayLocked = Boolean(d.dayLocked);
       fresh.weight = d.weight;
       fresh.waist = d.waist;
       fresh.sleepHours = d.sleepHours;
@@ -3192,6 +3466,7 @@
       fresh.boosters = Array.isArray(d.boosters) ? [...d.boosters] : [];
       fresh.coffee = d.coffee;
       fresh.coffeeLogs = Array.isArray(d.coffeeLogs) ? [...d.coffeeLogs] : [];
+      fresh.coffeeItems = Array.isArray(d.coffeeItems) ? [...d.coffeeItems] : [];
       fresh.energyDrinks = d.energyDrinks;
       fresh.energyLogs = Array.isArray(d.energyLogs) ? [...d.energyLogs] : [];
       fresh.wheyShakes = Array.isArray(d.wheyShakes) ? [...d.wheyShakes] : [];
@@ -3224,9 +3499,9 @@
     }
 
     let currentDate = todayISO();
+    let activeTab = "today";
     let syncTimer = null;
     let heroRemainingMode = false;
-    let morningCollapsed = false;
     let weightRangeDays = 7;
     let reportMode = "day";
     let aiCustomRange = false;
@@ -3265,6 +3540,7 @@
       const d = store[key];
       d.phase = PHASES[d.phase] ? d.phase : DEFAULT_PHASE;
       d.mode = d.mode === "rest" ? "rest" : "training";
+      d.dayLocked = Boolean(d.dayLocked);
       d.weight = (d.weight !== null && d.weight !== undefined && d.weight !== "" && Number(d.weight) > 0) ? Number(d.weight) : null;
       d.waist = (d.waist !== null && d.waist !== undefined && d.waist !== "" && Number(d.waist) > 0) ? Number(d.waist) : null;
       d.sleepHours = (d.sleepHours !== null && d.sleepHours !== undefined && d.sleepHours !== "" && Number(d.sleepHours) > 0) ? Number(d.sleepHours) : null;
@@ -3278,12 +3554,21 @@
       d.coffee = Math.max(0, parseInt(d.coffee, 10) || 0);
       d.energyDrinks = Math.max(0, parseInt(d.energyDrinks, 10) || 0);
       if (!Array.isArray(d.coffeeLogs)) d.coffeeLogs = [];
+      if (!Array.isArray(d.coffeeItems)) d.coffeeItems = [];
       if (!Array.isArray(d.energyLogs)) d.energyLogs = [];
 
       const [yy, mm, dd] = key.split("-").map(Number);
       const defaultTs = new Date(yy, mm - 1, dd, 12, 0, 0).getTime();
-      while (d.coffeeLogs.length < d.coffee) d.coffeeLogs.push(defaultTs);
-      if (d.coffeeLogs.length > d.coffee) d.coffeeLogs.length = d.coffee;
+
+      // Synchroniser coffeeItems (objets { mg, name, ts }) avec l'historique éventuel
+      if (d.coffeeItems.length < d.coffee) {
+        for (let i = d.coffeeItems.length; i < d.coffee; i++) {
+          d.coffeeItems.push({ mg: 80, name: "Espresso", ts: d.coffeeLogs[i] || defaultTs });
+        }
+      } else if (d.coffeeItems.length > d.coffee) {
+        d.coffeeItems.length = d.coffee;
+      }
+
       while (d.energyLogs.length < d.energyDrinks) d.energyLogs.push(defaultTs);
       if (d.energyLogs.length > d.energyDrinks) d.energyLogs.length = d.energyDrinks;
 
@@ -3338,7 +3623,9 @@
     }
 
     function getCaffeineBreakdown(day) {
-      const coffeeMg = day.coffee * 80;
+      const coffeeMg = (day.coffeeItems && day.coffeeItems.length)
+        ? day.coffeeItems.reduce((acc, it) => acc + (Number(it.mg) || 80), 0)
+        : day.coffee * 80;
       const energyMg = day.energyDrinks * 150;
       const boosterMg = getBoosterTotalStats(day).caffeineMg;
       return {
@@ -3363,10 +3650,19 @@
       const fallbackNoon = new Date(y, m - 1, d, 12, 0, 0).getTime();
       let activeMg = 0;
 
-      for (let i = 0; i < day.coffee; i++) {
-        const ts = (day.coffeeLogs && day.coffeeLogs[i]) ? day.coffeeLogs[i] : fallbackNoon;
-        activeMg += calcCaffeineStimulation(80, refTimeMs - ts);
+      if (day.coffeeItems && day.coffeeItems.length) {
+        day.coffeeItems.forEach(it => {
+          const mg = Number(it.mg) || 80;
+          const ts = it.ts || fallbackNoon;
+          activeMg += calcCaffeineStimulation(mg, refTimeMs - ts);
+        });
+      } else {
+        for (let i = 0; i < day.coffee; i++) {
+          const ts = (day.coffeeLogs && day.coffeeLogs[i]) ? day.coffeeLogs[i] : fallbackNoon;
+          activeMg += calcCaffeineStimulation(80, refTimeMs - ts);
+        }
       }
+
       for (let i = 0; i < day.energyDrinks; i++) {
         const ts = (day.energyLogs && day.energyLogs[i]) ? day.energyLogs[i] : fallbackNoon;
         activeMg += calcCaffeineStimulation(150, refTimeMs - ts);
@@ -3591,6 +3887,8 @@
     function renderHeaderRings(day, stats) {
       const box = document.getElementById("header-rings-svg");
       const pctEl = document.getElementById("header-rings-pct");
+      const btnRings = document.getElementById("btn-header-rings");
+      if (btnRings) btnRings.classList.toggle("active-radar", activeTab === "radar");
       if (!box) return;
 
       const r1 = Math.min(1, stats.targets.kcal > 0 ? stats.valKcal / stats.targets.kcal : 0);
@@ -4225,6 +4523,7 @@
       if (!d) return false;
       return (
         st.checkedFoods > 0 ||
+        d.dayLocked ||
         (d.weight && d.weight > 0) ||
         (d.waist && d.waist > 0) ||
         (d.sleepHours && d.sleepHours > 0) ||
@@ -4260,7 +4559,7 @@
       }
       box.innerHTML = keys.map(k => {
         const d = getDay(k);
-        const plan = getPlan(d);
+        const isRest = d.mode === "rest";
         const st = getDayStats(d);
         const caf = getCaffeineBreakdown(d);
         const extra = [
@@ -4269,14 +4568,17 @@
           d.sleepHours ? `🌙 ${formatSleepHours(d.sleepHours)}` : ""
         ].filter(Boolean).join(" • ");
         return `
-          <div class="history-item">
-            <div>
-              <strong style="font-size:12.5px;">${formatFrenchDate(k)}</strong>
-              <div style="font-size:10.5px;color:#8b95a8;">${getPhaseObj(d.phase).label} • ${plan.label}${extra ? ` • ${extra}` : ``} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${Math.round(caf.totalMg)}mg caf.</div>
+          <div class="history-card-item ${isRest ? "mode-rest" : "mode-training"}">
+            <div style="min-width:0;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <strong style="font-size:12.5px;">${formatFrenchDate(k)}</strong>
+                <span class="${isRest ? "mode-tag-re" : "mode-tag-tr"}">${isRest ? "🔋 Repos" : "⚡ Training"}</span>
+              </div>
+              <div style="font-size:10.5px;color:#8b95a8;margin-top:2px;">${extra ? `${extra} • ` : ``}${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${Math.round(caf.totalMg)}mg caf.</div>
               <div style="font-size:10.5px;color:#cbd5e1;margin-top:2px;">P ${Math.round(st.valP)}g • G ${Math.round(st.valC)}g • L ${Math.round(st.valF)}g</div>
             </div>
             <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-              <span style="font-size:12px;font-weight:700;color:#60a5fa;">${Math.round(st.valKcal)} kcal</span>
+              <span style="font-size:12px;font-weight:700;color:${isRest ? "#34d399" : "#60a5fa"};">${Math.round(st.valKcal)} kcal</span>
               <button class="btn-dark" data-open-date="${k}" type="button" style="padding:5px 8px;font-size:11px;">Ouvrir</button>
             </div>
           </div>
@@ -4356,6 +4658,108 @@
       }
     }
 
+    function buildHorizontalWheelHtml(idx, currentTs) {
+      const curMin = tsToMinutesOfDay(currentTs);
+      const ticks = [];
+      for (let m = 300; m <= 1425; m += 15) {
+        const hh = String(Math.floor(m / 60)).padStart(2, "0");
+        const mm = String(m % 60).padStart(2, "0");
+        const isMajor = (m % 60 === 0);
+        const isActive = (Math.abs(m - curMin) < 8);
+        ticks.push(`
+          <div class="h-wheel-tick ${isMajor ? "major" : ""} ${isActive ? "active" : ""}" data-min="${m}">
+            <div class="h-wheel-tick-bar"></div>
+            <span>${isMajor ? `${hh}h` : `${mm}`}</span>
+          </div>
+        `);
+      }
+      return `
+        <div class="h-wheel-wrap" data-wheel-booster="${idx}" title="Glisser horizontalement pour régler l'heure">
+          <div class="h-wheel-pointer"></div>
+          <div class="h-wheel-track">${ticks.join("")}</div>
+        </div>
+      `;
+    }
+
+    function positionBoosterWheel(wrap, ts) {
+      const track = wrap.querySelector(".h-wheel-track");
+      if (!track) return;
+      const curMin = tsToMinutesOfDay(ts);
+      const stepIdx = Math.max(0, Math.min(75, Math.round((curMin - 300) / 15)));
+      const tickW = 44;
+      const halfWrap = (wrap.clientWidth || 200) / 2;
+      const offset = halfWrap - (stepIdx * tickW + tickW / 2);
+      track.style.transform = `translateX(${offset}px)`;
+      track.querySelectorAll(".h-wheel-tick").forEach((el, i) => {
+        el.classList.toggle("active", i === stepIdx);
+      });
+    }
+
+    function initBoosterWheels() {
+      document.querySelectorAll("[data-wheel-booster]").forEach(wrap => {
+        const idx = Number(wrap.dataset.wheelBooster);
+        const d = getDay(currentDate);
+        if (!d.boosters[idx]) return;
+        positionBoosterWheel(wrap, d.boosters[idx].ts);
+
+        let startX = 0;
+        let startMin = 0;
+        let dragging = false;
+
+        const onStart = clientX => {
+          dragging = true;
+          startX = clientX;
+          startMin = tsToMinutesOfDay(getDay(currentDate).boosters[idx].ts);
+        };
+
+        const onMove = clientX => {
+          if (!dragging) return;
+          const dx = clientX - startX;
+          const deltaSteps = Math.round(-dx / 22);
+          const nextMin = Math.max(300, Math.min(1425, Math.round((startMin + deltaSteps * 15) / 15) * 15));
+          const newTs = minutesOfDayToTs(currentDate, nextMin);
+          const dayObj = getDay(currentDate);
+          if (dayObj.boosters[idx] && dayObj.boosters[idx].ts !== newTs) {
+            dayObj.boosters[idx].ts = newTs;
+            positionBoosterWheel(wrap, newTs);
+            const lblEl = document.querySelector(`[data-booster-time-lbl="${idx}"]`);
+            const inpEl = document.querySelector(`[data-direct-booster="${idx}"]`);
+            const tStr = tsToTimeInput(newTs);
+            if (lblEl) lblEl.textContent = tStr;
+            if (inpEl) inpEl.value = tStr;
+            renderCaffeineEnergy(dayObj);
+          }
+        };
+
+        const onEnd = () => {
+          if (!dragging) return;
+          dragging = false;
+          persistAndSync();
+          buildCoachReport();
+        };
+
+        wrap.addEventListener("touchstart", e => {
+          if (e.touches && e.touches[0]) onStart(e.touches[0].clientX);
+        }, { passive: true });
+        wrap.addEventListener("touchmove", e => {
+          if (e.touches && e.touches[0]) onMove(e.touches[0].clientX);
+        }, { passive: true });
+        wrap.addEventListener("touchend", onEnd);
+
+        wrap.addEventListener("mousedown", e => {
+          onStart(e.clientX);
+          const mmHandler = ev => onMove(ev.clientX);
+          const muHandler = () => {
+            window.removeEventListener("mousemove", mmHandler);
+            window.removeEventListener("mouseup", muHandler);
+            onEnd();
+          };
+          window.addEventListener("mousemove", mmHandler);
+          window.addEventListener("mouseup", muHandler);
+        });
+      });
+    }
+
     function renderBoosters(day) {
       populateBoosterSelect();
       updateBoosterPreview();
@@ -4376,8 +4780,8 @@
         const st = boosterEntryStats(entry);
         const timeVal = tsToTimeInput(entry.ts);
         return `
-          <div class="caf-log-card">
-            <div class="caf-log-top">
+          <div class="booster-log-card">
+            <div class="booster-log-top">
               <div style="min-width:0;">
                 <div style="color:#e2e8f0;word-break:break-word;"><strong>${st.label}</strong></div>
                 <div class="cheat-item-sub">${Math.round(st.caffeineMg)} mg caféine • ${Math.round(st.kcal)} kcal</div>
@@ -4387,39 +4791,24 @@
                 <button class="whey-del-btn" data-del-booster="${i}" type="button" title="Supprimer">×</button>
               </div>
             </div>
-            <div class="caf-time-quick-row">
-              <span class="time-chip-btn">🕒 ${timeVal}</span>
-              <button class="time-step-pill" data-shift-booster="${i}" data-delta-min="-60" type="button">-1h</button>
-              <button class="time-step-pill" data-shift-booster="${i}" data-delta-min="-30" type="button">-30m</button>
-              <button class="time-step-pill" data-shift-booster="${i}" data-delta-min="30" type="button">+30m</button>
-              <button class="time-step-pill" data-morning-booster="${i}" type="button">Matin 7h30</button>
+            <div class="time-wheel-row">
+              <label class="time-direct-badge" title="Cliquer pour saisir l'heure">
+                <span>🕒</span>
+                <span data-booster-time-lbl="${i}">${timeVal}</span>
+                <input type="time" data-direct-booster="${i}" value="${timeVal}" aria-label="Heure de prise" />
+              </label>
+              ${buildHorizontalWheelHtml(i, entry.ts)}
             </div>
           </div>
         `;
       }).join("");
 
-      listEl.querySelectorAll("[data-shift-booster]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const idx = Number(btn.dataset.shiftBooster);
-          const deltaMs = Number(btn.dataset.deltaMin) * 60000;
+      listEl.querySelectorAll("[data-direct-booster]").forEach(inp => {
+        inp.addEventListener("change", () => {
+          const idx = Number(inp.dataset.directBooster);
           const d = getDay(currentDate);
-          if (d.boosters[idx]) {
-            const base = d.boosters[idx].ts || Date.now();
-            d.boosters[idx].ts = base + deltaMs;
-            persistAndSync();
-            renderBoosters(d);
-            renderCaffeineEnergy(d);
-            buildCoachReport();
-          }
-        });
-      });
-
-      listEl.querySelectorAll("[data-morning-booster]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const idx = Number(btn.dataset.morningBooster);
-          const d = getDay(currentDate);
-          if (d.boosters[idx]) {
-            d.boosters[idx].ts = setMorningHourTs(currentDate);
+          if (d.boosters[idx] && inp.value) {
+            d.boosters[idx].ts = timeInputToTs(currentDate, inp.value);
             persistAndSync();
             renderBoosters(d);
             renderCaffeineEnergy(d);
@@ -4438,6 +4827,8 @@
           renderAll();
         });
       });
+
+      requestAnimationFrame(initBoosterWheels);
     }
 
     function populateWheySelect() {
@@ -4484,6 +4875,12 @@
     function renderWheyShakes(day) {
       populateWheySelect();
       updateWheyPreview();
+
+      const chipWhey = document.getElementById("sum-chip-whey");
+      if (chipWhey) {
+        const nb = day.wheyShakes.length;
+        chipWhey.textContent = nb > 0 ? `${nb} shaker${nb > 1 ? "s" : ""}` : "0 shaker";
+      }
 
       const listEl = document.getElementById("whey-shakers-list");
       if (!listEl) return;
@@ -4648,6 +5045,9 @@
       document.getElementById("energy-count").textContent = day.energyDrinks;
       document.getElementById("caffeine-total-pill").textContent = `Total : ${Math.round(caf.totalMg)} mg`;
 
+      const chipCaf = document.getElementById("sum-chip-caf");
+      if (chipCaf) chipCaf.textContent = `☕ ${Math.round(caf.totalMg)} mg`;
+
       const gaugeLbl = document.getElementById("energy-gauge-label");
       const activeMgEl = document.getElementById("energy-active-mg");
       const barEl = document.getElementById("caffeine-bar");
@@ -4667,80 +5067,6 @@
         bedEl.textContent = `${energy.bedtimeMg} mg`;
         bedEl.style.color = energy.bedtimeMg > 80 ? "#fb7185" : (energy.bedtimeMg > 40 ? "#fbbf24" : "#34d399");
       }
-
-      const logsBox = document.getElementById("caffeine-logs-list");
-      if (!logsBox) return;
-      const rows = [];
-      for (let i = 0; i < day.coffee; i++) {
-        rows.push({ type: "coffee", idx: i, label: `☕ Café #${i + 1} (80 mg)`, ts: day.coffeeLogs[i] });
-      }
-      for (let i = 0; i < day.energyDrinks; i++) {
-        rows.push({ type: "energy", idx: i, label: `⚡ Boisson énergisante #${i + 1} (150 mg)`, ts: day.energyLogs[i] });
-      }
-      if (!rows.length) {
-        logsBox.innerHTML = "";
-        return;
-      }
-      logsBox.innerHTML = rows.map(r => `
-        <div class="caf-log-card">
-          <div class="caf-log-top">
-            <span>${r.label}</span>
-            <button class="whey-del-btn" data-del-caf-type="${r.type}" data-del-caf-idx="${r.idx}" type="button" title="Supprimer">×</button>
-          </div>
-          <div class="caf-time-quick-row">
-            <span class="time-chip-btn">🕒 ${tsToTimeInput(r.ts)}</span>
-            <button class="time-step-pill" data-shift-caf-type="${r.type}" data-shift-caf-idx="${r.idx}" data-delta-min="-60" type="button">-1h</button>
-            <button class="time-step-pill" data-shift-caf-type="${r.type}" data-shift-caf-idx="${r.idx}" data-delta-min="-30" type="button">-30m</button>
-            <button class="time-step-pill" data-shift-caf-type="${r.type}" data-shift-caf-idx="${r.idx}" data-delta-min="30" type="button">+30m</button>
-            <button class="time-step-pill" data-morning-caf-type="${r.type}" data-morning-caf-idx="${r.idx}" type="button">Matin 7h30</button>
-          </div>
-        </div>
-      `).join("");
-
-      logsBox.querySelectorAll("[data-shift-caf-type]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const d = getDay(currentDate);
-          const idx = Number(btn.dataset.shiftCafIdx);
-          const deltaMs = Number(btn.dataset.deltaMin) * 60000;
-          if (btn.dataset.shiftCafType === "coffee" && d.coffeeLogs[idx] !== undefined) {
-            d.coffeeLogs[idx] += deltaMs;
-          } else if (btn.dataset.shiftCafType === "energy" && d.energyLogs[idx] !== undefined) {
-            d.energyLogs[idx] += deltaMs;
-          }
-          persistAndSync();
-          renderCaffeineEnergy(d);
-        });
-      });
-
-      logsBox.querySelectorAll("[data-morning-caf-type]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const d = getDay(currentDate);
-          const idx = Number(btn.dataset.morningCafIdx);
-          if (btn.dataset.morningCafType === "coffee" && d.coffeeLogs[idx] !== undefined) {
-            d.coffeeLogs[idx] = setMorningHourTs(currentDate);
-          } else if (btn.dataset.morningCafType === "energy" && d.energyLogs[idx] !== undefined) {
-            d.energyLogs[idx] = setMorningHourTs(currentDate);
-          }
-          persistAndSync();
-          renderCaffeineEnergy(d);
-        });
-      });
-
-      logsBox.querySelectorAll("[data-del-caf-type]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const d = getDay(currentDate);
-          const idx = Number(btn.dataset.delCafIdx);
-          if (btn.dataset.delCafType === "coffee") {
-            d.coffeeLogs.splice(idx, 1);
-            d.coffee = Math.max(0, d.coffee - 1);
-          } else {
-            d.energyLogs.splice(idx, 1);
-            d.energyDrinks = Math.max(0, d.energyDrinks - 1);
-          }
-          persistAndSync();
-          renderAll();
-        });
-      });
     }
 
     function renderSleepCard(day) {
@@ -4771,103 +5097,12 @@
         }
       }
 
-      // Badges de synthèse dans l'accordéon matin
       const cw = document.getElementById("morning-chip-weight");
       const cwa = document.getElementById("morning-chip-waist");
       const cs = document.getElementById("morning-chip-sleep");
       if (cw) cw.textContent = day.weight ? `⚖️ ${day.weight.toFixed(1)}kg` : "⚖️ —";
       if (cwa) cwa.textContent = day.waist ? `📏 ${day.waist.toFixed(1)}cm` : "📏 —";
       if (cs) cs.textContent = day.sleepHours ? `🌙 ${formatSleepHours(day.sleepHours)}` : "🌙 —";
-
-      const mBody = document.getElementById("morning-body");
-      const mChev = document.getElementById("morning-chevron");
-      if (mBody) mBody.classList.toggle("hidden", morningCollapsed);
-      if (mChev) mChev.textContent = morningCollapsed ? "▶" : "▼";
-    }
-
-    function renderStockTab() {
-      const box = document.getElementById("stock-tubs-list");
-      if (!box) return;
-
-      const items = [
-        ...WHEY_PROTEINS.filter(w => w.tubTotalG > 0).map(w => {
-          const totalDoses = Math.round(w.tubTotalG / w.servingG);
-          const sinceTs = Number(stockMeta[w.id]) || 0;
-          let usedDoses = 0;
-          Object.keys(store).forEach(k => {
-            const d = store[k];
-            if (d && (d.updatedAt || 0) >= sinceTs && Array.isArray(d.wheyShakes)) {
-              d.wheyShakes.forEach(sh => {
-                if (sh.id === w.id) usedDoses += (Number(sh.qty) || 0) / w.servingG;
-              });
-            }
-          });
-          return {
-            id: w.id,
-            brand: w.brand,
-            name: w.name,
-            totalDoses,
-            usedDoses: Number(usedDoses.toFixed(1)),
-            color: "#3b82f6"
-          };
-        }),
-        ...BOOSTERS.map(b => {
-          const totalDoses = b.servingsPerTub || 30;
-          const sinceTs = Number(stockMeta[b.id]) || 0;
-          let usedDoses = 0;
-          Object.keys(store).forEach(k => {
-            const d = store[k];
-            if (d && Array.isArray(d.boosters)) {
-              d.boosters.forEach(bs => {
-                const entryTs = bs.ts || d.updatedAt || 0;
-                if (bs.id === b.id && entryTs >= sinceTs) usedDoses += Number(bs.dose) || 1;
-              });
-            }
-          });
-          return {
-            id: b.id,
-            brand: b.brand,
-            name: b.name,
-            totalDoses,
-            usedDoses: Number(usedDoses.toFixed(1)),
-            color: "#f97316"
-          };
-        })
-      ];
-
-      box.innerHTML = items.map(it => {
-        const rem = Math.max(0, Number((it.totalDoses - it.usedDoses).toFixed(1)));
-        const pct = Math.min(100, Math.round((rem / it.totalDoses) * 100));
-        const low = pct <= 20;
-        return `
-          <div class="stock-tub-card">
-            <div class="stock-tub-top">
-              <div style="min-width:0;">
-                <div class="supp-name">${it.brand} — ${it.name}</div>
-                <div class="supp-sub">${it.usedDoses} dose${it.usedDoses > 1 ? "s" : ""} prise${it.usedDoses > 1 ? "s" : ""} sur ${it.totalDoses}</div>
-              </div>
-              <span class="whey-macros-badge" style="${low ? "color:#fb7185;border-color:rgba(244,63,94,0.4);background:rgba(244,63,94,0.15);" : ""}">${rem} / ${it.totalDoses} doses</span>
-            </div>
-            <div class="mini-track" style="margin:8px 0 0;">
-              <div style="height:100%;width:${pct}%;background:${low ? "#f43f5e" : it.color};border-radius:999px;"></div>
-            </div>
-            <div class="stock-controls-row">
-              <span style="font-size:10.5px;color:#7c879c;">Niveau pot : ${pct}%</span>
-              <button class="reuse-btn" data-reset-tub="${it.id}" type="button">🔄 Nouveau pot (${it.totalDoses})</button>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      box.querySelectorAll("[data-reset-tub]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const id = btn.dataset.resetTub;
-          stockMeta[id] = Date.now();
-          writeStore(STOCK_KEY, stockMeta);
-          renderStockTab();
-          toast("Compteur remis à neuf");
-        });
-      });
     }
 
     function renderAll() {
@@ -4876,12 +5111,31 @@
       const plan = getPlan(day);
 
       document.getElementById("date-heading").textContent = isToday ? "Aujourd'hui" : currentDate;
-      document.getElementById("date-badge").textContent = isToday ? "EN COURS" : "ARCHIVÉ";
+      const badgeEl = document.getElementById("date-badge");
+      if (day.dayLocked) {
+        badgeEl.textContent = day.mode === "rest" ? "🔒 REPOS" : "🔒 ENTRAÎNEMENT";
+        badgeEl.className = "status-pill " + (day.mode === "rest" ? "locked-rest" : "locked-training");
+      } else {
+        badgeEl.textContent = isToday ? "EN COURS" : "ARCHIVÉ";
+        badgeEl.className = "status-pill";
+      }
       document.getElementById("date-subtitle").textContent = formatFrenchDate(currentDate);
       document.getElementById("date-input").value = currentDate;
 
-      document.getElementById("btn-mode-training").classList.toggle("active", day.mode === "training");
-      document.getElementById("btn-mode-rest").classList.toggle("active", day.mode === "rest");
+      const modeWrap = document.getElementById("global-mode-bar");
+      const btnTr = document.getElementById("btn-mode-training");
+      const btnRe = document.getElementById("btn-mode-rest");
+      const btnLock = document.getElementById("btn-lock-day");
+      const lockIcon = document.getElementById("lock-day-icon");
+      const lockText = document.getElementById("lock-day-text");
+
+      if (modeWrap) modeWrap.classList.toggle("is-locked", day.dayLocked);
+      if (btnTr) btnTr.classList.toggle("active", day.mode === "training");
+      if (btnRe) btnRe.classList.toggle("active", day.mode === "rest");
+      if (btnLock) btnLock.classList.toggle("locked", day.dayLocked);
+      if (lockIcon) lockIcon.textContent = day.dayLocked ? "🔒" : "🔓";
+      if (lockText) lockText.textContent = day.dayLocked ? "Figé" : "Figer";
+
       document.getElementById("plan-mode-caption").textContent = plan.label;
       const phaseSel = document.getElementById("phase-select");
       if (phaseSel) {
@@ -5032,11 +5286,22 @@
       document.getElementById("card-eaa").classList.toggle("done", day.eaa);
       document.getElementById("eaa-sub").textContent = day.eaa ? "15 g validé" : "15 g / jour";
 
+      const chipW = document.getElementById("sum-chip-water");
+      const chipS = document.getElementById("sum-chip-salt");
+      const chipSup = document.getElementById("sum-chip-supps");
+      if (chipW) chipW.textContent = `${day.water.toFixed(1)}/4.5L`;
+      if (chipS) chipS.textContent = `${day.salt.toFixed(1)}/6g`;
+      if (chipSup) {
+        const cnt = (day.creatine ? 1 : 0) + (day.eaa ? 1 : 0);
+        chipSup.textContent = `Supp ${cnt}/2`;
+      }
+
       renderWheyShakes(day);
       renderBoosters(day);
       renderProteinBars(day);
       renderCheats(day);
       renderCaffeineEnergy(day);
+      applyAccordionStates();
 
       mealsEl.querySelectorAll(".meal-head").forEach(head => {
         head.addEventListener("click", e => {
@@ -5102,15 +5367,26 @@
     }
 
     function switchMainTab(tab) {
+      activeTab = tab;
       document.getElementById("tab-today-view").classList.toggle("hidden", tab !== "today");
       document.getElementById("tab-radar-view").classList.toggle("hidden", tab !== "radar");
       document.getElementById("tab-stock-view").classList.toggle("hidden", tab !== "stock");
       document.getElementById("tab-history-view").classList.toggle("hidden", tab !== "history");
 
+      const hideDayControls = (tab === "stock" || tab === "history");
+      document.getElementById("global-mode-bar").classList.toggle("hidden", hideDayControls);
+      document.getElementById("global-date-bar").classList.toggle("hidden", hideDayControls);
+
       document.getElementById("nav-today").classList.toggle("active", tab === "today");
       document.getElementById("nav-radar").classList.toggle("active", tab === "radar");
       document.getElementById("nav-stock").classList.toggle("active", tab === "stock");
       document.getElementById("nav-history").classList.toggle("active", tab === "history");
+
+      const btnRings = document.getElementById("btn-header-rings");
+      if (btnRings) btnRings.classList.toggle("active-radar", tab === "radar");
+
+      applyAccordionStates();
+
       if (tab === "today") {
         renderAll();
       } else if (tab === "radar") {
@@ -5125,15 +5401,20 @@
       }
     }
 
+    document.querySelectorAll("[data-acc-key]").forEach(head => {
+      head.addEventListener("click", () => {
+        toggleAccordion(head.dataset.accKey);
+      });
+    });
+
     document.getElementById("nav-today").addEventListener("click", () => switchMainTab("today"));
     document.getElementById("nav-radar").addEventListener("click", () => switchMainTab("radar"));
     document.getElementById("nav-stock").addEventListener("click", () => switchMainTab("stock"));
     document.getElementById("nav-history").addEventListener("click", () => switchMainTab("history"));
-    document.getElementById("btn-header-rings").addEventListener("click", () => switchMainTab("radar"));
 
-    document.getElementById("btn-toggle-morning").addEventListener("click", () => {
-      morningCollapsed = !morningCollapsed;
-      renderSleepCard(getDay(currentDate));
+    // Bascule Radar <-> Aujourd'hui au clic sur les anneaux en haut à droite
+    document.getElementById("btn-header-rings").addEventListener("click", () => {
+      switchMainTab(activeTab === "radar" ? "today" : "radar");
     });
 
     document.getElementById("btn-prev-date").addEventListener("click", () => {
@@ -5168,15 +5449,32 @@
 
     document.getElementById("btn-mode-training").addEventListener("click", () => {
       const d = getDay(currentDate);
+      if (d.dayLocked) {
+        toast("Journée figée — déverrouille 🔒 pour changer");
+        return;
+      }
       if (d.mode !== "training") {
         switchDayModePreservingData(currentDate, "training", d.phase);
       }
     });
+
     document.getElementById("btn-mode-rest").addEventListener("click", () => {
       const d = getDay(currentDate);
+      if (d.dayLocked) {
+        toast("Journée figée — déverrouille 🔒 pour changer");
+        return;
+      }
       if (d.mode !== "rest") {
         switchDayModePreservingData(currentDate, "rest", d.phase);
       }
+    });
+
+    document.getElementById("btn-lock-day").addEventListener("click", () => {
+      const d = getDay(currentDate);
+      d.dayLocked = !d.dayLocked;
+      persistAndSync();
+      renderAll();
+      toast(d.dayLocked ? `Journée figée (${d.mode === "rest" ? "Repos" : "Entraînement"})` : "Type de journée déverrouillé");
     });
 
     document.getElementById("water-minus").addEventListener("click", () => {
@@ -5350,18 +5648,29 @@
       toast("Écart ajouté");
     });
 
+    document.getElementById("coffee-type-select").addEventListener("change", e => {
+      const hintEl = document.getElementById("coffee-unit-mg-hint");
+      if (hintEl) hintEl.textContent = `${e.target.value} mg`;
+    });
+
     document.getElementById("coffee-minus").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.coffee > 0) {
         d.coffee -= 1;
         d.coffeeLogs.pop();
+        d.coffeeItems.pop();
         persistAndSync(); renderAll();
       }
     });
     document.getElementById("coffee-plus").addEventListener("click", () => {
       const d = getDay(currentDate);
+      const sel = document.getElementById("coffee-type-select");
+      const mg = sel ? (Number(sel.value) || 80) : 80;
+      const name = (sel && sel.options[sel.selectedIndex]) ? (sel.options[sel.selectedIndex].dataset.name || "Café") : "Café";
+      const now = Date.now();
       d.coffee += 1;
-      d.coffeeLogs.push(Date.now());
+      d.coffeeLogs.push(now);
+      d.coffeeItems.push({ mg, name, ts: now });
       persistAndSync(); renderAll();
     });
 
@@ -5403,14 +5712,6 @@
       writeStore(CFG_KEY, cfg);
       const ok = await pullCloud(true);
       if (ok) document.getElementById("cloud-panel").classList.add("hidden");
-    });
-
-    document.getElementById("btn-reset-current").addEventListener("click", () => {
-      const cur = getDay(currentDate);
-      store[currentDate] = defaultDay(cur.mode, cur.phase);
-      persistAndSync();
-      renderAll();
-      toast("Journée réinitialisée");
     });
 
     async function copyToClipboard(txt, okMsg) {
@@ -5738,9 +6039,16 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
           const delta = Math.round(Number(a.coffeeDelta));
           day.coffee = Math.max(0, day.coffee + delta);
           if (delta > 0) {
-            for (let k = 0; k < delta; k++) day.coffeeLogs.push(Date.now());
+            const now = Date.now();
+            for (let k = 0; k < delta; k++) {
+              day.coffeeLogs.push(now);
+              day.coffeeItems.push({ mg: 80, name: "Café", ts: now });
+            }
           } else if (delta < 0) {
-            for (let k = 0; k < Math.abs(delta); k++) day.coffeeLogs.pop();
+            for (let k = 0; k < Math.abs(delta); k++) {
+              day.coffeeLogs.pop();
+              day.coffeeItems.pop();
+            }
           }
         }
         if (Number(a.energyDelta)) {
