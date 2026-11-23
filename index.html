@@ -62,6 +62,19 @@
       padding: 10px 12px 24px;
     }
 
+    /* Verrouillage global de la journée */
+    .day-is-frozen .lockable-zone input:not(.keep-enabled),
+    .day-is-frozen .lockable-zone select:not(.keep-enabled),
+    .day-is-frozen .lockable-zone button:not(.keep-enabled) {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .day-is-frozen .supp-card,
+    .day-is-frozen .meal-head {
+      opacity: 0.65;
+    }
+
     /* Header */
     .top-header {
       display: flex;
@@ -2114,7 +2127,7 @@
   </style>
 </head>
 <body>
-  <div class="app-shell">
+  <div class="app-shell" id="app-shell">
     <header class="top-header">
       <div class="brand-left">
         <div class="app-mark">
@@ -2132,7 +2145,7 @@
       </div>
 
       <div class="header-right">
-        <button class="activity-rings-btn" id="btn-header-rings" type="button" title="Basculer Radar & Stats / Aujourd'hui">
+        <button class="activity-rings-btn keep-enabled" id="btn-header-rings" type="button" title="Basculer Radar & Stats / Aujourd'hui">
           <div id="header-rings-svg" style="width:32px;height:32px;flex-shrink:0;"></div>
           <div class="rings-meta">
             <span class="rings-pct" id="header-rings-pct">0%</span>
@@ -2140,7 +2153,7 @@
           </div>
         </button>
 
-        <button class="icon-chip" id="btn-toggle-cloud" type="button">
+        <button class="icon-chip keep-enabled" id="btn-toggle-cloud" type="button">
           <span class="sync-dot" id="sync-dot"></span>
           <span>Cloud</span>
         </button>
@@ -2169,16 +2182,16 @@
     </div>
 
     <div class="date-bar" id="global-date-bar">
-      <button class="arrow-btn" id="btn-prev-date" type="button">‹</button>
+      <button class="arrow-btn keep-enabled" id="btn-prev-date" type="button">‹</button>
       <div class="date-center">
         <div class="date-top-line">
-          <span class="date-main-label" id="date-heading">Aujourd'hui</span>
+          <span class="date-main-label keep-enabled" id="date-heading">Aujourd'hui</span>
           <span class="status-pill" id="date-badge">EN COURS</span>
         </div>
         <div class="date-sub-label" id="date-subtitle">samedi 21 novembre</div>
         <input type="date" id="date-input" class="hidden-date-input" />
       </div>
-      <button class="arrow-btn" id="btn-next-date" type="button">›</button>
+      <button class="arrow-btn keep-enabled" id="btn-next-date" type="button">›</button>
     </div>
 
     <div class="mode-switch-wrap" id="global-mode-bar">
@@ -2190,15 +2203,30 @@
         <span>🔋</span>
         <span>JOUR DE REPOS</span>
       </button>
-      <button class="lock-day-btn" id="btn-lock-day" type="button" title="Valider et figer le type de journée">
+      <button class="lock-day-btn keep-enabled" id="btn-lock-day" type="button" title="Valider et figer le type de journée">
         <span id="lock-day-icon">🔓</span>
         <span id="lock-day-text">Figer</span>
       </button>
     </div>
 
-    <div id="tab-today-view">
+    <div id="tab-today-view" class="lockable-zone">
+      <!-- Saisie rapide IA au-dessus des calories validées -->
+      <div class="ai-bar-card">
+        <div class="whey-head">
+          <div class="supp-left">
+            <span>✨</span>
+            <strong style="font-size:12.5px;">Saisie rapide IA</strong>
+          </div>
+          <span style="font-size:10px;color:#8b95a8;">Eau, sommeil, suppléments, repas...</span>
+        </div>
+        <div class="ai-input-row">
+          <input type="text" id="ai-nlp-input" class="ai-input" placeholder="Ex : +50cl eau, sommeil 7h45 score 88, taille 85.5..." />
+          <button class="ai-btn" id="btn-ai-nlp" type="button">✨ Go</button>
+        </div>
+      </div>
+
       <!-- Calories & Macros (Sticky + tap pour basculer Validé / Restant) -->
-      <div class="hero-macros-card" id="hero-macros-card" title="Appuyer pour basculer Validé / Restant">
+      <div class="hero-macros-card keep-enabled" id="hero-macros-card" title="Appuyer pour basculer Validé / Restant">
         <div class="hero-top">
           <div>
             <div class="hero-eyebrow"><span id="hero-eyebrow-text">CALORIES VALIDÉES</span><span class="hero-mode-chip" id="hero-mode-chip">RESTANT ⇄</span></div>
@@ -2245,7 +2273,7 @@
 
       <!-- Accordéon 1 : Routine Matin & Santé (Poids, Taille, Sommeil) -->
       <div class="accordion-card">
-        <div class="accordion-head" data-acc-key="today_morning">
+        <div class="accordion-head keep-enabled" data-acc-key="today_morning">
           <div class="accordion-head-main">
             <span style="font-size:15px;">🌅</span>
             <div style="min-width:0;flex:1;">
@@ -2312,24 +2340,9 @@
         </div>
       </div>
 
-      <!-- Saisie rapide IA -->
-      <div class="ai-bar-card">
-        <div class="whey-head">
-          <div class="supp-left">
-            <span>✨</span>
-            <strong style="font-size:12.5px;">Saisie rapide IA</strong>
-          </div>
-          <span style="font-size:10px;color:#8b95a8;">Eau, sommeil, suppléments, repas...</span>
-        </div>
-        <div class="ai-input-row">
-          <input type="text" id="ai-nlp-input" class="ai-input" placeholder="Ex : +50cl eau, sommeil 7h45 score 88, taille 85.5..." />
-          <button class="ai-btn" id="btn-ai-nlp" type="button">✨ Go</button>
-        </div>
-      </div>
-
       <!-- Accordéon 2 : Eau, Sel & Suppléments -->
       <div class="accordion-card">
-        <div class="accordion-head" data-acc-key="today_hydration_supp">
+        <div class="accordion-head keep-enabled" data-acc-key="today_hydration_supp">
           <div class="accordion-head-main">
             <span style="font-size:15px;">💧</span>
             <div style="min-width:0;flex:1;">
@@ -2415,7 +2428,7 @@
 
       <!-- Accordéon 3 : Shakers, Booster & Caféine -->
       <div class="accordion-card">
-        <div class="accordion-head" data-acc-key="today_shakers_caf">
+        <div class="accordion-head keep-enabled" data-acc-key="today_shakers_caf">
           <div class="accordion-head-main">
             <span style="font-size:15px;">🥤</span>
             <div style="min-width:0;flex:1;">
@@ -2522,12 +2535,13 @@
 
               <div class="caf-box">
                 <div class="caf-box-head">
-                  <span class="caf-label">Énergisante</span>
+                  <span class="caf-label">Boissons énergisantes</span>
                   <span class="caf-mg-hint" id="energy-unit-mg-hint">160 mg</span>
                 </div>
                 <select id="energy-type-select" class="coffee-type-select" aria-label="Type de boisson énergisante">
+                  <option value="monster_ultra" data-mg="160" data-kcal="11" data-c="4.4" data-name="Monster Ultra (500ml)">Monster Ultra (160 mg)</option>
                   <option value="c4_500" data-mg="160" data-kcal="20" data-c="0" data-name="C4 Energy (500ml)">C4 Energy (160 mg)</option>
-                  <option value="abe_330" data-mg="200" data-kcal="0" data-c="0" data-name="ABE Energy Drink (330ml)">ABE Drink (200 mg)</option>
+                  <option value="abe_330" data-mg="200" data-kcal="0" data-c="0" data-name="ABE Drink (330ml)">ABE Drink (200 mg)</option>
                 </select>
                 <div class="caf-ctrl-row">
                   <button class="cnt-btn" id="energy-minus" type="button">−</button>
@@ -2540,35 +2554,50 @@
         </div>
       </div>
 
-      <!-- Repas -->
-      <div class="section-head">
-        <div class="section-head-top">
-          <div class="section-head-title-wrap">
-            <h2>PLAN ALIMENTAIRE</h2>
-            <button class="reuse-btn" id="btn-reuse-choices" type="button" aria-label="Reprendre la journée précédente" title="Reprendre les aliments de la dernière journée similaire">↺</button>
+      <!-- Accordéon 4 : Plan alimentaire (repliable/dépliable en entier) -->
+      <div class="accordion-card" style="margin-top:10px;">
+        <div class="accordion-head keep-enabled" data-acc-key="today_meals_plan">
+          <div class="accordion-head-main">
+            <span style="font-size:15px;">🍽️</span>
+            <div style="min-width:0;flex:1;">
+              <div class="accordion-title-text">Plan alimentaire</div>
+              <div class="accordion-collapsed-sub" id="summary-today-meals">0/6 repas • Entraînement</div>
+            </div>
           </div>
-          <div class="section-head-right">
-            <select id="phase-select" class="phase-select" aria-label="Phase alimentaire"></select>
-            <span id="plan-mode-caption">Entraînement</span>
+          <span class="acc-chevron-pill" data-acc-chev="today_meals_plan">▼</span>
+        </div>
+
+        <div class="accordion-body" data-acc-body="today_meals_plan">
+          <div class="section-head" style="margin-top:0;">
+            <div class="section-head-top">
+              <div class="section-head-title-wrap">
+                <h2>REPAS DU PLAN</h2>
+                <button class="reuse-btn" id="btn-reuse-choices" type="button" aria-label="Reprendre la journée précédente" title="Reprendre les aliments de la dernière journée similaire">↺</button>
+              </div>
+              <div class="section-head-right">
+                <select id="phase-select" class="phase-select" aria-label="Phase alimentaire"></select>
+                <span id="plan-mode-caption">Entraînement</span>
+              </div>
+            </div>
+            <button class="reuse-btn full-width" id="btn-toggle-sub" type="button" style="color:#60a5fa;" title="Substitution ou compléments de macros">✨ Substituer / Compléter</button>
           </div>
+          <div class="ai-sub-drawer hidden" id="ai-sub-drawer">
+            <div class="whey-head">
+              <strong style="font-size:12.5px;color:#93c5fd;">✨ Substitution & Compléments IA</strong>
+              <button class="whey-del-btn" id="btn-close-sub" type="button" style="color:#94a3b8;">×</button>
+            </div>
+            <div style="margin-top:7px;">
+              <input type="text" id="ai-sub-input" class="ai-input" placeholder="Ex : remplacer 130g poulet par thon, ou consigne..." />
+            </div>
+            <div class="ai-sub-btns">
+              <button class="ai-btn" id="btn-ai-sub" type="button">Équivalence</button>
+              <button class="btn-blue" id="btn-ai-complete" type="button">Compléter</button>
+            </div>
+            <div class="ai-result-box hidden" id="ai-sub-result"></div>
+          </div>
+          <div id="meals-list"></div>
         </div>
-        <button class="reuse-btn full-width" id="btn-toggle-sub" type="button" style="color:#60a5fa;" title="Substitution ou compléments de macros">✨ Substituer / Compléter</button>
       </div>
-      <div class="ai-sub-drawer hidden" id="ai-sub-drawer">
-        <div class="whey-head">
-          <strong style="font-size:12.5px;color:#93c5fd;">✨ Substitution & Compléments IA</strong>
-          <button class="whey-del-btn" id="btn-close-sub" type="button" style="color:#94a3b8;">×</button>
-        </div>
-        <div style="margin-top:7px;">
-          <input type="text" id="ai-sub-input" class="ai-input" placeholder="Ex : remplacer 130g poulet par thon, ou consigne..." />
-        </div>
-        <div class="ai-sub-btns">
-          <button class="ai-btn" id="btn-ai-sub" type="button">Équivalence</button>
-          <button class="btn-blue" id="btn-ai-complete" type="button">Compléter</button>
-        </div>
-        <div class="ai-result-box hidden" id="ai-sub-result"></div>
-      </div>
-      <div id="meals-list"></div>
 
       <!-- Barres protéinées -->
       <div class="bar-card">
@@ -2837,21 +2866,21 @@
 
   <nav class="bottom-bar">
     <div class="bottom-bar-inner">
-      <button class="tab-nav-btn active" id="nav-today" type="button">
+      <button class="tab-nav-btn active keep-enabled" id="nav-today" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="4" width="18" height="18" rx="3"></rect>
           <path d="M9 12l2 2 4-4"></path>
         </svg>
         <span>Aujourd'hui</span>
       </button>
-      <button class="tab-nav-btn" id="nav-radar" type="button">
+      <button class="tab-nav-btn keep-enabled" id="nav-radar" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="9"></circle>
           <path d="M12 3v9l6.5 3.5"></path>
         </svg>
         <span>Radar & Stats</span>
       </button>
-      <button class="tab-nav-btn" id="nav-stock" type="button">
+      <button class="tab-nav-btn keep-enabled" id="nav-stock" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
           <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
@@ -2859,7 +2888,7 @@
         </svg>
         <span>Stock</span>
       </button>
-      <button class="tab-nav-btn" id="nav-history" type="button">
+      <button class="tab-nav-btn keep-enabled" id="nav-history" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="4" width="18" height="18" rx="3"></rect>
           <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -3286,6 +3315,7 @@
       today_morning: false,
       today_hydration_supp: false,
       today_shakers_caf: false,
+      today_meals_plan: false,
       radar_evo: false,
       radar_hydrosalt: false,
       radar_macros: false,
@@ -3313,6 +3343,10 @@
       collapsedSections[key] = !Boolean(collapsedSections[key]);
       writeStore(UI_COLLAPSE_KEY, collapsedSections);
       applyAccordionStates();
+    }
+
+    function isCurrentDayLocked() {
+      return Boolean(getDay(currentDate).dayLocked);
     }
 
     function todayISO() {
@@ -3554,7 +3588,7 @@
 
       if (d.energyItems.length < d.energyDrinks) {
         for (let i = d.energyItems.length; i < d.energyDrinks; i++) {
-          d.energyItems.push({ id: "c4_500", mg: 160, kcal: 20, c: 0, name: "C4 Energy (500ml)", ts: d.energyLogs[i] || defaultTs });
+          d.energyItems.push({ id: "monster_ultra", mg: 160, kcal: 11, c: 4.4, name: "Monster Ultra (500ml)", ts: d.energyLogs[i] || defaultTs });
         }
       } else if (d.energyItems.length > d.energyDrinks) {
         d.energyItems.length = d.energyDrinks;
@@ -4502,7 +4536,7 @@
           return `${st.label}${tm}${st.caffeineMg ? ` (${Math.round(st.caffeineMg)} mg caf.)` : ""}`;
         }).join(" | ")}`);
       }
-      out.push(`Caféine : ${Math.round(caf.totalMg)} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${caf.boosterMg ? ` | Boosters = ${Math.round(caf.boosterMg)} mg` : ""})`);
+      out.push(`Caféine : ${Math.round(caf.totalMg)} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Boissons énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${caf.boosterMg ? ` | Boosters = ${Math.round(caf.boosterMg)} mg` : ""})`);
       if (day.wheyShakes.length) {
         out.push(`Shakers Whey & RTD : ${day.wheyShakes.map(s => shakerMacros(s).label).join(" | ")}`);
       }
@@ -4817,13 +4851,14 @@
         let dragging = false;
 
         const onStart = clientX => {
+          if (isCurrentDayLocked()) return;
           dragging = true;
           startX = clientX;
           startMin = tsToMinutesOfDay(getDay(currentDate).boosters[idx].ts);
         };
 
         const onMove = clientX => {
-          if (!dragging) return;
+          if (!dragging || isCurrentDayLocked()) return;
           const dx = clientX - startX;
           const deltaSteps = Math.round(-dx / 22);
           const nextMin = Math.max(0, Math.min(1425, Math.round((startMin + deltaSteps * 15) / 15) * 15));
@@ -4915,6 +4950,7 @@
 
       listEl.querySelectorAll("[data-direct-booster]").forEach(inp => {
         inp.addEventListener("change", () => {
+          if (isCurrentDayLocked()) return;
           const idx = Number(inp.dataset.directBooster);
           const d = getDay(currentDate);
           if (d.boosters[idx] && inp.value) {
@@ -4929,6 +4965,7 @@
 
       listEl.querySelectorAll("[data-del-booster]").forEach(btn => {
         btn.addEventListener("click", () => {
+          if (isCurrentDayLocked()) return;
           const idx = Number(btn.dataset.delBooster);
           const d = getDay(currentDate);
           d.boosters.splice(idx, 1);
@@ -5010,6 +5047,7 @@
 
       listEl.querySelectorAll("[data-del-whey]").forEach(btn => {
         btn.addEventListener("click", () => {
+          if (isCurrentDayLocked()) return;
           const idx = Number(btn.dataset.delWhey);
           getDay(currentDate).wheyShakes.splice(idx, 1);
           persistAndSync();
@@ -5089,6 +5127,7 @@
 
       listEl.querySelectorAll("[data-del-bar]").forEach(btn => {
         btn.addEventListener("click", () => {
+          if (isCurrentDayLocked()) return;
           const idx = Number(btn.dataset.delBar);
           getDay(currentDate).proteinBars.splice(idx, 1);
           persistAndSync();
@@ -5134,6 +5173,7 @@
 
       listEl.querySelectorAll("[data-del-cheat]").forEach(btn => {
         btn.addEventListener("click", () => {
+          if (isCurrentDayLocked()) return;
           const idx = Number(btn.dataset.delCheat);
           getDay(currentDate).cheats.splice(idx, 1);
           persistAndSync();
@@ -5219,6 +5259,11 @@
       const isToday = currentDate === todayISO();
       const plan = getPlan(day);
 
+      document.getElementById("app-shell").classList.toggle("day-is-frozen", Boolean(day.dayLocked));
+      document.querySelectorAll(".lockable-zone input:not(.keep-enabled), .lockable-zone select:not(.keep-enabled), .lockable-zone button:not(.keep-enabled)").forEach(el => {
+        el.disabled = Boolean(day.dayLocked);
+      });
+
       document.getElementById("date-heading").textContent = isToday ? "Aujourd'hui" : currentDate;
       const badgeEl = document.getElementById("date-badge");
       if (day.dayLocked) {
@@ -5239,8 +5284,14 @@
       const lockText = document.getElementById("lock-day-text");
 
       if (modeWrap) modeWrap.classList.toggle("is-locked", day.dayLocked);
-      if (btnTr) btnTr.classList.toggle("active", day.mode === "training");
-      if (btnRe) btnRe.classList.toggle("active", day.mode === "rest");
+      if (btnTr) {
+        btnTr.classList.toggle("active", day.mode === "training");
+        btnTr.disabled = Boolean(day.dayLocked);
+      }
+      if (btnRe) {
+        btnRe.classList.toggle("active", day.mode === "rest");
+        btnRe.disabled = Boolean(day.dayLocked);
+      }
       if (btnLock) btnLock.classList.toggle("locked", day.dayLocked);
       if (lockIcon) lockIcon.textContent = day.dayLocked ? "🔒" : "🔓";
       if (lockText) lockText.textContent = day.dayLocked ? "Figé" : "Figer";
@@ -5249,6 +5300,7 @@
       const phaseSel = document.getElementById("phase-select");
       if (phaseSel) {
         phaseSel.innerHTML = Object.keys(PHASES).map(k => `<option value="${k}" ${k === day.phase ? "selected" : ""}>${PHASES[k].label}</option>`).join("");
+        phaseSel.disabled = Boolean(day.dayLocked);
       }
 
       const heroCard = document.getElementById("hero-macros-card");
@@ -5256,6 +5308,11 @@
 
       const dayStats = getDayStats(day);
       renderHeaderRings(day, dayStats);
+
+      const sumMeals = document.getElementById("summary-today-meals");
+      if (sumMeals) {
+        sumMeals.textContent = `${dayStats.checkedMeals}/${dayStats.totalMeals} repas • ${plan.label}`;
+      }
 
       const mealsEl = document.getElementById("meals-list");
       mealsEl.innerHTML = "";
@@ -5280,21 +5337,21 @@
           }
 
           const control = def.options.length > 1
-            ? `<select class="item-select" data-meal="${m.id}" data-idx="${idx}">${
+            ? `<select class="item-select" data-meal="${m.id}" data-idx="${idx}" ${day.dayLocked ? "disabled" : ""}>${
                 def.options.map(op => `<option value="${op.food}" data-qty="${op.qty}" ${op.food === sel.food ? "selected" : ""}>${op.food} (≈${op.qty}g)</option>`).join("")
               }</select>`
             : `<div class="item-fixed">${sel.food}</div>`;
 
           return `
             <div class="item-row ${itemActive ? "" : "unchecked"}">
-              <input type="checkbox" class="item-check" data-meal="${m.id}" data-idx="${idx}" ${itemActive ? "checked" : ""} />
+              <input type="checkbox" class="item-check" data-meal="${m.id}" data-idx="${idx}" ${itemActive ? "checked" : ""} ${day.dayLocked ? "disabled" : ""} />
               <span class="dot-badge dot-${def.macro.toLowerCase()}">${def.macro}</span>
               <div>
                 ${control}
                 <div class="item-meta">${Math.round(mac.kcal)} kcal • P ${mac.p.toFixed(1)}g • C ${mac.c.toFixed(1)}g • L ${mac.f.toFixed(1)}g</div>
               </div>
               <div class="qty-pill ${isModified ? "modified" : ""}" title="${isModified ? `Plan : ${plannedQty}g` : ""}">
-                <input type="number" class="qty-num" inputmode="decimal" step="1" min="0" value="${sel.qty}" data-meal="${m.id}" data-idx="${idx}" />
+                <input type="number" class="qty-num" inputmode="decimal" step="1" min="0" value="${sel.qty}" data-meal="${m.id}" data-idx="${idx}" ${day.dayLocked ? "disabled" : ""} />
                 <span class="qty-u">g</span>
               </div>
             </div>
@@ -5308,7 +5365,7 @@
         card.innerHTML = `
           <div class="meal-head" data-toggle-meal="${m.id}">
             <div class="meal-head-left">
-              <input type="checkbox" class="meal-checkbox" data-meal="${m.id}" ${st.checked ? "checked" : ""} />
+              <input type="checkbox" class="meal-checkbox" data-meal="${m.id}" ${st.checked ? "checked" : ""} ${day.dayLocked ? "disabled" : ""} />
               <h3 class="meal-name">${m.name}</h3>
             </div>
             <span class="meal-kcal-pill">${Math.round(mValKcal)} / ${Math.round(mKcal)} KCAL</span>
@@ -5411,6 +5468,7 @@
 
       mealsEl.querySelectorAll(".meal-head").forEach(head => {
         head.addEventListener("click", e => {
+          if (isCurrentDayLocked()) return;
           if (e.target.classList.contains("meal-checkbox")) return;
           const mSt = getDay(currentDate).meals[head.dataset.toggleMeal];
           const next = !mSt.checked;
@@ -5423,6 +5481,7 @@
 
       mealsEl.querySelectorAll(".meal-checkbox").forEach(cb => {
         cb.addEventListener("change", e => {
+          if (isCurrentDayLocked()) return;
           const mSt = getDay(currentDate).meals[e.target.dataset.meal];
           mSt.checked = e.target.checked;
           mSt.items.forEach(it => { it.checked = e.target.checked; });
@@ -5433,6 +5492,7 @@
 
       mealsEl.querySelectorAll(".item-check").forEach(cb => {
         cb.addEventListener("change", e => {
+          if (isCurrentDayLocked()) return;
           const mSt = getDay(currentDate).meals[e.target.dataset.meal];
           const idx = Number(e.target.dataset.idx);
           mSt.items[idx].checked = e.target.checked;
@@ -5444,6 +5504,7 @@
 
       mealsEl.querySelectorAll(".item-select").forEach(sel => {
         sel.addEventListener("change", e => {
+          if (isCurrentDayLocked()) return;
           const op = e.target.options[e.target.selectedIndex];
           getDay(currentDate).meals[e.target.dataset.meal].items[Number(e.target.dataset.idx)] = {
             food: op.value,
@@ -5457,6 +5518,7 @@
 
       mealsEl.querySelectorAll(".qty-num").forEach(inp => {
         inp.addEventListener("change", e => {
+          if (isCurrentDayLocked()) return;
           const val = Math.max(0, Number(e.target.value) || 0);
           getDay(currentDate).meals[e.target.dataset.meal].items[Number(e.target.dataset.idx)].qty = val;
           persistAndSync();
@@ -5544,6 +5606,10 @@
     });
 
     document.getElementById("phase-select").addEventListener("change", e => {
+      if (isCurrentDayLocked()) {
+        toast("Journée figée 🔒");
+        return;
+      }
       const nextPhase = e.target.value;
       const d = getDay(currentDate);
       if (PHASES[nextPhase] && d.phase !== nextPhase) {
@@ -5583,43 +5649,57 @@
     });
 
     document.getElementById("water-minus").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       d.water = Math.max(0, Number((d.water - 0.25).toFixed(2)));
       persistAndSync(); renderAll();
     });
     document.getElementById("water-plus-25").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       d.water = Number((d.water + 0.25).toFixed(2));
       persistAndSync(); renderAll();
     });
     document.getElementById("water-plus-50").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       d.water = Number((d.water + 0.50).toFixed(2));
       persistAndSync(); renderAll();
     });
 
     document.getElementById("salt-minus").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       d.salt = Math.max(0, Number((d.salt - 0.5).toFixed(1)));
       persistAndSync(); renderAll();
     });
     document.getElementById("salt-plus-05").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       d.salt = Number((d.salt + 0.5).toFixed(1));
       persistAndSync(); renderAll();
     });
     document.getElementById("salt-plus-1").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       d.salt = Number((d.salt + 1.0).toFixed(1));
       persistAndSync(); renderAll();
     });
 
     document.getElementById("card-creatine").addEventListener("click", () => {
+      if (isCurrentDayLocked()) {
+        toast("Journée figée 🔒");
+        return;
+      }
       const d = getDay(currentDate);
       d.creatine = !d.creatine;
       persistAndSync(); renderAll();
     });
     document.getElementById("card-eaa").addEventListener("click", () => {
+      if (isCurrentDayLocked()) {
+        toast("Journée figée 🔒");
+        return;
+      }
       const d = getDay(currentDate);
       d.eaa = !d.eaa;
       persistAndSync(); renderAll();
@@ -5633,6 +5713,7 @@
       updateBoosterPreview();
     });
     document.getElementById("btn-add-booster").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const sel = document.getElementById("booster-select");
       const doseSel = document.getElementById("booster-dose-select");
       if (!sel || !sel.value) {
@@ -5669,6 +5750,7 @@
     });
 
     document.getElementById("btn-add-whey-shake").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const sel = document.getElementById("whey-protein-select");
       const inp = document.getElementById("whey-shake-qty");
       if (!sel || !sel.value) {
@@ -5690,6 +5772,7 @@
     document.getElementById("protein-bar-select").addEventListener("change", updateBarPreview);
     document.getElementById("protein-bar-qty").addEventListener("change", updateBarPreview);
     document.getElementById("btn-add-bar").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const sel = document.getElementById("protein-bar-select");
       const qtyEl = document.getElementById("protein-bar-qty");
       if (!sel || !sel.value) {
@@ -5708,6 +5791,7 @@
     });
 
     document.getElementById("btn-add-cheat").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const txtEl = document.getElementById("cheat-text-input");
       const kcalEl = document.getElementById("cheat-kcal-input");
       const pEl = document.getElementById("cheat-p-input");
@@ -5743,6 +5827,7 @@
     });
 
     document.getElementById("coffee-minus").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       if (d.coffee > 0) {
         d.coffee -= 1;
@@ -5752,6 +5837,7 @@
       }
     });
     document.getElementById("coffee-plus").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       const sel = document.getElementById("coffee-type-select");
       const mg = sel ? (Number(sel.value) || 80) : 80;
@@ -5770,6 +5856,7 @@
     });
 
     document.getElementById("energy-minus").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       if (d.energyDrinks > 0) {
         d.energyDrinks -= 1;
@@ -5779,14 +5866,15 @@
       }
     });
     document.getElementById("energy-plus").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       const sel = document.getElementById("energy-type-select");
       const opt = sel ? sel.options[sel.selectedIndex] : null;
-      const id = sel ? sel.value : "c4_500";
+      const id = sel ? sel.value : "monster_ultra";
       const mg = opt ? (Number(opt.dataset.mg) || 160) : 160;
       const kcal = opt ? (Number(opt.dataset.kcal) || 0) : 0;
       const c = opt ? (Number(opt.dataset.c) || 0) : 0;
-      const name = opt ? (opt.dataset.name || "Énergisante") : "Énergisante";
+      const name = opt ? (opt.dataset.name || "Boisson énergisante") : "Boisson énergisante";
       const now = Date.now();
       d.energyDrinks += 1;
       d.energyLogs.push(now);
@@ -5878,6 +5966,7 @@
     });
 
     document.getElementById("weight-input").addEventListener("change", e => {
+      if (isCurrentDayLocked()) return;
       const raw = e.target.value.trim().replace(",", ".");
       const val = parseFloat(raw);
       const d = getDay(currentDate);
@@ -5888,6 +5977,7 @@
     });
 
     document.getElementById("waist-input").addEventListener("change", e => {
+      if (isCurrentDayLocked()) return;
       const raw = e.target.value.trim().replace(",", ".");
       const val = parseFloat(raw);
       const d = getDay(currentDate);
@@ -5898,6 +5988,7 @@
     });
 
     document.getElementById("sleep-duration-input").addEventListener("change", e => {
+      if (isCurrentDayLocked()) return;
       const d = getDay(currentDate);
       const parsed = parseSleepHours(e.target.value);
       d.sleepHours = parsed;
@@ -5907,6 +5998,7 @@
     });
 
     document.getElementById("sleep-quality-input").addEventListener("change", e => {
+      if (isCurrentDayLocked()) return;
       const raw = e.target.value.trim();
       const d = getDay(currentDate);
       if (!raw) {
@@ -5921,6 +6013,7 @@
     });
 
     document.getElementById("btn-reuse-choices").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       const cur = getDay(currentDate);
       const candidates = Object.keys(store)
         .filter(k => k < currentDate && store[k] && typeof store[k] === "object")
@@ -6050,10 +6143,12 @@
 
     // 1. Scan Photo IA (Écarts)
     document.getElementById("btn-cheat-photo").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       document.getElementById("cheat-photo-input").click();
     });
 
     document.getElementById("cheat-photo-input").addEventListener("change", async e => {
+      if (isCurrentDayLocked()) return;
       const file = e.target.files && e.target.files[0];
       e.target.value = "";
       if (!file) return;
@@ -6084,6 +6179,10 @@ Les valeurs kcal, p (protéines g), c (glucides g), f (lipides g) doivent être 
 
     // 2. Saisie en langage naturel
     async function runAiNlp() {
+      if (isCurrentDayLocked()) {
+        toast("Journée figée 🔒");
+        return;
+      }
       const inp = document.getElementById("ai-nlp-input");
       const btn = document.getElementById("btn-ai-nlp");
       const txt = (inp ? inp.value : "").trim();
@@ -6163,7 +6262,7 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
             const now = Date.now();
             for (let k = 0; k < delta; k++) {
               day.energyLogs.push(now);
-              day.energyItems.push({ id: "c4_500", mg: 160, kcal: 20, c: 0, name: "C4 Energy (500ml)", ts: now });
+              day.energyItems.push({ id: "monster_ultra", mg: 160, kcal: 11, c: 4.4, name: "Monster Ultra (500ml)", ts: now });
             }
           } else if (delta < 0) {
             for (let k = 0; k < Math.abs(delta); k++) {
@@ -6234,6 +6333,7 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
 
     // 3. Substitutions & compléments de macros
     document.getElementById("btn-toggle-sub").addEventListener("click", () => {
+      if (isCurrentDayLocked()) return;
       document.getElementById("ai-sub-drawer").classList.toggle("hidden");
     });
     document.getElementById("btn-close-sub").addEventListener("click", () => {
@@ -6241,6 +6341,7 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
     });
 
     async function runAiSub() {
+      if (isCurrentDayLocked()) return;
       const inp = document.getElementById("ai-sub-input");
       const btn = document.getElementById("btn-ai-sub");
       const resBox = document.getElementById("ai-sub-result");
@@ -6270,6 +6371,7 @@ Donne le grammage exact de remplacement pour matcher au mieux les macros princip
     }
 
     async function runAiCompleteDay() {
+      if (isCurrentDayLocked()) return;
       const inp = document.getElementById("ai-sub-input");
       const btn = document.getElementById("btn-ai-complete");
       const resBox = document.getElementById("ai-sub-result");
