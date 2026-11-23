@@ -1427,6 +1427,43 @@
       cursor: wait;
     }
 
+    .ai-range-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ai-range-inputs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .ai-date-lbl {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+
+    .ai-date-input {
+      background: #07090f;
+      border: 1px solid #222a3d;
+      color: #f8fafc;
+      border-radius: 7px;
+      padding: 4px 6px;
+      font-size: 11px;
+      font-family: inherit;
+    }
+
     .ai-result-box {
       background: #07090f;
       border: 1px solid #23304c;
@@ -1889,10 +1926,10 @@
 
       <!-- Repas -->
       <div class="section-head">
-        <div style="display:flex;align-items:center;gap:6px;">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
           <h2>PLAN ALIMENTAIRE</h2>
           <button class="reuse-btn" id="btn-reuse-choices" type="button" title="Reprendre les aliments de la dernière journée similaire">↺ Précédent</button>
-          <button class="reuse-btn" id="btn-toggle-sub" type="button" style="color:#60a5fa;" title="Demander une substitution équivalente en macros">✨ Substituer</button>
+          <button class="reuse-btn" id="btn-toggle-sub" type="button" style="color:#60a5fa;" title="Substitution ou compléments de macros">✨ Substituer / Compléter</button>
         </div>
         <div class="section-head-right">
           <select id="phase-select" class="phase-select" aria-label="Phase alimentaire"></select>
@@ -1901,12 +1938,15 @@
       </div>
       <div class="ai-sub-drawer hidden" id="ai-sub-drawer">
         <div class="whey-head">
-          <strong style="font-size:12.5px;color:#93c5fd;">✨ Substitution intelligente</strong>
+          <strong style="font-size:12.5px;color:#93c5fd;">✨ Substitution & Compléments IA</strong>
           <button class="whey-del-btn" id="btn-close-sub" type="button" style="color:#94a3b8;">×</button>
         </div>
         <div class="ai-input-row">
-          <input type="text" id="ai-sub-input" class="ai-input" placeholder="Ex : Plus de poulet, remplacer 130g par du thon..." />
-          <button class="ai-btn" id="btn-ai-sub" type="button">Calculer</button>
+          <input type="text" id="ai-sub-input" class="ai-input" placeholder="Ex : remplacer 130g poulet par thon, ou laisse vide + Compléter..." />
+          <div style="display:flex;gap:4px;">
+            <button class="ai-btn" id="btn-ai-sub" type="button">Équiv.</button>
+            <button class="btn-blue" id="btn-ai-complete" type="button" style="padding:7px 9px;">Compléter</button>
+          </div>
         </div>
         <div class="ai-result-box hidden" id="ai-sub-result"></div>
       </div>
@@ -2011,12 +2051,28 @@
       </div>
 
       <div class="panel-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
           <div>
             <div class="eyebrow">ANALYSE IA</div>
-            <strong style="font-size:15px;">Pré-check-in 7 jours</strong>
+            <strong style="font-size:15px;" id="ai-range-title">Pré-check-in sur plage</strong>
           </div>
-          <button class="ai-btn" id="btn-ai-weekly" type="button">✨ Analyser 7j</button>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button class="btn-dark" id="btn-copy-ai-weekly" type="button" style="padding:6px 10px;">Copier</button>
+            <button class="ai-btn" id="btn-ai-weekly" type="button">✨ Analyser</button>
+          </div>
+        </div>
+        <div class="ai-range-row">
+          <div class="ai-range-inputs">
+            <label class="ai-date-lbl">
+              Du
+              <input type="date" id="ai-date-from" class="ai-date-input" />
+            </label>
+            <label class="ai-date-lbl">
+              Au
+              <input type="date" id="ai-date-to" class="ai-date-input" />
+            </label>
+          </div>
+          <button class="reuse-btn" id="btn-ai-range-7d" type="button">7 derniers jours</button>
         </div>
         <div class="ai-result-box hidden" id="ai-weekly-result"></div>
       </div>
@@ -2139,29 +2195,22 @@
     };
 
     const PROTEIN_BARS = [
-      // Barebells
       { id: "bb_wca", brand: "Barebells", name: "White Chocolate Almond (55g)", kcal: 200, p: 20, c: 19, f: 8 },
       { id: "bb_cc", brand: "Barebells", name: "Creamy Crisp (55g)", kcal: 195, p: 20, c: 18, f: 7.6 },
       { id: "bb_coco", brand: "Barebells", name: "Soft Coco Choco (55g)", kcal: 217, p: 16, c: 20, f: 11 },
       { id: "bb_spread", brand: "Barebells", name: "Chocolate Spread (45g)", kcal: 161, p: 15, c: 14, f: 6.4 },
-
-      // ESN
       { id: "esn_spec", brand: "ESN", name: "Designer Bar Speculoos (45g)", kcal: 175, p: 15, c: 15, f: 7.5 },
       { id: "esn_almcoco", brand: "ESN", name: "Designer Bar Almond Coconut (45g)", kcal: 182, p: 14, c: 15, f: 8.5 },
       { id: "esn_haz", brand: "ESN", name: "Designer Bar Hazelnut Nougat (45g)", kcal: 180, p: 14, c: 15, f: 8.5 },
       { id: "esn_pbp", brand: "ESN", name: "Designer Bar Peanut Butter Pretzel (45g)", kcal: 178, p: 14, c: 15, f: 8 },
       { id: "esn_leb", brand: "ESN", name: "Designer Bar Lebkuchen (45g)", kcal: 175, p: 14, c: 15, f: 7.5 },
       { id: "esn_pc", brand: "ESN", name: "Designer Bar Peanut Caramel (45g)", kcal: 182, p: 14, c: 15, f: 8.7 },
-
-      // Quest
       { id: "q_cccd", brand: "Quest", name: "Chocolate Chip Cookie Dough (60g)", kcal: 190, p: 21, c: 22, f: 9 },
       { id: "q_cpb", brand: "Quest", name: "Chocolate Peanut Butter (60g)", kcal: 190, p: 20, c: 22, f: 9 },
       { id: "q_smores", brand: "Quest", name: "S'mores (60g)", kcal: 180, p: 21, c: 23, f: 7 },
       { id: "q_oat", brand: "Quest", name: "Oatmeal Chocolate Chip (60g)", kcal: 180, p: 20, c: 23, f: 7 },
       { id: "q_bday", brand: "Quest", name: "Birthday Cake (60g)", kcal: 180, p: 20, c: 25, f: 7 },
       { id: "q_blue", brand: "Quest", name: "Blueberry Muffin (60g)", kcal: 180, p: 20, c: 23, f: 7 },
-
-      // REDCON1
       { id: "rc_cc", brand: "REDCON1", name: "MRE Bar Cookies & Cream (55g)", kcal: 220, p: 20, c: 22, f: 7 },
       { id: "rc_mad", brand: "REDCON1", name: "MRE Bar Maple Almond Donut (55g)", kcal: 230, p: 20, c: 22, f: 8 },
       { id: "rc_cccd", brand: "REDCON1", name: "MRE Bar Chocolate Chip Cookie Dough (55g)", kcal: 220, p: 20, c: 22, f: 7 }
@@ -2345,6 +2394,14 @@
       return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
     }
 
+    function diffDaysISO(startIso, endIso) {
+      const [y1, m1, d1] = startIso.split("-").map(Number);
+      const [y2, m2, d2] = endIso.split("-").map(Number);
+      const t1 = Date.UTC(y1, m1 - 1, d1);
+      const t2 = Date.UTC(y2, m2 - 1, d2);
+      return Math.round((t2 - t1) / 86400000);
+    }
+
     function formatFrenchDate(iso) {
       const base = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : todayISO();
       const [y, m, d] = base.split("-").map(Number);
@@ -2386,6 +2443,33 @@
     let heroRemainingMode = false;
     let weightRangeDays = 7;
     let reportMode = "day";
+    let aiCustomRange = false;
+    let aiRangeFrom = addDaysISO(todayISO(), -6);
+    let aiRangeTo = todayISO();
+
+    function syncAiDateInputs(force = false) {
+      const fromEl = document.getElementById("ai-date-from");
+      const toEl = document.getElementById("ai-date-to");
+      if (!aiCustomRange) {
+        aiRangeFrom = addDaysISO(currentDate, -6);
+        aiRangeTo = currentDate;
+      }
+      if (fromEl && (force || !fromEl.value)) fromEl.value = aiRangeFrom;
+      if (toEl && (force || !toEl.value)) toEl.value = aiRangeTo;
+    }
+
+    function getNormalizedAiRange() {
+      const fromEl = document.getElementById("ai-date-from");
+      const toEl = document.getElementById("ai-date-to");
+      let start = (fromEl && /^\d{4}-\d{2}-\d{2}$/.test(fromEl.value)) ? fromEl.value : aiRangeFrom;
+      let end = (toEl && /^\d{4}-\d{2}-\d{2}$/.test(toEl.value)) ? toEl.value : aiRangeTo;
+      if (start > end) {
+        const tmp = start;
+        start = end;
+        end = tmp;
+      }
+      return { start, end };
+    }
 
     function getDay(iso) {
       const key = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : todayISO();
@@ -2776,11 +2860,11 @@
       `;
     }
 
-    function buildWeeklyCoachReport() {
-      const startIso = addDaysISO(currentDate, -6);
+    function buildRangeCoachReport(startIso, endIso) {
+      const totalSpan = Math.max(1, diffDaysISO(startIso, endIso) + 1);
       const days = [];
-      for (let i = 6; i >= 0; i--) {
-        const iso = addDaysISO(currentDate, -i);
+      for (let i = 0; i < totalSpan; i++) {
+        const iso = addDaysISO(startIso, i);
         if (store[iso]) {
           const d = getDay(iso);
           const st = getDayStats(d);
@@ -2791,7 +2875,7 @@
       }
 
       const out = [];
-      out.push(`MacroTrack — BILAN 7 JOURS (${startIso} → ${currentDate})`);
+      out.push(`MacroTrack — BILAN PÉRIODE (${startIso} → ${endIso})`);
       if (!days.length) {
         out.push("Aucune journée renseignée sur cette période.");
         return out.join("\n");
@@ -2813,7 +2897,7 @@
       const eaaCount = days.filter(x => x.d.eaa).length;
       const boostCount = days.filter(x => x.d.booster).length;
 
-      out.push(`Jours suivis : ${n}/7 (${trDays} Entraînement • ${reDays} Repos)`);
+      out.push(`Jours suivis : ${n}/${totalSpan} (${trDays} Entraînement • ${reDays} Repos)`);
       if (weights.length) {
         const avgW = weights.reduce((a, b) => a + b, 0) / weights.length;
         const deltaW = weights.length > 1 ? weights[weights.length - 1] - weights[0] : 0;
@@ -2837,11 +2921,11 @@
       });
       if (allCheats.length) {
         out.push("");
-        out.push(`ÉCARTS DE LA SEMAINE (${allCheats.length}) :`);
+        out.push(`ÉCARTS DE LA PÉRIODE (${allCheats.length}) :`);
         allCheats.forEach(l => out.push(l));
       } else {
         out.push("");
-        out.push("ÉCARTS DE LA SEMAINE : Aucun ✓");
+        out.push("ÉCARTS DE LA PÉRIODE : Aucun ✓");
       }
 
       out.push("");
@@ -2852,6 +2936,11 @@
       });
 
       return out.join("\n");
+    }
+
+    function buildWeeklyCoachReport() {
+      const startIso = addDaysISO(currentDate, -6);
+      return buildRangeCoachReport(startIso, currentDate);
     }
 
     function buildCoachReport() {
@@ -3335,6 +3424,7 @@
         });
       });
 
+      syncAiDateInputs(false);
       renderRadarChart();
       renderWeightChart();
       buildCoachReport();
@@ -3352,6 +3442,7 @@
       if (tab === "today") {
         renderAll();
       } else if (tab === "radar") {
+        syncAiDateInputs(false);
         renderRadarChart();
         renderWeightChart();
         buildCoachReport();
@@ -3366,10 +3457,12 @@
 
     document.getElementById("btn-prev-date").addEventListener("click", () => {
       currentDate = addDaysISO(currentDate, -1);
+      aiCustomRange = false;
       renderAll();
     });
     document.getElementById("btn-next-date").addEventListener("click", () => {
       currentDate = addDaysISO(currentDate, 1);
+      aiCustomRange = false;
       renderAll();
     });
     document.getElementById("date-heading").addEventListener("click", () => {
@@ -3378,6 +3471,7 @@
     document.getElementById("date-input").addEventListener("change", e => {
       if (e.target.value) {
         currentDate = e.target.value;
+        aiCustomRange = false;
         renderAll();
       }
     });
@@ -3580,20 +3674,37 @@
       toast("Journée réinitialisée");
     });
 
-    document.getElementById("btn-copy-summary").addEventListener("click", async () => {
-      const txt = document.getElementById("coach-summary-text").value;
+    async function copyToClipboard(txt, okMsg) {
+      if (!txt) return;
       try {
         await navigator.clipboard.writeText(txt);
-        toast("Bilan coach copié");
+        toast(okMsg || "Copié");
       } catch (e) {
-        const el = document.getElementById("coach-summary-text");
-        el.focus(); el.select();
+        const ta = document.createElement("textarea");
+        ta.value = txt;
+        document.body.appendChild(ta);
+        ta.select();
         try { document.execCommand("copy"); } catch (_) {}
-        toast("Bilan coach copié");
+        ta.remove();
+        toast(okMsg || "Copié");
       }
+    }
+
+    document.getElementById("btn-copy-summary").addEventListener("click", () => {
+      const txt = document.getElementById("coach-summary-text").value;
+      copyToClipboard(txt, "Bilan coach copié");
     });
 
-    // Synchronisation automatique : à l'ouverture, au retour sur l'app, au retour réseau et toutes les 60s
+    document.getElementById("btn-copy-ai-weekly").addEventListener("click", () => {
+      const resBox = document.getElementById("ai-weekly-result");
+      const txt = (resBox && !resBox.classList.contains("hidden") ? resBox.textContent : "").trim();
+      if (!txt) {
+        toast("Lance d'abord une analyse IA");
+        return;
+      }
+      copyToClipboard(txt, "Analyse IA copiée");
+    });
+
     let isSyncing = false;
     async function autoSync() {
       if (isSyncing || !navigator.onLine) return;
@@ -3677,6 +3788,26 @@
     document.getElementById("btn-report-week").addEventListener("click", () => {
       reportMode = "week";
       buildCoachReport();
+    });
+
+    document.getElementById("ai-date-from").addEventListener("change", e => {
+      if (e.target.value) {
+        aiCustomRange = true;
+        aiRangeFrom = e.target.value;
+      }
+    });
+    document.getElementById("ai-date-to").addEventListener("change", e => {
+      if (e.target.value) {
+        aiCustomRange = true;
+        aiRangeTo = e.target.value;
+      }
+    });
+    document.getElementById("btn-ai-range-7d").addEventListener("click", () => {
+      aiCustomRange = false;
+      aiRangeFrom = addDaysISO(currentDate, -6);
+      aiRangeTo = currentDate;
+      syncAiDateInputs(true);
+      toast("Plage réinitialisée sur 7 jours");
     });
 
     if ("serviceWorker" in navigator) {
@@ -3863,7 +3994,7 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
       if (e.key === "Enter") { e.preventDefault(); runAiNlp(); }
     });
 
-    // 3. Substitutions intelligentes
+    // 3. Substitutions & compléments de macros
     document.getElementById("btn-toggle-sub").addEventListener("click", () => {
       document.getElementById("ai-sub-drawer").classList.toggle("hidden");
     });
@@ -3876,14 +4007,19 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
       const btn = document.getElementById("btn-ai-sub");
       const resBox = document.getElementById("ai-sub-result");
       const q = (inp ? inp.value : "").trim();
-      if (!q) return;
+      if (!q) {
+        toast("Précise l'aliment à remplacer");
+        return;
+      }
       btn.disabled = true;
       btn.textContent = "⏳...";
       resBox.classList.remove("hidden");
       resBox.textContent = "Calcul de l'équivalence...";
       try {
+        const allowedList = Object.keys(FOODS).join(", ");
         const prompt = `Tu es un coach nutrition musculation précis et concis. L'utilisateur demande une substitution alimentaire : "${q}".
-Donne le grammage exact de remplacement pour matcher au mieux les macros principales (protéines ou glucides ou lipides selon l'aliment), avec le comparatif rapide (Original vs Remplacement : kcal, P, G, L) en 4 à 6 lignes maximum, sans blabla.`;
+Privilégie les aliments de cette liste si pertinent : ${allowedList}.
+Donne le grammage exact de remplacement pour matcher au mieux les macros principales (protéines, glucides ou lipides selon l'aliment), avec le comparatif rapide (Original vs Remplacement : kcal, P, G, L) en 4 à 6 lignes maximum, sans blabla.`;
         const reply = await callAI([{ parts: [{ text: prompt }] }], false);
         if (!reply) { resBox.classList.add("hidden"); return; }
         resBox.textContent = reply.trim();
@@ -3891,33 +4027,74 @@ Donne le grammage exact de remplacement pour matcher au mieux les macros princip
         resBox.textContent = "Erreur : " + (err.message || "échec");
       } finally {
         btn.disabled = false;
-        btn.textContent = "Calculer";
+        btn.textContent = "Équiv.";
+      }
+    }
+
+    async function runAiCompleteDay() {
+      const inp = document.getElementById("ai-sub-input");
+      const btn = document.getElementById("btn-ai-complete");
+      const resBox = document.getElementById("ai-sub-result");
+      const extraNote = (inp ? inp.value : "").trim();
+      btn.disabled = true;
+      btn.textContent = "⏳...";
+      resBox.classList.remove("hidden");
+      resBox.textContent = "Calcul des compléments sur la journée...";
+      try {
+        const day = getDay(currentDate);
+        const plan = getPlan(day);
+        const st = getDayStats(day);
+        const remP = Math.round(plan.targets.p - st.valP);
+        const remC = Math.round(plan.targets.c - st.valC);
+        const remF = Math.round(plan.targets.f - st.valF);
+        const remKcal = Math.round(plan.targets.kcal - st.valKcal);
+        const allowedList = Object.keys(FOODS).join(", ");
+
+        const prompt = `Tu es un coach nutrition musculation direct et précis.
+Voici les macros restantes aujourd'hui (${plan.label}) :
+- Restant : P ${remP}g | G ${remC}g | L ${remF}g | ${remKcal} kcal
+${extraNote ? `- Consigne utilisateur : "${extraNote}"` : ""}
+
+Aliments autorisés : ${allowedList}.
+Propose une combinaison concrète et simple avec des grammages arrondis pour compléter au mieux ce qui manque sans faire exploser les lipides ni les calories.
+Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros apportées).`;
+
+        const reply = await callAI([{ parts: [{ text: prompt }] }], false);
+        if (!reply) { resBox.classList.add("hidden"); return; }
+        resBox.textContent = reply.trim();
+      } catch (err) {
+        resBox.textContent = "Erreur : " + (err.message || "échec");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Compléter";
       }
     }
 
     document.getElementById("btn-ai-sub").addEventListener("click", runAiSub);
+    document.getElementById("btn-ai-complete").addEventListener("click", runAiCompleteDay);
     document.getElementById("ai-sub-input").addEventListener("keydown", e => {
       if (e.key === "Enter") { e.preventDefault(); runAiSub(); }
     });
 
-    // 4. Analyse hebdomadaire IA (Pré-check-in)
+    // 4. Analyse IA sur plage de dates (Pré-check-in)
     document.getElementById("btn-ai-weekly").addEventListener("click", async () => {
       const btn = document.getElementById("btn-ai-weekly");
       const resBox = document.getElementById("ai-weekly-result");
+      const { start, end } = getNormalizedAiRange();
       btn.disabled = true;
       btn.textContent = "⏳ Analyse...";
       resBox.classList.remove("hidden");
-      resBox.textContent = "Analyse de tes 7 derniers jours...";
+      resBox.textContent = `Analyse du ${start} au ${end}...`;
       try {
-        const weeklyText = buildWeeklyCoachReport();
-        const prompt = `Tu es un coach musculation/nutrition direct et factuel. Voici le bilan 7 jours de ton athlète :
-${weeklyText}
+        const rangeText = buildRangeCoachReport(start, end);
+        const prompt = `Tu es un coach musculation/nutrition direct et factuel. Voici le bilan de l'athlète du ${start} au ${end} :
+${rangeText}
 
 Fais un pré-check-in clair et structuré en français (max 12 lignes) :
-1. Tendance poids vs apports caloriques
+1. Tendance poids vs apports caloriques sur la période du ${start} au ${end}
 2. Régularité (hydratation objectif 4,5L, sel objectif 6g, caféine max 400mg, suppléments)
 3. Impact des écarts éventuels
-4. 2 recommandations concrètes pour la semaine prochaine.`;
+4. 2 recommandations concrètes pour la suite.`;
         const reply = await callAI([{ parts: [{ text: prompt }] }], false);
         if (!reply) { resBox.classList.add("hidden"); return; }
         resBox.textContent = reply.trim();
@@ -3925,7 +4102,7 @@ Fais un pré-check-in clair et structuré en français (max 12 lignes) :
         resBox.textContent = "Erreur : " + (err.message || "échec");
       } finally {
         btn.disabled = false;
-        btn.textContent = "✨ Analyser 7j";
+        btn.textContent = "✨ Analyser";
       }
     });
 
