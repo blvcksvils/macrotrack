@@ -956,9 +956,16 @@
     /* Section Header */
     .section-head {
       display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 12px 2px 8px;
+    }
+
+    .section-head-top {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 12px 2px 8px;
+      gap: 8px;
     }
 
     .section-head h2 {
@@ -982,6 +989,14 @@
       gap: 8px;
     }
 
+    .plan-actions-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: stretch;
+      gap: 6px;
+      width: 100%;
+    }
+
     .phase-select {
       background: #121724;
       color: #60a5fa;
@@ -1003,11 +1018,15 @@
       color: #cbd5e1;
       border: 1px solid #23304c;
       border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 10.5px;
+      padding: 6px 10px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
     .reuse-btn:active {
@@ -1396,6 +1415,13 @@
       margin-top: 7px;
     }
 
+    .ai-sub-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 7px;
+    }
+
     .ai-input {
       background: #07090f;
       border: 1px solid #23304c;
@@ -1419,6 +1445,7 @@
       white-space: nowrap;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 4px;
     }
 
@@ -1885,7 +1912,7 @@
             <span>☕</span>
             <span>Caféine</span>
           </div>
-          <span class="caffeine-pill" id="caffeine-total-pill">0 / 400 mg</span>
+          <span class="caffeine-pill" id="caffeine-total-pill">0 mg</span>
         </div>
 
         <div class="caf-sub-breakdown">
@@ -1926,14 +1953,16 @@
 
       <!-- Repas -->
       <div class="section-head">
-        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <div class="section-head-top">
           <h2>PLAN ALIMENTAIRE</h2>
+          <div class="section-head-right">
+            <select id="phase-select" class="phase-select" aria-label="Phase alimentaire"></select>
+            <span id="plan-mode-caption">Entraînement</span>
+          </div>
+        </div>
+        <div class="plan-actions-row">
           <button class="reuse-btn" id="btn-reuse-choices" type="button" title="Reprendre les aliments de la dernière journée similaire">↺ Précédent</button>
           <button class="reuse-btn" id="btn-toggle-sub" type="button" style="color:#60a5fa;" title="Substitution ou compléments de macros">✨ Substituer / Compléter</button>
-        </div>
-        <div class="section-head-right">
-          <select id="phase-select" class="phase-select" aria-label="Phase alimentaire"></select>
-          <span id="plan-mode-caption">Entraînement</span>
         </div>
       </div>
       <div class="ai-sub-drawer hidden" id="ai-sub-drawer">
@@ -1941,12 +1970,12 @@
           <strong style="font-size:12.5px;color:#93c5fd;">✨ Substitution & Compléments IA</strong>
           <button class="whey-del-btn" id="btn-close-sub" type="button" style="color:#94a3b8;">×</button>
         </div>
-        <div class="ai-input-row">
-          <input type="text" id="ai-sub-input" class="ai-input" placeholder="Ex : remplacer 130g poulet par thon, ou laisse vide + Compléter..." />
-          <div style="display:flex;gap:4px;">
-            <button class="ai-btn" id="btn-ai-sub" type="button">Équiv.</button>
-            <button class="btn-blue" id="btn-ai-complete" type="button" style="padding:7px 9px;">Compléter</button>
-          </div>
+        <div style="margin-top:7px;">
+          <input type="text" id="ai-sub-input" class="ai-input" placeholder="Ex : remplacer 130g poulet par thon, ou consigne..." />
+        </div>
+        <div class="ai-sub-btns">
+          <button class="ai-btn" id="btn-ai-sub" type="button">Équivalence</button>
+          <button class="btn-blue" id="btn-ai-complete" type="button">Compléter</button>
         </div>
         <div class="ai-result-box hidden" id="ai-sub-result"></div>
       </div>
@@ -2700,7 +2729,7 @@
         { label: "Eau", pct: Math.min(100, Math.round((day.water / 4.5) * 100)), raw: `${day.water.toFixed(2)}/4,5 L` },
         { label: "Sel", pct: Math.min(100, Math.round((day.salt / 6.0) * 100)), raw: `${day.salt.toFixed(1)}/6 g` },
         { label: "Créatine + EAA", pct: (day.creatine ? 50 : 0) + (day.eaa ? 50 : 0), raw: `Créa ${day.creatine ? "OK" : "Non"} • EAA ${day.eaa ? "OK" : "Non"}` },
-        { label: "Booster & Caféine", pct: Math.min(100, Math.round(((day.booster ? 50 : 0) + Math.min(50, (caf.totalMg / 400) * 50)))), raw: `${caf.totalMg} mg • Booster ${day.booster ? "OK" : "Non"}` }
+        { label: "Booster & Caféine", pct: day.booster ? 100 : 0, raw: `${caf.totalMg} mg • Booster ${day.booster ? "OK" : "Non"}` }
       ];
 
       const avgScore = Math.round(axes.reduce((acc, a) => acc + a.pct, 0) / axes.length);
@@ -3376,10 +3405,10 @@
       const caf = getCaffeineBreakdown(day);
       document.getElementById("coffee-count").textContent = day.coffee;
       document.getElementById("energy-count").textContent = day.energyDrinks;
-      document.getElementById("caffeine-total-pill").textContent = `${caf.totalMg} / 400 mg`;
+      document.getElementById("caffeine-total-pill").textContent = `${caf.totalMg} mg`;
       document.getElementById("caf-coffee-summary").textContent = `Café : ${caf.coffeeMg} mg`;
       document.getElementById("caf-energy-summary").textContent = `Boissons énergisantes : ${caf.energyMg} mg`;
-      document.getElementById("caffeine-bar").style.width = `${Math.min(100, (caf.totalMg / 400) * 100)}%`;
+      document.getElementById("caffeine-bar").style.width = `${Math.min(100, (caf.totalMg / 500) * 100)}%`;
 
       mealsEl.querySelectorAll(".meal-checkbox").forEach(cb => {
         cb.addEventListener("change", e => {
@@ -4027,7 +4056,7 @@ Donne le grammage exact de remplacement pour matcher au mieux les macros princip
         resBox.textContent = "Erreur : " + (err.message || "échec");
       } finally {
         btn.disabled = false;
-        btn.textContent = "Équiv.";
+        btn.textContent = "Équivalence";
       }
     }
 
@@ -4092,7 +4121,7 @@ ${rangeText}
 
 Fais un pré-check-in clair et structuré en français (max 12 lignes) :
 1. Tendance poids vs apports caloriques sur la période du ${start} au ${end}
-2. Régularité (hydratation objectif 4,5L, sel objectif 6g, caféine max 400mg, suppléments)
+2. Régularité (hydratation objectif 4,5L, sel objectif 6g, caféine consommée, suppléments)
 3. Impact des écarts éventuels
 4. 2 recommandations concrètes pour la suite.`;
         const reply = await callAI([{ parts: [{ text: prompt }] }], false);
