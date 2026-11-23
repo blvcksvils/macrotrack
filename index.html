@@ -609,7 +609,7 @@
 
     .mini-fill-water { height: 100%; background: #38bdf8; border-radius: 999px; }
     .mini-fill-salt { height: 100%; background: #f59e0b; border-radius: 999px; }
-    .mini-fill-caffeine { height: 100%; background: #f43f5e; border-radius: 999px; }
+    .mini-fill-caffeine { height: 100%; background: linear-gradient(90deg, #10b981, #f59e0b, #f43f5e); border-radius: 999px; transition: width 0.3s ease; }
 
     .step-btns {
       display: grid;
@@ -836,7 +836,7 @@
       font-size: 13px;
     }
 
-    /* Tuile Caféine */
+    /* Tuile Caféine & Jauge d'énergie */
     .caffeine-master-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -861,13 +861,24 @@
       color: #f8fafc;
     }
 
+    .energy-gauge-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      color: #34d399;
+      margin: 7px 0 4px;
+      gap: 6px;
+    }
+
     .caf-sub-breakdown {
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 10.5px;
       color: #8b95a8;
-      margin: 6px 0 7px;
+      margin: 4px 0 7px;
       gap: 6px;
       flex-wrap: wrap;
     }
@@ -1883,14 +1894,14 @@
             <span>🥤</span>
             <strong style="font-size:13px;">Shaker Whey</strong>
           </div>
-          <span class="whey-macros-badge" id="whey-preview-macros">25g • 21g P • 88 kcal</span>
+          <span class="whey-macros-badge" id="whey-preview-macros"></span>
         </div>
         <div class="whey-select-row">
           <select id="whey-protein-select" class="bar-select" aria-label="Choisir une protéine"></select>
         </div>
         <div class="whey-controls">
           <div class="whey-qty-wrap">
-            <input type="number" id="whey-shake-qty" class="whey-qty-input" inputmode="decimal" min="1" step="1" value="25" />
+            <input type="number" id="whey-shake-qty" class="whey-qty-input" inputmode="decimal" min="1" step="1" placeholder="g" />
             <span class="qty-u">g</span>
           </div>
           <button class="whey-add-btn" id="btn-add-whey-shake" type="button">+ Ajouter shaker</button>
@@ -1905,7 +1916,7 @@
             <span>🔥</span>
             <strong style="font-size:13px;">Booster pré workout</strong>
           </div>
-          <span class="caffeine-pill" id="booster-preview-pill">195 mg caféine</span>
+          <span class="caffeine-pill" id="booster-preview-pill"></span>
         </div>
         <div class="whey-select-row">
           <select id="booster-select" class="bar-select" aria-label="Choisir un booster"></select>
@@ -1924,23 +1935,28 @@
         <div class="whey-shakers-list" id="boosters-list"></div>
       </div>
 
-      <!-- Caféine -->
+      <!-- Caféine & Jauge d'énergie -->
       <div class="caffeine-master-card">
         <div class="caf-master-top">
           <div class="caf-master-title">
             <span>☕</span>
-            <span>Caféine</span>
+            <span>Caféine & Énergie</span>
           </div>
-          <span class="caffeine-pill" id="caffeine-total-pill">0 mg</span>
+          <span class="caffeine-pill" id="caffeine-total-pill">Total : 0 mg</span>
+        </div>
+
+        <div class="energy-gauge-head">
+          <span id="energy-gauge-label">⚡ Énergie active : 0%</span>
+          <span id="energy-active-mg" style="color:#94a3b8;font-size:10px;">0 mg actifs</span>
+        </div>
+
+        <div class="mini-track">
+          <div class="mini-fill-caffeine" id="caffeine-bar" style="width:0%"></div>
         </div>
 
         <div class="caf-sub-breakdown">
           <span id="caf-coffee-summary">Café : 0 mg</span>
           <span id="caf-energy-summary">Boissons énergisantes : 0 mg</span>
-        </div>
-
-        <div class="mini-track">
-          <div class="mini-fill-caffeine" id="caffeine-bar" style="width:0%"></div>
         </div>
 
         <div class="caf-two-grid">
@@ -2568,13 +2584,64 @@
         booster: false,
         boosters: [],
         coffee: 0,
+        coffeeLogs: [],
         energyDrinks: 0,
+        energyLogs: [],
         wheyShakes: [],
         proteinBars: [],
         cheats: [],
         updatedAt: 0,
         meals
       };
+    }
+
+    function switchDayModePreservingData(iso, nextMode, nextPhase = null) {
+      const d = getDay(iso);
+      const targetPhase = nextPhase && PHASES[nextPhase] ? nextPhase : d.phase;
+      const targetMode = nextMode === "rest" ? "rest" : "training";
+      const oldMeals = d.meals || {};
+      const fresh = defaultDay(targetMode, targetPhase);
+
+      // Conserver toutes les données journalières (poids, eau, sel, suppléments, boosters, caféine, whey, barres, écarts)
+      fresh.weight = d.weight;
+      fresh.water = d.water;
+      fresh.salt = d.salt;
+      fresh.creatine = d.creatine;
+      fresh.eaa = d.eaa;
+      fresh.booster = d.booster;
+      fresh.boosters = Array.isArray(d.boosters) ? [...d.boosters] : [];
+      fresh.coffee = d.coffee;
+      fresh.coffeeLogs = Array.isArray(d.coffeeLogs) ? [...d.coffeeLogs] : [];
+      fresh.energyDrinks = d.energyDrinks;
+      fresh.energyLogs = Array.isArray(d.energyLogs) ? [...d.energyLogs] : [];
+      fresh.wheyShakes = Array.isArray(d.wheyShakes) ? [...d.wheyShakes] : [];
+      fresh.proteinBars = Array.isArray(d.proteinBars) ? [...d.proteinBars] : [];
+      fresh.cheats = Array.isArray(d.cheats) ? [...d.cheats] : [];
+
+      // Reprendre l'état des repas si l'id existe dans le nouveau plan, ou par position/nom de repas
+      const targetPlan = getPlan(fresh);
+      const oldMealEntries = Object.values(oldMeals);
+      targetPlan.meals.forEach((m, mIdx) => {
+        const matched = oldMeals[m.id] || oldMealEntries[mIdx];
+        if (matched && Array.isArray(matched.items)) {
+          fresh.meals[m.id].checked = Boolean(matched.checked);
+          fresh.meals[m.id].items = m.items.map((def, idx) => {
+            const prevIt = matched.items[idx];
+            if (prevIt) {
+              return {
+                food: FOODS[prevIt.food] ? prevIt.food : def.defaultFood,
+                qty: prevIt.qty !== undefined ? prevIt.qty : def.defaultQty,
+                checked: Boolean(prevIt.checked)
+              };
+            }
+            return { food: def.defaultFood, qty: def.defaultQty, checked: false };
+          });
+        }
+      });
+
+      store[iso] = fresh;
+      persistAndSync();
+      renderAll();
     }
 
     let currentDate = todayISO();
@@ -2627,6 +2694,8 @@
       d.booster = Boolean(d.booster) || d.boosters.length > 0;
       d.coffee = Math.max(0, parseInt(d.coffee, 10) || 0);
       d.energyDrinks = Math.max(0, parseInt(d.energyDrinks, 10) || 0);
+      if (!Array.isArray(d.coffeeLogs)) d.coffeeLogs = [];
+      if (!Array.isArray(d.energyLogs)) d.energyLogs = [];
       if (!Array.isArray(d.wheyShakes)) d.wheyShakes = [];
       if (!Array.isArray(d.proteinBars)) d.proteinBars = [];
       if (!Array.isArray(d.cheats)) d.cheats = [];
@@ -2687,6 +2756,46 @@
         boosterMg,
         totalMg: coffeeMg + energyMg + boosterMg
       };
+    }
+
+    // Pharmacocinétique de la caféine : absorption sur ~30 min, demi-vie ~5h
+    function calcCaffeineStimulation(mg, elapsedMs) {
+      if (mg <= 0 || elapsedMs < 0) return 0;
+      const hours = elapsedMs / 3600000;
+      if (hours > 24) return 0;
+      const absorption = hours < 0.5 ? (0.3 + 0.7 * (hours / 0.5)) : 1.0;
+      const decay = Math.pow(0.5, hours / 5.0);
+      return mg * absorption * decay;
+    }
+
+    function getActiveCaffeineEnergy(iso, day) {
+      const now = Date.now();
+      const [y, m, d] = iso.split("-").map(Number);
+      const fallbackNoon = new Date(y, m - 1, d, 12, 0, 0).getTime();
+      let activeMg = 0;
+
+      for (let i = 0; i < day.coffee; i++) {
+        const ts = (day.coffeeLogs && day.coffeeLogs[i]) ? day.coffeeLogs[i] : fallbackNoon;
+        activeMg += calcCaffeineStimulation(80, now - ts);
+      }
+
+      for (let i = 0; i < day.energyDrinks; i++) {
+        const ts = (day.energyLogs && day.energyLogs[i]) ? day.energyLogs[i] : fallbackNoon;
+        activeMg += calcCaffeineStimulation(150, now - ts);
+      }
+
+      if (day.boosters && day.boosters.length) {
+        day.boosters.forEach(entry => {
+          const st = boosterEntryStats(entry);
+          const ts = entry.ts || fallbackNoon;
+          activeMg += calcCaffeineStimulation(st.caffeineMg, now - ts);
+        });
+      } else if (day.booster) {
+        activeMg += calcCaffeineStimulation(200, now - fallbackNoon);
+      }
+
+      const pct = Math.min(100, Math.round((activeMg / 300) * 100));
+      return { activeMg: Math.round(activeMg), pct };
     }
 
     function isItemValidated(mealState, itemState) {
@@ -2894,7 +3003,7 @@
         { label: "Eau", pct: Math.min(100, Math.round((day.water / 4.5) * 100)), raw: `${day.water.toFixed(2)}/4,5 L` },
         { label: "Sel", pct: Math.min(100, Math.round((day.salt / 6.0) * 100)), raw: `${day.salt.toFixed(1)}/6 g` },
         { label: "Créatine + EAA", pct: (day.creatine ? 50 : 0) + (day.eaa ? 50 : 0), raw: `Créa ${day.creatine ? "OK" : "Non"} • EAA ${day.eaa ? "OK" : "Non"}` },
-        { label: "Booster & Caféine", pct: day.booster ? 100 : 0, raw: `${caf.totalMg} mg • Booster ${day.booster ? "OK" : "Non"}` }
+        { label: "Booster & Caféine", pct: day.booster ? 100 : 0, raw: `${Math.round(caf.totalMg)} mg • Booster ${day.booster ? "OK" : "Non"}` }
       ];
 
       const avgScore = Math.round(axes.reduce((acc, a) => acc + a.pct, 0) / axes.length);
@@ -3166,7 +3275,7 @@
           return `${st.label}${st.caffeineMg ? ` (${Math.round(st.caffeineMg)} mg caf.)` : ""}`;
         }).join(" | ")}`);
       }
-      out.push(`Caféine : ${caf.totalMg} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Boissons énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${caf.boosterMg ? ` | Boosters = ${Math.round(caf.boosterMg)} mg` : ""})`);
+      out.push(`Caféine : ${Math.round(caf.totalMg)} mg (Café x${day.coffee} = ${caf.coffeeMg} mg | Boissons énergisantes x${day.energyDrinks} = ${caf.energyMg} mg${caf.boosterMg ? ` | Boosters = ${Math.round(caf.boosterMg)} mg` : ""})`);
       if (day.wheyShakes.length) {
         out.push(`Shakers Whey : ${day.wheyShakes.map(s => shakerMacros(s).label).join(" | ")}`);
       }
@@ -3250,7 +3359,7 @@
           <div class="history-item">
             <div>
               <strong style="font-size:12.5px;">${formatFrenchDate(k)}</strong>
-              <div style="font-size:10.5px;color:#8b95a8;">${getPhaseObj(d.phase).label} • ${plan.label}${d.weight ? ` • ${d.weight.toFixed(1)}kg` : ``} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${caf.totalMg}mg caf.</div>
+              <div style="font-size:10.5px;color:#8b95a8;">${getPhaseObj(d.phase).label} • ${plan.label}${d.weight ? ` • ${d.weight.toFixed(1)}kg` : ``} • ${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${Math.round(caf.totalMg)}mg caf.</div>
               <div style="font-size:10.5px;color:#cbd5e1;margin-top:2px;">P ${Math.round(st.valP)}g • G ${Math.round(st.valC)}g • L ${Math.round(st.valF)}g</div>
             </div>
             <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
@@ -3274,20 +3383,25 @@
       const sel = document.getElementById("booster-select");
       if (!sel || sel.options.length > 0) return;
       const brands = [...new Set(BOOSTERS.map(b => b.brand))];
-      sel.innerHTML = brands.map(brand => {
+      sel.innerHTML = `<option value="" selected>Sélectionner un booster...</option>` + brands.map(brand => {
         const items = BOOSTERS.filter(b => b.brand === brand);
         return `<optgroup label="${brand}">${items.map(b => `<option value="${b.id}">${b.name}</option>`).join("")}</optgroup>`;
       }).join("");
     }
 
-    function renderBoosters(day) {
-      populateBoosterSelect();
+    function updateBoosterPreview() {
       const sel = document.getElementById("booster-select");
       const doseSel = document.getElementById("booster-dose-select");
       const previewPill = document.getElementById("booster-preview-pill");
       const previewMeta = document.getElementById("booster-preview-meta");
 
-      const b = getBoosterById(sel ? sel.value : BOOSTERS[0].id);
+      if (!sel || !sel.value) {
+        if (previewPill) previewPill.textContent = "Aucun choisi";
+        if (previewMeta) previewMeta.textContent = "";
+        return;
+      }
+
+      const b = getBoosterById(sel.value);
       const dose = Math.max(0.5, Number(doseSel ? doseSel.value : 1) || 1);
       const prev = boosterEntryStats({ id: b.id, dose });
 
@@ -3298,6 +3412,11 @@
         const gTot = (b.doseG * dose).toFixed(1).replace(/\.0$/, "");
         previewMeta.textContent = `${b.brand} • ${gTot}g • ${Math.round(prev.kcal)} kcal • G ${prev.c.toFixed(1).replace(/\.0$/, "")}g • ${b.servingsPerTub} doses/pot`;
       }
+    }
+
+    function renderBoosters(day) {
+      populateBoosterSelect();
+      updateBoosterPreview();
 
       const card = document.getElementById("card-booster");
       if (card) {
@@ -3313,11 +3432,12 @@
 
       listEl.innerHTML = day.boosters.map((entry, i) => {
         const st = boosterEntryStats(entry);
+        const timeStr = entry.ts ? ` • ${new Date(entry.ts).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}` : "";
         return `
           <div class="cheat-item">
             <div style="min-width:0;">
               <div style="color:#e2e8f0;word-break:break-word;"><strong>${st.label}</strong></div>
-              <div class="cheat-item-sub">${Math.round(st.caffeineMg)} mg caféine • ${Math.round(st.kcal)} kcal</div>
+              <div class="cheat-item-sub">${Math.round(st.caffeineMg)} mg caféine • ${Math.round(st.kcal)} kcal${timeStr}</div>
             </div>
             <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
               <span class="caffeine-pill">${Math.round(st.caffeineMg)} mg</span>
@@ -3343,23 +3463,33 @@
       const sel = document.getElementById("whey-protein-select");
       if (!sel || sel.options.length > 0) return;
       const brands = [...new Set(WHEY_PROTEINS.map(w => w.brand))];
-      sel.innerHTML = brands.map(brand => {
+      sel.innerHTML = `<option value="" selected>Sélectionner une protéine...</option>` + brands.map(brand => {
         const items = WHEY_PROTEINS.filter(w => w.brand === brand);
         return `<optgroup label="${brand}">${items.map(w => `<option value="${w.id}">${w.name}</option>`).join("")}</optgroup>`;
       }).join("");
     }
 
-    function renderWheyShakes(day) {
-      populateWheySelect();
+    function updateWheyPreview() {
       const sel = document.getElementById("whey-protein-select");
       const qtyInput = document.getElementById("whey-shake-qty");
-      const qty = Math.max(0, Number(qtyInput ? qtyInput.value : 25) || 0);
-      const selectedWhey = getWheyById(sel ? sel.value : WHEY_PROTEINS[0].id);
-      const prevMac = shakerMacros({ id: selectedWhey.id, qty });
       const badge = document.getElementById("whey-preview-macros");
+
+      if (!sel || !sel.value) {
+        if (badge) badge.textContent = "Aucune choisie";
+        return;
+      }
+
+      const qty = Math.max(0, Number(qtyInput ? qtyInput.value : 0) || 0);
+      const selectedWhey = getWheyById(sel.value);
+      const prevMac = shakerMacros({ id: selectedWhey.id, qty });
       if (badge) {
         badge.textContent = `${qty}g • ${prevMac.p.toFixed(1).replace(/\.0$/, "")}g P • ${Math.round(prevMac.kcal)} kcal`;
       }
+    }
+
+    function renderWheyShakes(day) {
+      populateWheySelect();
+      updateWheyPreview();
 
       const listEl = document.getElementById("whey-shakers-list");
       if (!listEl) return;
@@ -3506,6 +3636,31 @@
           renderAll();
         });
       });
+    }
+
+    function renderCaffeineEnergy(day) {
+      const caf = getCaffeineBreakdown(day);
+      const energy = getActiveCaffeineEnergy(currentDate, day);
+      document.getElementById("coffee-count").textContent = day.coffee;
+      document.getElementById("energy-count").textContent = day.energyDrinks;
+      document.getElementById("caffeine-total-pill").textContent = `Total : ${Math.round(caf.totalMg)} mg`;
+      document.getElementById("caf-coffee-summary").textContent = `Café : ${caf.coffeeMg} mg`;
+      document.getElementById("caf-energy-summary").textContent = `Boissons énergisantes : ${caf.energyMg} mg`;
+
+      const gaugeLbl = document.getElementById("energy-gauge-label");
+      const activeMgEl = document.getElementById("energy-active-mg");
+      const barEl = document.getElementById("caffeine-bar");
+
+      if (gaugeLbl) {
+        let stateText = "Repos";
+        if (energy.pct >= 75) stateText = "Boost max";
+        else if (energy.pct >= 40) stateText = "Haute énergie";
+        else if (energy.pct > 0) stateText = "Énergie modérée";
+        gaugeLbl.textContent = `⚡ ${stateText} : ${energy.pct}%`;
+        gaugeLbl.style.color = energy.pct >= 75 ? "#fb7185" : (energy.pct >= 40 ? "#fbbf24" : "#34d399");
+      }
+      if (activeMgEl) activeMgEl.textContent = `~${energy.activeMg} mg actifs`;
+      if (barEl) barEl.style.width = `${energy.pct}%`;
     }
 
     function renderAll() {
@@ -3661,14 +3816,7 @@
       renderBoosters(day);
       renderProteinBars(day);
       renderCheats(day);
-
-      const caf = getCaffeineBreakdown(day);
-      document.getElementById("coffee-count").textContent = day.coffee;
-      document.getElementById("energy-count").textContent = day.energyDrinks;
-      document.getElementById("caffeine-total-pill").textContent = `${Math.round(caf.totalMg)} mg`;
-      document.getElementById("caf-coffee-summary").textContent = `Café : ${caf.coffeeMg} mg`;
-      document.getElementById("caf-energy-summary").textContent = `Boissons énergisantes : ${caf.energyMg} mg`;
-      document.getElementById("caffeine-bar").style.width = `${Math.min(100, (caf.totalMg / 500) * 100)}%`;
+      renderCaffeineEnergy(day);
 
       mealsEl.querySelectorAll(".meal-checkbox").forEach(cb => {
         cb.addEventListener("change", e => {
@@ -3769,10 +3917,7 @@
       const nextPhase = e.target.value;
       const d = getDay(currentDate);
       if (PHASES[nextPhase] && d.phase !== nextPhase) {
-        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, boosters: d.boosters, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, proteinBars: d.proteinBars, cheats: d.cheats };
-        store[currentDate] = Object.assign(defaultDay(d.mode, nextPhase), prev);
-        persistAndSync();
-        renderAll();
+        switchDayModePreservingData(currentDate, d.mode, nextPhase);
         toast(`Phase : ${PHASES[nextPhase].label}`);
       }
     });
@@ -3780,19 +3925,13 @@
     document.getElementById("btn-mode-training").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "training") {
-        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, boosters: d.boosters, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, proteinBars: d.proteinBars, cheats: d.cheats };
-        store[currentDate] = Object.assign(defaultDay("training", d.phase), prev);
-        persistAndSync();
-        renderAll();
+        switchDayModePreservingData(currentDate, "training", d.phase);
       }
     });
     document.getElementById("btn-mode-rest").addEventListener("click", () => {
       const d = getDay(currentDate);
       if (d.mode !== "rest") {
-        const prev = { weight: d.weight, water: d.water, salt: d.salt, creatine: d.creatine, eaa: d.eaa, booster: d.booster, boosters: d.boosters, coffee: d.coffee, energyDrinks: d.energyDrinks, wheyShakes: d.wheyShakes, proteinBars: d.proteinBars, cheats: d.cheats };
-        store[currentDate] = Object.assign(defaultDay("rest", d.phase), prev);
-        persistAndSync();
-        renderAll();
+        switchDayModePreservingData(currentDate, "rest", d.phase);
       }
     });
 
@@ -3841,19 +3980,25 @@
 
     populateBoosterSelect();
     document.getElementById("booster-select").addEventListener("change", () => {
-      renderBoosters(getDay(currentDate));
+      updateBoosterPreview();
     });
     document.getElementById("booster-dose-select").addEventListener("change", () => {
-      renderBoosters(getDay(currentDate));
+      updateBoosterPreview();
     });
     document.getElementById("btn-add-booster").addEventListener("click", () => {
       const sel = document.getElementById("booster-select");
       const doseSel = document.getElementById("booster-dose-select");
-      const b = getBoosterById(sel ? sel.value : BOOSTERS[0].id);
+      if (!sel || !sel.value) {
+        toast("Sélectionne un booster");
+        return;
+      }
+      const b = getBoosterById(sel.value);
       const dose = Math.max(0.5, Number(doseSel ? doseSel.value : 1) || 1);
       const d = getDay(currentDate);
-      d.boosters.push({ id: b.id, dose });
+      d.boosters.push({ id: b.id, dose, ts: Date.now() });
       d.booster = true;
+      sel.value = "";
+      if (doseSel) doseSel.value = "1";
       persistAndSync();
       renderAll();
       toast(`${dose}× ${b.brand} ajouté`);
@@ -3861,23 +4006,34 @@
 
     populateWheySelect();
     document.getElementById("whey-protein-select").addEventListener("change", e => {
-      const w = getWheyById(e.target.value);
       const qtyInp = document.getElementById("whey-shake-qty");
+      if (!e.target.value) {
+        if (qtyInp) qtyInp.value = "";
+        updateWheyPreview();
+        return;
+      }
+      const w = getWheyById(e.target.value);
       if (qtyInp && w && w.servingG) qtyInp.value = w.servingG;
-      renderWheyShakes(getDay(currentDate));
+      updateWheyPreview();
     });
 
     document.getElementById("whey-shake-qty").addEventListener("input", () => {
-      renderWheyShakes(getDay(currentDate));
+      updateWheyPreview();
     });
 
     document.getElementById("btn-add-whey-shake").addEventListener("click", () => {
       const sel = document.getElementById("whey-protein-select");
       const inp = document.getElementById("whey-shake-qty");
-      const w = getWheyById(sel ? sel.value : WHEY_PROTEINS[0].id);
+      if (!sel || !sel.value) {
+        toast("Sélectionne une protéine");
+        return;
+      }
+      const w = getWheyById(sel.value);
       const qty = Math.max(1, Number(inp ? inp.value : w.servingG) || w.servingG);
       const d = getDay(currentDate);
       d.wheyShakes.push({ id: w.id, qty });
+      sel.value = "";
+      if (inp) inp.value = "";
       persistAndSync();
       renderAll();
       toast(`${w.brand} ${qty}g ajouté`);
@@ -3935,23 +4091,31 @@
 
     document.getElementById("coffee-minus").addEventListener("click", () => {
       const d = getDay(currentDate);
-      d.coffee = Math.max(0, d.coffee - 1);
-      persistAndSync(); renderAll();
+      if (d.coffee > 0) {
+        d.coffee -= 1;
+        d.coffeeLogs.pop();
+        persistAndSync(); renderAll();
+      }
     });
     document.getElementById("coffee-plus").addEventListener("click", () => {
       const d = getDay(currentDate);
       d.coffee += 1;
+      d.coffeeLogs.push(Date.now());
       persistAndSync(); renderAll();
     });
 
     document.getElementById("energy-minus").addEventListener("click", () => {
       const d = getDay(currentDate);
-      d.energyDrinks = Math.max(0, d.energyDrinks - 1);
-      persistAndSync(); renderAll();
+      if (d.energyDrinks > 0) {
+        d.energyDrinks -= 1;
+        d.energyLogs.pop();
+        persistAndSync(); renderAll();
+      }
     });
     document.getElementById("energy-plus").addEventListener("click", () => {
       const d = getDay(currentDate);
       d.energyDrinks += 1;
+      d.energyLogs.push(Date.now());
       persistAndSync(); renderAll();
     });
 
@@ -4038,6 +4202,7 @@
 
     setInterval(() => {
       if (document.visibilityState === "visible") autoSync();
+      renderCaffeineEnergy(getDay(currentDate));
     }, 60000);
 
     document.getElementById("hero-macros-card").addEventListener("click", () => {
@@ -4267,13 +4432,29 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
         if (Array.isArray(a.boosters)) {
           a.boosters.forEach(bs => {
             if (bs && BOOSTERS.some(b => b.id === bs.id)) {
-              day.boosters.push({ id: bs.id, dose: Math.max(0.5, Number(bs.dose) || 1) });
+              day.boosters.push({ id: bs.id, dose: Math.max(0.5, Number(bs.dose) || 1), ts: Date.now() });
               day.booster = true;
             }
           });
         }
-        if (Number(a.coffeeDelta)) day.coffee = Math.max(0, day.coffee + Math.round(Number(a.coffeeDelta)));
-        if (Number(a.energyDelta)) day.energyDrinks = Math.max(0, day.energyDrinks + Math.round(Number(a.energyDelta)));
+        if (Number(a.coffeeDelta)) {
+          const delta = Math.round(Number(a.coffeeDelta));
+          day.coffee = Math.max(0, day.coffee + delta);
+          if (delta > 0) {
+            for (let k = 0; k < delta; k++) day.coffeeLogs.push(Date.now());
+          } else if (delta < 0) {
+            for (let k = 0; k < Math.abs(delta); k++) day.coffeeLogs.pop();
+          }
+        }
+        if (Number(a.energyDelta)) {
+          const delta = Math.round(Number(a.energyDelta));
+          day.energyDrinks = Math.max(0, day.energyDrinks + delta);
+          if (delta > 0) {
+            for (let k = 0; k < delta; k++) day.energyLogs.push(Date.now());
+          } else if (delta < 0) {
+            for (let k = 0; k < Math.abs(delta); k++) day.energyLogs.pop();
+          }
+        }
         if (a.weightKg && Number(a.weightKg) > 0) day.weight = Number(Number(a.weightKg).toFixed(1));
         if (Array.isArray(a.wheyShakes)) {
           a.wheyShakes.forEach(sh => {
