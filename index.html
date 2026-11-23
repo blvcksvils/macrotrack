@@ -1604,29 +1604,11 @@
       margin-bottom: 12px;
     }
 
-    .cheat-presets-row {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .cheat-preset-chip {
-      background: #121724;
-      border: 1px solid #222c42;
-      color: #cbd5e1;
-      border-radius: 999px;
-      padding: 4px 9px;
-      font-size: 10.5px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
     .cheat-inputs {
       display: grid;
       grid-template-columns: 1fr 74px auto;
       gap: 6px;
-      margin-top: 8px;
+      margin-top: 9px;
     }
 
     .cheat-text-input,
@@ -1845,11 +1827,11 @@
       margin-top: 8px;
     }
 
-    /* Historique avec code couleur Entraînement vs Repos */
+    /* Historique : différenciation purement visuelle par couleur (bleu = training, vert = repos) */
     .history-card-item {
-      background: #090c13;
-      border: 1px solid #181f30;
-      border-left: 3.5px solid #3b82f6;
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.28);
+      border-left: 4px solid #3b82f6;
       border-radius: 11px;
       padding: 9px 10px;
       margin-bottom: 8px;
@@ -1860,33 +1842,18 @@
     }
 
     .history-card-item.mode-rest {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.28);
       border-left-color: #10b981;
     }
 
-    .mode-tag-tr {
-      display: inline-block;
-      background: rgba(37, 99, 235, 0.2);
-      color: #60a5fa;
-      border: 1px solid rgba(59, 130, 246, 0.35);
-      font-size: 9px;
-      font-weight: 800;
-      padding: 1px 6px;
-      border-radius: 5px;
-      text-transform: uppercase;
-      vertical-align: middle;
-    }
-
-    .mode-tag-re {
-      display: inline-block;
-      background: rgba(16, 185, 129, 0.18);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      font-size: 9px;
-      font-weight: 800;
-      padding: 1px 6px;
-      border-radius: 5px;
-      text-transform: uppercase;
-      vertical-align: middle;
+    .history-legend-dots {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #94a3b8;
     }
 
     /* Assistant IA */
@@ -2623,11 +2590,6 @@
             <span class="tracker-pill pill-salt" id="cheat-summary-pill">Aucun écart</span>
           </div>
         </div>
-        <div class="cheat-presets-row" id="cheat-presets-row">
-          <button class="cheat-preset-chip" type="button" data-preset-txt="Carré chocolat noir 85% (10g)" data-preset-kcal="58" data-preset-p="1" data-preset-c="2" data-preset-f="5">+ Chocolat 85%</button>
-          <button class="cheat-preset-chip" type="button" data-preset-txt="Nuage de lait café" data-preset-kcal="25" data-preset-p="2" data-preset-c="3" data-preset-f="1">+ Lait café</button>
-          <button class="cheat-preset-chip" type="button" data-preset-txt="1 cuillère miel (15g)" data-preset-kcal="46" data-preset-p="0" data-preset-c="12" data-preset-f="0">+ Miel 15g</button>
-        </div>
         <div class="cheat-inputs">
           <input type="text" id="cheat-text-input" class="cheat-text-input" placeholder="Ex : 2 carrés de chocolat, pizza..." />
           <input type="number" id="cheat-kcal-input" class="cheat-kcal-input" inputmode="decimal" min="0" step="10" placeholder="kcal" />
@@ -2847,9 +2809,9 @@
             <div class="eyebrow">HISTORIQUE</div>
             <strong style="font-size:15px;">Journées</strong>
           </div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <span class="mode-tag-tr">Entraînement</span>
-            <span class="mode-tag-re">Repos</span>
+          <div class="history-legend-dots">
+            <span><span class="evo-dot" style="background:#3b82f6;"></span>Training</span>
+            <span><span class="evo-dot" style="background:#10b981;"></span>Repos</span>
           </div>
         </div>
         <div id="history-list"></div>
@@ -3378,7 +3340,7 @@
     }
 
     function minutesOfDayToTs(iso, totalMin) {
-      const clamped = Math.max(300, Math.min(1425, Math.round(totalMin / 15) * 15));
+      const clamped = Math.max(0, Math.min(1425, Math.round(totalMin / 15) * 15));
       const [y, m, d] = iso.split("-").map(Number);
       const hh = Math.floor(clamped / 60);
       const mm = clamped % 60;
@@ -3560,7 +3522,6 @@
       const [yy, mm, dd] = key.split("-").map(Number);
       const defaultTs = new Date(yy, mm - 1, dd, 12, 0, 0).getTime();
 
-      // Synchroniser coffeeItems (objets { mg, name, ts }) avec l'historique éventuel
       if (d.coffeeItems.length < d.coffee) {
         for (let i = d.coffeeItems.length; i < d.coffee; i++) {
           d.coffeeItems.push({ mg: 80, name: "Espresso", ts: d.coffeeLogs[i] || defaultTs });
@@ -4542,6 +4503,91 @@
       );
     }
 
+    function renderStockTab() {
+      const box = document.getElementById("stock-tubs-list");
+      if (!box) return;
+
+      const items = [
+        ...WHEY_PROTEINS.filter(w => Number(w.tubTotalG) > 0).map(w => {
+          const totalDoses = Math.round(w.tubTotalG / w.servingG);
+          const sinceTs = Number(stockMeta[w.id]) || 0;
+          let usedDoses = 0;
+          Object.keys(store).forEach(k => {
+            const d = store[k];
+            if (d && (d.updatedAt || 0) >= sinceTs && Array.isArray(d.wheyShakes)) {
+              d.wheyShakes.forEach(sh => {
+                if (sh && sh.id === w.id) usedDoses += (Number(sh.qty) || 0) / w.servingG;
+              });
+            }
+          });
+          return {
+            id: w.id,
+            brand: w.brand,
+            name: w.name,
+            totalDoses,
+            usedDoses: Number(usedDoses.toFixed(1)),
+            color: "#3b82f6"
+          };
+        }),
+        ...BOOSTERS.map(b => {
+          const totalDoses = b.servingsPerTub || 30;
+          const sinceTs = Number(stockMeta[b.id]) || 0;
+          let usedDoses = 0;
+          Object.keys(store).forEach(k => {
+            const d = store[k];
+            if (d && Array.isArray(d.boosters)) {
+              d.boosters.forEach(bs => {
+                const entryTs = (bs && bs.ts) || d.updatedAt || 0;
+                if (bs && bs.id === b.id && entryTs >= sinceTs) usedDoses += Number(bs.dose) || 1;
+              });
+            }
+          });
+          return {
+            id: b.id,
+            brand: b.brand,
+            name: b.name,
+            totalDoses,
+            usedDoses: Number(usedDoses.toFixed(1)),
+            color: "#f97316"
+          };
+        })
+      ];
+
+      box.innerHTML = items.map(it => {
+        const rem = Math.max(0, Number((it.totalDoses - it.usedDoses).toFixed(1)));
+        const pct = Math.min(100, Math.round((rem / it.totalDoses) * 100));
+        const low = pct <= 20;
+        return `
+          <div class="stock-tub-card">
+            <div class="stock-tub-top">
+              <div style="min-width:0;">
+                <div class="supp-name">${it.brand} — ${it.name}</div>
+                <div class="supp-sub">${it.usedDoses} dose${it.usedDoses > 1 ? "s" : ""} prise${it.usedDoses > 1 ? "s" : ""} sur ${it.totalDoses}</div>
+              </div>
+              <span class="whey-macros-badge" style="${low ? "color:#fb7185;border-color:rgba(244,63,94,0.4);background:rgba(244,63,94,0.15);" : ""}">${rem} / ${it.totalDoses} doses</span>
+            </div>
+            <div class="mini-track" style="margin:8px 0 0;">
+              <div style="height:100%;width:${pct}%;background:${low ? "#f43f5e" : it.color};border-radius:999px;"></div>
+            </div>
+            <div class="stock-controls-row">
+              <span style="font-size:10.5px;color:#7c879c;">Niveau pot : ${pct}%</span>
+              <button class="reuse-btn" data-reset-tub="${it.id}" type="button">🔄 Nouveau pot (${it.totalDoses})</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      box.querySelectorAll("[data-reset-tub]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.resetTub;
+          stockMeta[id] = Date.now();
+          writeStore(STOCK_KEY, stockMeta);
+          renderStockTab();
+          toast("Compteur remis à neuf");
+        });
+      });
+    }
+
     function renderHistory() {
       const box = document.getElementById("history-list");
       if (!box) return;
@@ -4570,10 +4616,7 @@
         return `
           <div class="history-card-item ${isRest ? "mode-rest" : "mode-training"}">
             <div style="min-width:0;">
-              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <strong style="font-size:12.5px;">${formatFrenchDate(k)}</strong>
-                <span class="${isRest ? "mode-tag-re" : "mode-tag-tr"}">${isRest ? "🔋 Repos" : "⚡ Training"}</span>
-              </div>
+              <strong style="font-size:12.5px;color:${isRest ? "#6ee7b7" : "#93c5fd"};">${formatFrenchDate(k)}</strong>
               <div style="font-size:10.5px;color:#8b95a8;margin-top:2px;">${extra ? `${extra} • ` : ``}${d.water.toFixed(2)}L • ${d.salt.toFixed(1)}g sel • ${Math.round(caf.totalMg)}mg caf.</div>
               <div style="font-size:10.5px;color:#cbd5e1;margin-top:2px;">P ${Math.round(st.valP)}g • G ${Math.round(st.valC)}g • L ${Math.round(st.valF)}g</div>
             </div>
@@ -4658,10 +4701,11 @@
       }
     }
 
+    // Roue horizontale de 00:00 (0 min) à 23:45 (1425 min) par pas de 15 min (96 pas)
     function buildHorizontalWheelHtml(idx, currentTs) {
       const curMin = tsToMinutesOfDay(currentTs);
       const ticks = [];
-      for (let m = 300; m <= 1425; m += 15) {
+      for (let m = 0; m <= 1425; m += 15) {
         const hh = String(Math.floor(m / 60)).padStart(2, "0");
         const mm = String(m % 60).padStart(2, "0");
         const isMajor = (m % 60 === 0);
@@ -4685,7 +4729,7 @@
       const track = wrap.querySelector(".h-wheel-track");
       if (!track) return;
       const curMin = tsToMinutesOfDay(ts);
-      const stepIdx = Math.max(0, Math.min(75, Math.round((curMin - 300) / 15)));
+      const stepIdx = Math.max(0, Math.min(95, Math.round(curMin / 15)));
       const tickW = 44;
       const halfWrap = (wrap.clientWidth || 200) / 2;
       const offset = halfWrap - (stepIdx * tickW + tickW / 2);
@@ -4716,7 +4760,7 @@
           if (!dragging) return;
           const dx = clientX - startX;
           const deltaSteps = Math.round(-dx / 22);
-          const nextMin = Math.max(300, Math.min(1425, Math.round((startMin + deltaSteps * 15) / 15) * 15));
+          const nextMin = Math.max(0, Math.min(1425, Math.round((startMin + deltaSteps * 15) / 15) * 15));
           const newTs = minutesOfDayToTs(currentDate, nextMin);
           const dayObj = getDay(currentDate);
           if (dayObj.boosters[idx] && dayObj.boosters[idx].ts !== newTs) {
@@ -5412,7 +5456,6 @@
     document.getElementById("nav-stock").addEventListener("click", () => switchMainTab("stock"));
     document.getElementById("nav-history").addEventListener("click", () => switchMainTab("history"));
 
-    // Bascule Radar <-> Aujourd'hui au clic sur les anneaux en haut à droite
     document.getElementById("btn-header-rings").addEventListener("click", () => {
       switchMainTab(activeTab === "radar" ? "today" : "radar");
     });
@@ -5600,22 +5643,6 @@
       persistAndSync();
       renderAll();
       toast(`${qty}× ${b.brand} ajoutée`);
-    });
-
-    document.getElementById("cheat-presets-row").querySelectorAll("[data-preset-txt]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const d = getDay(currentDate);
-        d.cheats.push({
-          text: btn.dataset.presetTxt,
-          kcal: Number(btn.dataset.presetKcal) || 0,
-          p: Number(btn.dataset.presetP) || 0,
-          c: Number(btn.dataset.presetC) || 0,
-          f: Number(btn.dataset.presetF) || 0
-        });
-        persistAndSync();
-        renderAll();
-        toast(`${btn.dataset.presetTxt} ajouté`);
-      });
     });
 
     document.getElementById("btn-add-cheat").addEventListener("click", () => {
