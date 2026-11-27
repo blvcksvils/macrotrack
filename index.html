@@ -3277,6 +3277,10 @@
           <div class="eyebrow">7 DERNIERS JOURS</div>
           <div id="health-week-table" style="margin-top:6px;"></div>
         </div>
+        <details class="panel-card" id="health-diag-details">
+          <summary style="cursor:pointer;font-weight:800;font-size:12.5px;">🩺 Diagnostic Firebase Santé</summary>
+          <div class="import-preview-box" id="health-diag-box">Chargement du diagnostic...</div>
+        </details>
         <details class="panel-card">
           <summary style="cursor:pointer;font-weight:800;font-size:12.5px;">⚙️ Configuration Health Auto Export</summary>
           <div class="import-preview-box">1. App Health Auto Export (Premium) → Automations → + → REST API.
@@ -3686,6 +3690,7 @@
     let coachCtxStore = readStore(COACH_CTX_KEY, {});
     if (!coachCtxStore || typeof coachCtxStore !== "object") coachCtxStore = {};
     let coachAnswers = {};
+    let lastHealthDiag = "";
 
     function saveMealItemPref(phaseKey, modeKey, mealId, idx, food, qty) {
       const planKey = `${phaseKey || DEFAULT_PHASE}__${modeKey === "rest" ? "rest" : "training"}`;
@@ -3879,6 +3884,49 @@
       return `${h}h${String(m).padStart(2, "0")}`;
     }
 
+    function normalizeHealthDay(raw) {
+      if (!raw || typeof raw !== "object") return null;
+      const stepsVal = Number(raw.steps ?? raw.step_count ?? raw.stepCount ?? 0);
+      const weightVal = Number(raw.weight ?? raw.weight_body_mass ?? 0);
+      const waistVal = Number(raw.waist ?? raw.waist_circumference ?? 0);
+      const waterVal = Number(raw.water ?? raw.dietary_water ?? 0);
+
+      let sleepObj = null;
+      if (raw.sleep && typeof raw.sleep === "object") {
+        let asleepH = Number(raw.sleep.asleepH ?? raw.sleep.totalSleep ?? raw.sleep.asleep ?? 0);
+        if (asleepH > 24) asleepH = asleepH / 3600;
+        const scoreRaw = raw.sleep.score ?? raw.sleep.sleepQuality ?? raw.sleep.sleepScore ?? raw.sleep.quality;
+        const scoreNum = (scoreRaw !== undefined && scoreRaw !== null && scoreRaw !== "" && !isNaN(Number(scoreRaw)))
+          ? Math.min(100, Math.max(0, Math.round(Number(scoreRaw))))
+          : null;
+        sleepObj = {
+          ...raw.sleep,
+          asleepH: asleepH > 0 ? Number(asleepH.toFixed(2)) : 0,
+          score: scoreNum
+        };
+      } else if (Number(raw.sleepHours ?? raw.sleep_analysis ?? 0) > 0) {
+        let sh = Number(raw.sleepHours ?? raw.sleep_analysis);
+        if (sh > 24) sh = sh / 3600;
+        sleepObj = { asleepH: Number(sh.toFixed(2)), score: null };
+      }
+
+      return {
+        ...raw,
+        steps: stepsVal > 0 ? Math.round(stepsVal) : 0,
+        weight: weightVal > 0 ? Number(weightVal.toFixed(1)) : null,
+        waist: waistVal > 0 ? Number(waistVal.toFixed(1)) : null,
+        water: waterVal > 0 ? Number(waterVal.toFixed(2)) : 0,
+        sleep: sleepObj
+      };
+    }
+
+    function getHealthDay(iso) {
+      if (!healthStore || typeof healthStore !== "object") return null;
+      if (healthStore[iso]) return normalizeHealthDay(healthStore[iso]);
+      const prefixKey = Object.keys(healthStore).find(k => typeof k === "string" && k.startsWith(iso));
+      return prefixKey ? normalizeHealthDay(healthStore[prefixKey]) : null;
+    }
+
     function getEffectiveSleepHours(iso, day) {
       const h = getHealthDay(iso);
       const healthSlp = h && h.sleep && Number(h.sleep.asleepH) > 0 ? Number(h.sleep.asleepH) : null;
@@ -3893,7 +3941,7 @@
       const h = getHealthDay(iso);
       const hScore = h && h.sleep && (h.sleep.score !== undefined && h.sleep.score !== null)
         ? Number(h.sleep.score)
-        : (h && h.sleep && (h.sleep.sleepQuality !== undefined && h.sleep.sleepQuality !== null) ? Number(h.sleep.sleepQuality) : null);
+        : null;
       if (day && day.sleepQualityManual === true && day.sleepQuality !== null && day.sleepQuality !== undefined) {
         return Number(day.sleepQuality);
       }
@@ -3908,7 +3956,7 @@
 
     function getEffectiveWaterLiters(iso, day) {
       const manual = day ? (Number(day.water) || 0) : 0;
-      if (day && day.waterAuto === false) return manual;
+      if (day && day.waterAuto === false && manual > 0) return manual;
       const h = getHealthDay(iso);
       const hWater = h && h.water !== undefined && h.water !== null ? Number(h.water) : null;
       if (hWater !== null && !isNaN(hWater) && hWater > 0) return hWater;
@@ -5037,7 +5085,7 @@
       if (!el) return;
       el.textContent = msg;
       el.classList.remove("hidden");
-      setTimeout(() => el.classList.add("hidden"), 2000);
+      setTimeout(() => el.classList.add("hidden"), 2400);
     }
 
     function setSyncState(cls, text) {
@@ -5045,6 +5093,26 @@
       const msg = document.getElementById("sync-msg");
       if (dot) dot.className = "sync-dot " + (cls || "");
       if (msg) msg.textContent = text || "";
+    }
+
+    function updateHealthDiagnostic(statusNote = "") {
+      const box = document.getElementById("health-diag-box");
+      if (!box) return;
+      const baseUrl = (cfg.url || "").trim().replace(/\/+$/, "");
+      const uid = (cfg.uid || "").trim();
+      const keys = Object.keys(healthStore || {}).sort();
+      const lastKey = keys.length ? keys[keys.length - 1] : "aucune";
+      const curRaw = getHealthDay(currentDate);
+      const lines = [
+        `URL Firebase : ${baseUrl || "(vide)"}`,
+        `UID configuré : ${uid || "(vide)"}`,
+        `Jours trouvés dans health.json : ${keys.length} (dernière date : ${lastKey})`,
+        `Dernier export Worker (healthMeta.ts) : ${healthMeta && healthMeta.ts ? new Date(Number(healthMeta.ts)).toLocaleString("fr-FR") : "jamais"}`,
+        statusNote ? `Dernière lecture : ${statusNote}` : "",
+        `Données brutes (${currentDate}) : ${curRaw ? JSON.stringify(curRaw) : "null (aucune donnée pour cette date)"}`
+      ].filter(Boolean);
+      lastHealthDiag = lines.join("\n");
+      box.textContent = lastHealthDiag;
     }
 
     async function pushCloudDay(iso = currentDate) {
@@ -5080,37 +5148,61 @@
       }
     }
 
-    async function pullHealthOnly() {
+    async function pullHealthOnly(showToast = false) {
       const baseUrl = (cfg.url || "").trim().replace(/\/+$/, "");
       const uid = (cfg.uid || "").trim();
-      if (!baseUrl || !uid || !navigator.onLine) return false;
+      if (!baseUrl || !uid) {
+        updateHealthDiagnostic("URL Firebase ou UID manquant");
+        if (showToast) toast("URL Firebase ou UID manquant");
+        return false;
+      }
+      if (!navigator.onLine) {
+        updateHealthDiagnostic("Hors ligne");
+        if (showToast) toast("Appareil hors ligne");
+        return false;
+      }
       try {
         const userBase = `${baseUrl}/users/${encodeURIComponent(uid)}`;
         const [resHealth, resMeta] = await Promise.all([
           fetch(`${userBase}/health.json`, { cache: "no-store" }),
           fetch(`${userBase}/healthMeta.json`, { cache: "no-store" })
         ]);
-        let changed = false;
-        if (resHealth.ok) {
-          const rh = await resHealth.json();
-          if (rh && typeof rh === "object") {
-            healthStore = rh;
-            writeStore(HEALTH_KEY, healthStore);
-            applyHealthToDays();
-            changed = true;
-          }
+        if (!resHealth.ok) {
+          const errNote = `Erreur HTTP ${resHealth.status} sur health.json`;
+          updateHealthDiagnostic(errNote);
+          if (showToast) toast(errNote);
+          return false;
         }
-        if (resMeta.ok) {
-          const rm = await resMeta.json();
-          if (rm && typeof rm === "object") {
-            healthMeta = rm;
-            writeStore(HEALTH_META_KEY, healthMeta);
-            changed = true;
-          }
+        const rh = await resHealth.json();
+        const rm = resMeta.ok ? await resMeta.json() : null;
+
+        if (rh && typeof rh === "object") {
+          healthStore = rh;
+          writeStore(HEALTH_KEY, healthStore);
+          applyHealthToDays();
+        } else {
+          healthStore = {};
+          writeStore(HEALTH_KEY, healthStore);
         }
-        if (changed) renderAll();
-        return changed;
-      } catch (_) {
+
+        if (rm && typeof rm === "object") {
+          healthMeta = rm;
+          writeStore(HEALTH_META_KEY, healthMeta);
+        }
+
+        const keys = Object.keys(healthStore || {}).sort();
+        const lastKey = keys.length ? keys[keys.length - 1] : "aucune";
+        const note = `OK à ${new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })} (${keys.length}j, dernier : ${lastKey})`;
+        updateHealthDiagnostic(note);
+        renderAll();
+        if (showToast) {
+          toast(keys.length ? `Santé : ${keys.length}j (dernier : ${lastKey})` : "health.json vide pour cet UID");
+        }
+        return true;
+      } catch (e) {
+        const errNote = "Erreur réseau : " + (e && e.message ? e.message : "échec");
+        updateHealthDiagnostic(errNote);
+        if (showToast) toast(errNote);
         return false;
       }
     }
@@ -5200,6 +5292,8 @@
             updated = true;
           }
         }
+        const hKeys = Object.keys(healthStore || {}).sort();
+        updateHealthDiagnostic(`OK via Cloud (${hKeys.length}j, dernier : ${hKeys.length ? hKeys[hKeys.length - 1] : "aucune"})`);
 
         getDay(currentDate);
         writeStore(LOGS_KEY, store);
@@ -5772,8 +5866,6 @@
       return [...updatedDates];
     }
 
-    function getHealthDay(iso) { return healthStore[iso] || null; }
-
     function getWorkoutsOfDay(iso) {
       const h = getHealthDay(iso);
       if (!h || !h.workouts || typeof h.workouts !== "object") return [];
@@ -5802,11 +5894,14 @@
 
     function applyHealthToDays() {
       let changed = false;
-      Object.keys(healthStore).forEach(iso => {
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return;
-        const h = healthStore[iso];
-        if (!h || typeof h !== "object") return;
+      Object.keys(healthStore || {}).forEach(rawKey => {
+        const m = String(rawKey).match(/^(\d{4}-\d{2}-\d{2})/);
+        if (!m) return;
+        const iso = m[1];
+        const h = normalizeHealthDay(healthStore[rawKey]);
+        if (!h) return;
         const d = getDay(iso);
+
         const w = Number(h.weight);
         if (w > 0 && (d.weight === null || d.weightAuto === true) && d.weight !== w) {
           d.weight = w; d.weightAuto = true; changed = true;
@@ -5821,10 +5916,10 @@
         }
         const hScore = h.sleep && (h.sleep.score !== undefined && h.sleep.score !== null)
           ? Number(h.sleep.score)
-          : (h.sleep && (h.sleep.sleepQuality !== undefined && h.sleep.sleepQuality !== null) ? Number(h.sleep.sleepQuality) : null);
+          : null;
         if (hScore !== null && !isNaN(hScore)) {
           const clampedScore = Math.min(100, Math.max(0, Math.round(hScore)));
-          if (!d.sleepQualityManual && d.sleepQuality !== clampedScore) {
+          if ((!d.sleepQualityManual || d.sleepQuality === null) && d.sleepQuality !== clampedScore) {
             d.sleepQuality = clampedScore;
             changed = true;
           }
@@ -5983,6 +6078,8 @@
         }
         wkBox.innerHTML = `<div class="health-row health-week-grid" style="color:#8b95a8;font-size:9.5px;font-weight:800;text-transform:uppercase;"><span>Jour</span><span>Pas</span><span>Poids</span><span>Sommeil</span><span>Séances</span></div>` + rows.join("");
       }
+
+      updateHealthDiagnostic();
     }
 
     function renderImportsTab() {
@@ -7029,15 +7126,13 @@
     on("nav-radar", "click", () => switchMainTab("radar"));
     on("nav-stock", "click", () => switchMainTab("stock"));
     on("nav-history", "click", () => switchMainTab("history"));
-    on("nav-imports", "click", () => { switchMainTab("imports"); pullHealthOnly(); });
-    on("health-today-strip", "click", () => { switchMainTab("imports"); pullHealthOnly(); });
+    on("nav-imports", "click", () => { switchMainTab("imports"); pullHealthOnly(false); });
+    on("health-today-strip", "click", () => { switchMainTab("imports"); pullHealthOnly(false); });
     on("btn-refresh-health-now", "click", async () => {
       const btn = document.getElementById("btn-refresh-health-now");
       if (btn) btn.disabled = true;
       try {
-        await pullHealthOnly();
-        renderAll();
-        toast("Santé actualisée");
+        await pullHealthOnly(true);
       } finally {
         if (btn) btn.disabled = false;
       }
@@ -7478,6 +7573,7 @@
       const d = getDay(currentDate);
       d.weight = (!isNaN(val) && val > 0) ? Number(val.toFixed(1)) : null;
       d.weightAuto = (d.weight === null) ? null : false;
+      if (d.weight === null) applyHealthToDays();
       persistAndSync();
       renderAll();
       if (d.weight !== null) toast(`Poids enregistré : ${d.weight.toFixed(1)} kg`);
@@ -7490,6 +7586,7 @@
       const d = getDay(currentDate);
       d.waist = (!isNaN(val) && val > 0) ? Number(val.toFixed(1)) : null;
       d.waistAuto = (d.waist === null) ? null : false;
+      if (d.waist === null) applyHealthToDays();
       persistAndSync();
       renderAll();
       if (d.waist !== null) toast(`Tour de taille : ${d.waist.toFixed(1)} cm`);
@@ -7501,6 +7598,7 @@
       const parsed = parseSleepHours(e.target.value);
       d.sleepHours = parsed;
       d.sleepAuto = (d.sleepHours === null) ? null : false;
+      if (d.sleepHours === null) applyHealthToDays();
       persistAndSync();
       renderAll();
       if (d.sleepHours !== null) toast(`Sommeil : ${formatSleepHours(d.sleepHours)}`);
@@ -7513,6 +7611,7 @@
       if (!raw) {
         d.sleepQuality = null;
         d.sleepQualityManual = false;
+        applyHealthToDays();
       } else {
         const val = parseInt(raw, 10);
         d.sleepQuality = !isNaN(val) ? Math.min(100, Math.max(0, val)) : null;
