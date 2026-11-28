@@ -23,6 +23,7 @@
       --muted: #8b95a8;
       --blue: #2563eb;
       --blue-bright: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.20);
       --cyan: #38bdf8;
       --purple: #a855f7;
       --indigo: #818cf8;
@@ -83,14 +84,9 @@
       height: 380px;
       z-index: -1;
       pointer-events: none;
-      background: radial-gradient(120% 100% at 50% 0%, var(--tab-glow, rgba(16,185,129,0.20)) 0%, transparent 70%);
+      background: radial-gradient(120% 100% at 50% 0%, var(--accent-soft) 0%, transparent 70%);
       transition: background 0.4s ease;
     }
-    body[data-tab="today"] { --tab-glow: rgba(16,185,129,0.20); }
-    body[data-tab="radar"] { --tab-glow: rgba(56,189,248,0.18); }
-    body[data-tab="stock"] { --tab-glow: rgba(249,115,22,0.16); }
-    body[data-tab="history"] { --tab-glow: rgba(129,140,248,0.18); }
-    body[data-tab="imports"] { --tab-glow: rgba(244,63,94,0.14); }
 
     .app-shell {
       width: 100%;
@@ -119,6 +115,7 @@
     }
 
     .top-header {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -142,6 +139,60 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .app-mark:hover {
+      border-color: var(--blue-bright);
+    }
+
+    .theme-popover {
+      position: absolute;
+      top: 44px;
+      left: 0;
+      z-index: 55;
+      background: #0e121d;
+      border: 1px solid #26314a;
+      border-radius: 13px;
+      padding: 9px 10px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.78);
+      min-width: 215px;
+    }
+
+    .theme-swatches {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .theme-swatch-btn {
+      background: #090c13;
+      border: 1px solid #1e273b;
+      border-radius: 9px;
+      padding: 6px 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #cbd5e1;
+      cursor: pointer;
+    }
+
+    .theme-swatch-btn.active {
+      border-color: var(--blue-bright);
+      background: var(--accent-soft);
+      color: #ffffff;
+    }
+
+    .theme-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
       flex-shrink: 0;
     }
 
@@ -183,8 +234,8 @@
     }
 
     .activity-rings-btn.active-radar {
-      border-color: #3b82f6;
-      background: rgba(37, 99, 235, 0.16);
+      border-color: var(--blue-bright);
+      background: var(--accent-soft);
     }
 
     .rings-meta {
@@ -473,7 +524,7 @@
     }
 
     .week-day-cell.is-today:not(.selected) .week-day-num-circle {
-      border: 1.5px solid #3b82f6;
+      border: 1.5px solid var(--blue-bright);
       color: #93c5fd;
     }
 
@@ -487,8 +538,8 @@
     }
 
     .status-pill {
-      background: rgba(37, 99, 235, 0.22);
-      color: #60a5fa;
+      background: var(--accent-soft);
+      color: var(--blue-bright);
       border: 1px solid rgba(59, 130, 246, 0.35);
       font-size: 9px;
       font-weight: 800;
@@ -612,8 +663,8 @@
       text-transform: uppercase;
       padding: 2px 6px;
       border-radius: 999px;
-      background: rgba(59, 130, 246, 0.14);
-      color: #60a5fa;
+      background: var(--accent-soft);
+      color: var(--blue-bright);
       border: 1px solid rgba(59, 130, 246, 0.28);
       margin-left: 6px;
       vertical-align: middle;
@@ -697,7 +748,7 @@
     .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #3b82f6, #10b981);
+      background: linear-gradient(90deg, var(--blue-bright), #10b981);
       border-radius: 0;
       transition: width 0.25s ease;
     }
@@ -807,7 +858,7 @@
       border-radius: 7px;
       background: #131926;
       border: 1px solid #222d44;
-      color: #60a5fa;
+      color: var(--blue-bright);
       font-size: 9.5px;
       font-weight: 800;
       display: inline-flex;
@@ -1290,8 +1341,8 @@
     .whey-macros-badge {
       font-size: 10px;
       font-weight: 700;
-      color: #60a5fa;
-      background: rgba(37, 99, 235, 0.14);
+      color: var(--blue-bright);
+      background: var(--accent-soft);
       border: 1px solid rgba(59, 130, 246, 0.28);
       padding: 2px 7px;
       border-radius: 999px;
@@ -1530,7 +1581,7 @@
 
     .phase-select {
       background: #121724;
-      color: #60a5fa;
+      color: var(--blue-bright);
       border: 1px solid #23304c;
       border-radius: 8px;
       padding: 4px 20px 4px 7px;
@@ -1610,7 +1661,7 @@
       margin: 0;
       font-size: 13px;
       font-weight: 800;
-      color: #60a5fa;
+      color: var(--blue-bright);
     }
 
     .meal-kcal-pill {
@@ -1767,7 +1818,7 @@
     }
 
     .bar-add-btn {
-      background: #2563eb;
+      background: var(--blue);
       color: #ffffff;
       border: none;
       border-radius: 8px;
@@ -2080,12 +2131,45 @@
       font-size: 10px;
     }
 
+    .stock-brand-group {
+      margin-bottom: 8px;
+    }
+
+    .stock-brand-btn {
+      width: 100%;
+      background: #111624;
+      border: 1px solid #222d44;
+      border-radius: 11px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: #f8fafc;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .stock-brand-btn.open {
+      border-color: var(--blue-bright);
+      background: #141c2e;
+    }
+
+    .stock-brand-items {
+      margin-top: 6px;
+      padding-left: 6px;
+      border-left: 2px solid #1f2a42;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
     .stock-tub-card {
       background: #090c13;
       border: 1px solid #181f30;
       border-radius: 11px;
       padding: 8px 10px;
-      margin-bottom: 6px;
+      margin-bottom: 0;
     }
 
     .stock-tub-top {
@@ -2149,7 +2233,7 @@
     }
 
     .ai-bar-card {
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(14, 18, 29, 0.96));
+      background: linear-gradient(135deg, var(--accent-soft), rgba(14, 18, 29, 0.96));
       border: 1px solid rgba(59, 130, 246, 0.35);
       border-radius: 13px;
       padding: 8px 10px;
@@ -2182,7 +2266,7 @@
     }
 
     .ai-btn {
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      background: linear-gradient(135deg, var(--blue), #7c3aed);
       color: #ffffff;
       border: none;
       border-radius: 8px;
@@ -2391,8 +2475,8 @@
     }
 
     .tab-nav-btn.active {
-      color: #93c5fd;
-      background: rgba(59, 130, 246, 0.22);
+      color: var(--blue-bright);
+      background: var(--accent-soft);
     }
 
     .toast {
@@ -2416,8 +2500,8 @@
       .app-shell { padding-left: calc(18px + env(safe-area-inset-left)); padding-right: calc(18px + env(safe-area-inset-right)); }
       .top-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
       .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; align-items: start; }
-      #stock-tubs-list, #history-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px; align-items: start; }
-      .stock-tub-card, .history-card-item { margin-bottom: 0; }
+      #history-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px; align-items: start; }
+      .history-card-item { margin-bottom: 0; }
       #radar-svg-box { max-width: 520px !important; }
     }
     @media (min-width: 1280px) {
@@ -2431,6 +2515,8 @@
     .health-tile-lbl { font-size:10px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:#8b95a8; }
     .health-tile-val { margin-top:4px; font-size:20px; font-weight:600; color:#fff; line-height:1.1; font-family: var(--serif); letter-spacing: -0.01em; }
     .health-tile-sub { margin-top:3px; font-size:10.5px; color:#94a3b8; }
+    .steps-manual-row { display:flex; align-items:center; gap:5px; margin-top:6px; }
+    .steps-manual-input { width:100%; background:#0e131f; border:1px solid #1f283d; border-radius:7px; color:#fff; font-size:11.5px; font-weight:700; padding:4px 7px; font-family:inherit; }
     .auto-badge { display:inline-block; font-size:8.5px; font-weight:800; padding:1px 5px; border-radius:999px; margin-left:5px; background:rgba(16,185,129,.16); color:#34d399; border:1px solid rgba(16,185,129,.35); vertical-align:middle; }
     .health-strip { display:flex; flex-wrap:nowrap; width:100%; gap:6px; margin-top:7px; cursor:pointer; }
     .health-chip { flex:1 1 auto; display:inline-flex; align-items:center; justify-content:center; text-align:center; background:#0e131f; border:1px solid #1e273b; border-radius:999px; padding:5px 8px; font-size:10px; font-weight:700; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
@@ -2439,6 +2525,7 @@
     .wk-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
     .wk-tag { font-size:9.5px; font-weight:700; padding:2px 6px; border-radius:999px; background:#0e131f; border:1px solid #1e293b; color:#cbd5e1; }
     .wk-tag.hevy { border-color:rgba(59,130,246,.35); color:#93c5fd; }
+    .wk-tag.fitness { border-color:rgba(249,115,22,.35); color:#fdba74; }
     .wk-tag.rec { border-color:rgba(16,185,129,.35); color:#6ee7b7; }
     .wk-hr-box { margin-top:5px; background:#0b0f18; border:1px solid #182032; border-radius:8px; padding:5px 7px; }
     .health-week-grid { display:grid; grid-template-columns:1.1fr .9fr .9fr .9fr .6fr; gap:4px; align-items:center; font-size:10.5px; }
@@ -2454,10 +2541,10 @@
     .muscle-bar-row { display:grid; grid-template-columns:82px 1fr auto; align-items:center; gap:7px; font-size:10.5px; }
     .muscle-bar-name { font-weight:700; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .muscle-bar-track { height:7px; background:#090c13; border:1px solid #181f30; border-radius:999px; overflow:hidden; }
-    .muscle-bar-fill { height:100%; background:linear-gradient(90deg, #2563eb, #38bdf8); border-radius:999px; }
+    .muscle-bar-fill { height:100%; background:linear-gradient(90deg, var(--blue), var(--cyan)); border-radius:999px; }
     .muscle-bar-val { font-size:9.5px; font-weight:700; color:#94a3b8; white-space:nowrap; }
     .hevy-ex-details { margin-top:6px; background:#090c13; border:1px solid #181f30; border-radius:8px; padding:5px 8px; }
-    .hevy-ex-details summary { cursor:pointer; font-size:10.5px; font-weight:700; color:#93c5fd; list-style:none; }
+    .hevy-ex-details summary { cursor:pointer; font-size:10.5px; font-weight:700; color:var(--blue-bright); list-style:none; }
     .hevy-ex-details summary::-webkit-details-marker { display:none; }
     .hevy-ex-item { padding:5px 0; border-top:1px solid rgba(255,255,255,.05); font-size:10.5px; }
     .hevy-ex-item:first-of-type { border-top:none; margin-top:4px; }
@@ -2503,18 +2590,26 @@
   <div class="app-shell" id="app-shell">
     <header class="top-header">
       <div class="brand-left">
-        <div class="app-mark">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button class="app-mark keep-enabled" id="btn-theme-toggle" type="button" title="Changer le thème de couleur">
+          <svg id="brand-icon-svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--blue-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="3"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-        </div>
+        </button>
         <div>
           <div class="eyebrow">THE ASCEND STANDARD</div>
           <h1 class="app-title">MacroTrack</h1>
         </div>
+      </div>
+
+      <div class="theme-popover hidden" id="theme-popover">
+        <div class="whey-head">
+          <span class="eyebrow">THÈME & COULEUR</span>
+          <button class="whey-del-btn keep-enabled" id="btn-close-theme" type="button" style="color:#94a3b8;">×</button>
+        </div>
+        <div class="theme-swatches" id="theme-swatches"></div>
       </div>
 
       <div class="header-right">
@@ -2568,7 +2663,7 @@
       </div>
       <label class="toggle-inline-row" style="margin-top:7px;">
         <span>Auto-fermer les sections en scrollant</span>
-        <input type="checkbox" id="auto-collapse-scroll-chk" checked style="width:17px;height:17px;accent-color:#3b82f6;" />
+        <input type="checkbox" id="auto-collapse-scroll-chk" checked style="width:17px;height:17px;accent-color:var(--blue-bright);" />
       </label>
       <div class="btn-row">
         <button class="btn-blue" id="btn-force-sync" type="button">Forcer sync</button>
@@ -2622,10 +2717,10 @@
             <span>✨</span>
             <strong style="font-size:12px;">Saisie rapide IA</strong>
           </div>
-          <span style="font-size:9.5px;color:#8b95a8;">Eau, sommeil, suppléments, repas...</span>
+          <span style="font-size:9.5px;color:#8b95a8;">Eau, pas, sommeil, suppléments...</span>
         </div>
         <div class="ai-input-row">
-          <input type="text" id="ai-nlp-input" class="ai-input" placeholder="Ex : +50cl eau, sommeil 7h45 score 88, taille 85.5..." />
+          <input type="text" id="ai-nlp-input" class="ai-input" placeholder="Ex : +50cl eau, 9500 pas, sommeil 7h45 score 88..." />
           <button class="ai-btn" id="btn-ai-nlp" type="button">✨ Go</button>
         </div>
       </div>
@@ -3000,7 +3095,7 @@
                   <span id="plan-mode-caption">Entraînement</span>
                 </div>
               </div>
-              <button class="reuse-btn full-width" id="btn-toggle-sub" type="button" style="color:#60a5fa;" title="Substitution ou compléments de macros">✨ Substituer / Compléter</button>
+              <button class="reuse-btn full-width" id="btn-toggle-sub" type="button" style="color:var(--blue-bright);" title="Substitution ou compléments de macros">✨ Substituer / Compléter</button>
             </div>
             <div class="ai-sub-drawer hidden" id="ai-sub-drawer">
               <div class="whey-head">
@@ -3256,7 +3351,7 @@
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
           <div>
             <div class="eyebrow">INVENTAIRE & DOSES</div>
-            <strong style="font-size:14.5px;">Pots ouverts</strong>
+            <strong style="font-size:14.5px;">Pots ouverts par marque</strong>
           </div>
           <span style="font-size:10.5px;color:#8b95a8;">Sync cloud</span>
         </div>
@@ -3288,7 +3383,7 @@
         <div class="panel-card">
           <div class="whey-head">
             <div>
-              <div class="eyebrow">APPLE SANTÉ</div>
+              <div class="eyebrow">APPLE SANTÉ & FITNESS</div>
               <strong style="font-size:14.5px;" id="health-day-title">Données du jour</strong>
             </div>
             <div style="display:flex;align-items:center;gap:6px;">
@@ -3299,7 +3394,7 @@
           <div class="health-tiles" id="health-tiles"></div>
         </div>
         <div class="panel-card">
-          <div class="eyebrow">SÉANCES DU JOUR (HEVY & FITNESS)</div>
+          <div class="eyebrow">SÉANCES DU JOUR (HEVY, CARDIO & APPLE FITNESS)</div>
           <div id="health-workouts-list" style="margin-top:6px;"></div>
         </div>
 
@@ -3315,14 +3410,20 @@
                 <button class="seg-mini-btn" data-hevy-range="30" type="button">30j</button>
               </div>
               <button class="reuse-btn" id="btn-sync-hevy-history" type="button" title="Importer les 10 dernières séances via API Hevy">↻ Importer</button>
+              <button class="reuse-btn" id="btn-toggle-hevy-body" type="button" title="Replier / Déplier">▼</button>
             </div>
           </div>
-          <div class="hevy-kpis-grid" id="hevy-kpis-grid"></div>
-          <div class="muscle-bars-wrap" id="hevy-muscles-bars"></div>
+          <div id="hevy-collapsible-body">
+            <div class="hevy-kpis-grid" id="hevy-kpis-grid"></div>
+            <div class="muscle-bars-wrap" id="hevy-muscles-bars"></div>
+          </div>
         </div>
       </div><div class="col">
         <div class="panel-card">
-          <div class="eyebrow">DERNIÈRES SÉANCES HEVY</div>
+          <div class="whey-head">
+            <div class="eyebrow">DERNIÈRES SÉANCES HEVY</div>
+            <button class="reuse-btn" id="btn-toggle-hevy-recent" type="button" title="Replier / Déplier">▼</button>
+          </div>
           <div id="hevy-recent-list" style="margin-top:6px;"></div>
         </div>
         <div class="panel-card">
@@ -3451,6 +3552,15 @@
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;");
     }
+
+    const THEMES = {
+      blue:    { label: "Bleu",     primary: "#2563eb", bright: "#3b82f6", soft: "rgba(59, 130, 246, 0.20)" },
+      emerald: { label: "Émeraude", primary: "#059669", bright: "#10b981", soft: "rgba(16, 185, 129, 0.20)" },
+      purple:  { label: "Violet",   primary: "#7c3aed", bright: "#a855f7", soft: "rgba(168, 85, 247, 0.20)" },
+      orange:  { label: "Orange",   primary: "#ea580c", bright: "#f97316", soft: "rgba(249, 115, 22, 0.20)" },
+      rose:    { label: "Rose",     primary: "#e11d48", bright: "#f43f5e", soft: "rgba(244, 63, 94, 0.20)" },
+      cyan:    { label: "Cyan",     primary: "#0284c7", bright: "#38bdf8", soft: "rgba(56, 189, 248, 0.20)" }
+    };
 
     const FOODS = {
       "Whey isolat": { p: 86.0, f: 1.5, c: 2.0, kcal: 365 },
@@ -3725,18 +3835,55 @@
       healthWorkerUrl: DEFAULT_HEALTH_WORKER,
       healthKey: "",
       bedtime: "22:30",
-      autoCollapseScroll: true
+      autoCollapseScroll: true,
+      theme: "blue"
     };
     if (typeof cfg.aiUrl !== "string") cfg.aiUrl = "";
     if (typeof cfg.healthWorkerUrl !== "string" || !cfg.healthWorkerUrl.trim()) cfg.healthWorkerUrl = DEFAULT_HEALTH_WORKER;
     if (typeof cfg.healthKey !== "string") cfg.healthKey = "";
     if (typeof cfg.bedtime !== "string" || !/^\d{2}:\d{2}$/.test(cfg.bedtime)) cfg.bedtime = "22:30";
     if (typeof cfg.autoCollapseScroll !== "boolean") cfg.autoCollapseScroll = true;
+    if (!THEMES[cfg.theme]) cfg.theme = "blue";
+
+    function applyTheme(themeKey) {
+      const key = THEMES[themeKey] ? themeKey : "blue";
+      const t = THEMES[key];
+      const root = document.documentElement;
+      root.style.setProperty("--blue", t.primary);
+      root.style.setProperty("--blue-bright", t.bright);
+      root.style.setProperty("--accent-soft", t.soft);
+      cfg.theme = key;
+      writeStore(CFG_KEY, cfg);
+      renderThemeSwatches();
+    }
+
+    function renderThemeSwatches() {
+      const box = document.getElementById("theme-swatches");
+      if (!box) return;
+      box.innerHTML = Object.keys(THEMES).map(k => {
+        const t = THEMES[k];
+        return `
+          <button class="theme-swatch-btn keep-enabled ${cfg.theme === k ? "active" : ""}" data-pick-theme="${k}" type="button">
+            <span class="theme-dot" style="background:${t.bright};"></span>
+            <span>${t.label}</span>
+          </button>
+        `;
+      }).join("");
+      box.querySelectorAll("[data-pick-theme]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          applyTheme(btn.dataset.pickTheme);
+          const pop = document.getElementById("theme-popover");
+          if (pop) pop.classList.add("hidden");
+          toast(`Thème : ${THEMES[btn.dataset.pickTheme].label}`);
+        });
+      });
+    }
 
     let store = readStore(LOGS_KEY, {});
     if (!store || typeof store !== "object") store = {};
     let stockMeta = readStore(STOCK_KEY, {});
     if (!stockMeta || typeof stockMeta !== "object") stockMeta = {};
+    let openStockBrands = {};
     let importedRecords = readStore(IMPORTS_KEY, []);
     if (!Array.isArray(importedRecords)) importedRecords = [];
     let foodPrefs = readStore(FOOD_PREFS_KEY, {});
@@ -3750,6 +3897,8 @@
     let coachAnswers = {};
     let lastHealthDiag = "";
     let hevyRecapDays = 7;
+    let hevySummaryCollapsed = false;
+    let hevyRecentCollapsed = false;
 
     function saveMealItemPref(phaseKey, modeKey, mealId, idx, food, qty) {
       const planKey = `${phaseKey || DEFAULT_PHASE}__${modeKey === "rest" ? "rest" : "training"}`;
@@ -3986,12 +4135,28 @@
       return prefixKey ? normalizeHealthDay(healthStore[prefixKey]) : null;
     }
 
+    // Priorité stricte à Apple Santé / Fitness dès que la mesure officielle est synchronisée
+    function getEffectiveSteps(iso, day = null) {
+      const h = getHealthDay(iso);
+      const healthSteps = h && Number(h.steps) > 0 ? Math.round(Number(h.steps)) : 0;
+      const dObj = day || (store[iso] ? getDay(iso) : null);
+      const manualSteps = dObj && Number(dObj.manualSteps) > 0 ? Math.round(Number(dObj.manualSteps)) : 0;
+
+      if (healthSteps > 0) {
+        if (manualSteps > 0 && manualSteps !== healthSteps) {
+          return { steps: healthSteps, source: "health_override", conflictManual: manualSteps };
+        }
+        return { steps: healthSteps, source: "health", conflictManual: null };
+      }
+      if (manualSteps > 0) {
+        return { steps: manualSteps, source: "manual", conflictManual: null };
+      }
+      return { steps: 0, source: "none", conflictManual: null };
+    }
+
     function getEffectiveSleepHours(iso, day) {
       const h = getHealthDay(iso);
       const healthSlp = h && h.sleep && Number(h.sleep.asleepH) > 0 ? Number(h.sleep.asleepH) : null;
-      if (day && day.sleepAuto === false && day.sleepHours && Number(day.sleepHours) > 0) {
-        return Number(day.sleepHours);
-      }
       if (healthSlp !== null) return healthSlp;
       return day && day.sleepHours && Number(day.sleepHours) > 0 ? Number(day.sleepHours) : null;
     }
@@ -4001,9 +4166,6 @@
       const hScore = h && h.sleep && (h.sleep.score !== undefined && h.sleep.score !== null)
         ? Number(h.sleep.score)
         : null;
-      if (day && day.sleepQualityManual === true && day.sleepQuality !== null && day.sleepQuality !== undefined) {
-        return Number(day.sleepQuality);
-      }
       if (hScore !== null && !isNaN(hScore)) {
         return Math.min(100, Math.max(0, Math.round(hScore)));
       }
@@ -4015,10 +4177,11 @@
 
     function getEffectiveWaterLiters(iso, day) {
       const manual = day ? (Number(day.water) || 0) : 0;
-      if (day && day.waterAuto === false && manual > 0) return manual;
       const h = getHealthDay(iso);
       const hWater = h && h.water !== undefined && h.water !== null ? Number(h.water) : null;
-      if (hWater !== null && !isNaN(hWater) && hWater > 0) return hWater;
+      if (hWater !== null && !isNaN(hWater) && hWater > 0) {
+        return Math.max(hWater, manual);
+      }
       return manual;
     }
 
@@ -4041,6 +4204,7 @@
         dayLocked: false,
         weight: null,
         waist: null,
+        manualSteps: null,
         sleepHours: null,
         sleepQuality: null,
         water: 0,
@@ -4676,7 +4840,7 @@
           <div class="hevy-ex-item">
             <div class="hevy-ex-head">
               <span>${escapeHtml(ex.name || "Exercice")}</span>
-              <span style="color:#60a5fa;font-size:10px;white-space:nowrap;">${ex.volumeKg ? `${Number(ex.volumeKg).toLocaleString("fr-FR")} kg` : `${ex.setsCount || 0} séries`}</span>
+              <span style="color:var(--blue-bright);font-size:10px;white-space:nowrap;">${ex.volumeKg ? `${Number(ex.volumeKg).toLocaleString("fr-FR")} kg` : `${ex.setsCount || 0} séries`}</span>
             </div>
             ${mBadge}
             ${setsHtml ? `<div class="hevy-sets-pills">${setsHtml}</div>` : ""}
@@ -4891,6 +5055,7 @@
       d.dayLocked = Boolean(d.dayLocked);
       d.weight = (d.weight !== null && d.weight !== undefined && d.weight !== "" && Number(d.weight) > 0) ? Number(d.weight) : null;
       d.waist = (d.waist !== null && d.waist !== undefined && d.waist !== "" && Number(d.waist) > 0) ? Number(d.waist) : null;
+      d.manualSteps = (d.manualSteps !== null && d.manualSteps !== undefined && d.manualSteps !== "" && Number(d.manualSteps) > 0) ? Math.round(Number(d.manualSteps)) : null;
       d.sleepHours = (d.sleepHours !== null && d.sleepHours !== undefined && d.sleepHours !== "" && Number(d.sleepHours) > 0) ? Number(d.sleepHours) : null;
       d.sleepQuality = (d.sleepQuality !== null && d.sleepQuality !== undefined && d.sleepQuality !== "" && !isNaN(Number(d.sleepQuality))) ? Math.min(100, Math.max(0, Math.round(Number(d.sleepQuality)))) : null;
       d.water = Number(d.water) || 0;
@@ -5533,6 +5698,7 @@
         }
         const effSleep = getEffectiveSleepHours(iso, d);
         const effQual = getEffectiveSleepQuality(iso, d);
+        const effSteps = getEffectiveSteps(iso, d).steps;
         list.push({
           iso,
           weight: (d && d.weight !== null && Number(d.weight) > 0) ? Number(d.weight) : null,
@@ -5545,7 +5711,7 @@
           c: Math.round(st.valC),
           f: Math.round(st.valF),
           kcal: Math.round(st.valKcal),
-          steps: Number((getHealthDay(iso) || {}).steps) || 0,
+          steps: effSteps,
           workoutMin: getWorkoutMinutes(iso),
           workoutCount: getWorkoutsOfDay(iso).length,
           adherence
@@ -5558,8 +5724,7 @@
       const vals = [];
       for (let i = 0; i < 7; i++) {
         const di = addDaysISO(endIso, -i);
-        const hd = getHealthDay(di);
-        const s = hd ? Number(hd.steps) : 0;
+        const s = getEffectiveSteps(di).steps;
         if (s > 0) vals.push(s);
       }
       if (!vals.length) return { avg: null, count: 0 };
@@ -5711,7 +5876,7 @@
         out.push("Sommeil vs obj. 8h00 : aucune donnée");
       }
 
-      const stepVals = days.map(x => Number((getHealthDay(x.iso) || {}).steps) || 0).filter(v => v > 0);
+      const stepVals = days.map(x => getEffectiveSteps(x.iso, x.d).steps).filter(v => v > 0);
       if (stepVals.length) {
         out.push(`Pas : moy. ${Math.round(stepVals.reduce((a, b) => a + b, 0) / stepVals.length).toLocaleString("fr-FR")}/j (${stepVals.length}j)`);
       }
@@ -5739,7 +5904,7 @@
       days.forEach(x => {
         const sVal = getEffectiveSleepHours(x.iso, x.d);
         const wVal = getEffectiveWaterLiters(x.iso, x.d);
-        const stp = Number((getHealthDay(x.iso) || {}).steps) || 0;
+        const stp = getEffectiveSteps(x.iso, x.d).steps;
         const wkMinDay = getWorkoutMinutes(x.iso);
         out.push(`- ${x.iso} (${x.d.mode === "rest" ? "Repos" : "Train"}) : ${Math.round(x.st.valKcal)}/${x.st.targets.kcal || 2388} kcal | P${Math.round(x.st.valP)} G${Math.round(x.st.valC)} L${Math.round(x.st.valF)} | Eau ${wVal.toFixed(2)}L | Sel ${x.d.salt.toFixed(1)}g | Caf ${Math.round(x.caf.totalMg)}mg | Sommeil ${sVal ? formatSleepHours(sVal) : "—"} | Poids ${x.d.weight ? x.d.weight.toFixed(1) + "kg" : "—"} | Taille ${x.d.waist ? x.d.waist.toFixed(1) + "cm" : "—"} | Pas ${stp || "—"} | Séances ${x.wk.length} (${fmtMinutes(wkMinDay)})`);
       });
@@ -5754,6 +5919,7 @@
         d.dayLocked ||
         (d.weight && d.weight > 0) ||
         (d.waist && d.waist > 0) ||
+        (d.manualSteps && d.manualSteps > 0) ||
         (d.sleepHours && d.sleepHours > 0) ||
         d.sleepQuality !== null ||
         d.water > 0 ||
@@ -5790,7 +5956,9 @@
               });
             }
           });
-          return { id: w.id, brand: w.brand, name: w.name, totalDoses, usedDoses: Number(usedDoses.toFixed(1)), color: "#3b82f6" };
+          const rem = Math.max(0, Number((totalDoses - usedDoses).toFixed(1)));
+          const pct = Math.min(100, Math.round((rem / totalDoses) * 100));
+          return { id: w.id, brand: w.brand, name: w.name, totalDoses, usedDoses: Number(usedDoses.toFixed(1)), rem, pct, color: "#3b82f6" };
         }),
         ...BOOSTERS.map(b => {
           const totalDoses = b.servingsPerTub || 30;
@@ -5807,33 +5975,73 @@
               });
             }
           });
-          return { id: b.id, brand: b.brand, name: b.name, totalDoses, usedDoses: Number(usedDoses.toFixed(1)), color: "#f97316" };
+          const rem = Math.max(0, Number((totalDoses - usedDoses).toFixed(1)));
+          const pct = Math.min(100, Math.round((rem / totalDoses) * 100));
+          return { id: b.id, brand: "Boosters (" + b.brand + ")", groupKey: "Boosters", name: b.name, totalDoses, usedDoses: Number(usedDoses.toFixed(1)), rem, pct, color: "#f97316" };
         })
       ];
 
-      box.innerHTML = items.map(it => {
-        const rem = Math.max(0, Number((it.totalDoses - it.usedDoses).toFixed(1)));
-        const pct = Math.min(100, Math.round((rem / it.totalDoses) * 100));
-        const low = pct <= 20;
-        return `
-          <div class="stock-tub-card">
-            <div class="stock-tub-top">
-              <div style="min-width:0;">
-                <div class="supp-name">${escapeHtml(it.brand)} — ${escapeHtml(it.name)}</div>
-                <div class="supp-sub">${it.usedDoses} dose${it.usedDoses > 1 ? "s" : ""} prise${it.usedDoses > 1 ? "s" : ""} sur ${it.totalDoses}</div>
+      const groups = {};
+      items.forEach(it => {
+        const gName = it.groupKey || it.brand;
+        if (!groups[gName]) groups[gName] = [];
+        groups[gName].push(it);
+      });
+
+      box.innerHTML = Object.keys(groups).map(gName => {
+        const list = groups[gName];
+        const isOpen = Boolean(openStockBrands[gName]);
+        const lowCount = list.filter(x => x.pct <= 20).length;
+        const avgPct = Math.round(list.reduce((a, x) => a + x.pct, 0) / list.length);
+
+        const cardsHtml = list.map(it => {
+          const low = it.pct <= 20;
+          return `
+            <div class="stock-tub-card">
+              <div class="stock-tub-top">
+                <div style="min-width:0;">
+                  <div class="supp-name">${escapeHtml(it.name)}</div>
+                  <div class="supp-sub">${it.usedDoses} dose${it.usedDoses > 1 ? "s" : ""} prise${it.usedDoses > 1 ? "s" : ""} sur ${it.totalDoses}</div>
+                </div>
+                <span class="whey-macros-badge" style="${low ? "color:#fb7185;border-color:rgba(244,63,94,0.4);background:rgba(244,63,94,0.15);" : ""}">${it.rem} / ${it.totalDoses} doses</span>
               </div>
-              <span class="whey-macros-badge" style="${low ? "color:#fb7185;border-color:rgba(244,63,94,0.4);background:rgba(244,63,94,0.15);" : ""}">${rem} / ${it.totalDoses} doses</span>
+              <div class="mini-track" style="margin:6px 0 0;">
+                <div style="height:100%;width:${it.pct}%;background:${low ? "#f43f5e" : it.color};border-radius:0;"></div>
+              </div>
+              <div class="stock-controls-row">
+                <span style="font-size:10px;color:#7c879c;">Niveau pot : ${it.pct}%</span>
+                <button class="reuse-btn" data-reset-tub="${escapeHtml(it.id)}" type="button">🔄 Nouveau pot (${it.totalDoses})</button>
+              </div>
             </div>
-            <div class="mini-track" style="margin:6px 0 0;">
-              <div style="height:100%;width:${pct}%;background:${low ? "#f43f5e" : it.color};border-radius:0;"></div>
-            </div>
-            <div class="stock-controls-row">
-              <span style="font-size:10px;color:#7c879c;">Niveau pot : ${pct}%</span>
-              <button class="reuse-btn" data-reset-tub="${escapeHtml(it.id)}" type="button">🔄 Nouveau pot (${it.totalDoses})</button>
+          `;
+        }).join("");
+
+        return `
+          <div class="stock-brand-group">
+            <button class="stock-brand-btn ${isOpen ? "open" : ""}" data-toggle-brand="${escapeHtml(gName)}" type="button">
+              <div style="min-width:0;">
+                <div style="font-size:13px;font-weight:800;color:#ffffff;">${escapeHtml(gName)}</div>
+                <div class="supp-sub">${list.length} produit${list.length > 1 ? "s" : ""} • Niveau moyen ${avgPct}%${lowCount ? ` • ⚠️ ${lowCount} bas` : ""}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                <span class="whey-macros-badge">${list.length} pot${list.length > 1 ? "s" : ""}</span>
+                <span class="acc-chevron-pill">${isOpen ? "▼" : "▶"}</span>
+              </div>
+            </button>
+            <div class="stock-brand-items ${isOpen ? "" : "hidden"}">
+              ${cardsHtml}
             </div>
           </div>
         `;
       }).join("");
+
+      box.querySelectorAll("[data-toggle-brand]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const g = btn.dataset.toggleBrand;
+          openStockBrands[g] = !openStockBrands[g];
+          renderStockTab();
+        });
+      });
 
       box.querySelectorAll("[data-reset-tub]").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -5870,11 +6078,12 @@
         const slp = getEffectiveSleepHours(k, d);
         const qual = getEffectiveSleepQuality(k, d);
         const wat = getEffectiveWaterLiters(k, d);
+        const stp = getEffectiveSteps(k, d).steps;
         const extra = [
           d.weight ? `${d.weight.toFixed(1)}kg` : "",
           d.waist ? `${d.waist.toFixed(1)}cm` : "",
           slp ? `🌙 ${formatSleepHours(slp)}${qual !== null ? ` (${qual}/100)` : ""}` : "",
-          getHealthDay(k) && getHealthDay(k).steps ? `👣 ${Number(getHealthDay(k).steps).toLocaleString("fr-FR")}` : "",
+          stp ? `👣 ${stp.toLocaleString("fr-FR")}` : "",
           getWorkoutsOfDay(k).length ? `🏋️ ${getWorkoutsOfDay(k).length}` : ""
         ].filter(Boolean).join(" • ");
         return `
@@ -6014,6 +6223,11 @@
         .sort((a, b) => String(a.start || "").localeCompare(String(b.start || "")));
     }
 
+    function isHevyWorkout(w) {
+      if (!w || typeof w !== "object") return false;
+      return w.source === "hevy" || Boolean(w.volumeKg) || (Array.isArray(w.exercises) && w.exercises.length > 0);
+    }
+
     function getAllHevyWorkouts(daysSpan = null) {
       const minIso = daysSpan ? addDaysISO(todayISO(), -(daysSpan - 1)) : null;
       const all = [];
@@ -6025,9 +6239,7 @@
         const h = normalizeHealthDay(healthStore[rawKey]);
         if (!h || !h.workouts || typeof h.workouts !== "object") return;
         Object.values(h.workouts).forEach(w => {
-          if (!w || typeof w !== "object") return;
-          const isHevy = w.source === "hevy" || Boolean(w.volumeKg) || (Array.isArray(w.exercises) && w.exercises.length > 0);
-          if (isHevy) all.push({ iso, ...w });
+          if (isHevyWorkout(w)) all.push({ iso, ...w });
         });
       });
       return all.sort((a, b) => String(b.start || b.iso).localeCompare(String(a.start || a.iso)));
@@ -6037,6 +6249,16 @@
       document.querySelectorAll("#hevy-range-mini .seg-mini-btn").forEach(btn => {
         btn.classList.toggle("active", Number(btn.dataset.hevyRange) === hevyRecapDays);
       });
+
+      const bodyEl = document.getElementById("hevy-collapsible-body");
+      const btnTogBody = document.getElementById("btn-toggle-hevy-body");
+      if (bodyEl) bodyEl.classList.toggle("hidden", hevySummaryCollapsed);
+      if (btnTogBody) btnTogBody.textContent = hevySummaryCollapsed ? "▶" : "▼";
+
+      const recentBox = document.getElementById("hevy-recent-list");
+      const btnTogRecent = document.getElementById("btn-toggle-hevy-recent");
+      if (recentBox) recentBox.classList.toggle("hidden", hevyRecentCollapsed);
+      if (btnTogRecent) btnTogRecent.textContent = hevyRecentCollapsed ? "▶" : "▼";
 
       const periodWorkouts = getAllHevyWorkouts(hevyRecapDays);
       const totalSessions = periodWorkouts.length;
@@ -6108,7 +6330,6 @@
         }
       }
 
-      const recentBox = document.getElementById("hevy-recent-list");
       if (recentBox) {
         const recentAll = getAllHevyWorkouts(null).slice(0, 10);
         if (!recentAll.length) {
@@ -6126,7 +6347,7 @@
                     <div class="health-tile-sub">${escapeHtml(formatFrenchDate(w.iso))}${w.min ? ` • ${fmtMinutes(w.min)}` : ""}</div>
                   </div>
                   <div style="text-align:right;flex-shrink:0;">
-                    <strong style="font-size:12px;color:#60a5fa;">${w.volumeKg ? fmtTonnage(w.volumeKg) : ""}</strong>
+                    <strong style="font-size:12px;color:var(--blue-bright);">${w.volumeKg ? fmtTonnage(w.volumeKg) : ""}</strong>
                     <div class="health-tile-sub">${w.sets ? `${w.sets} séries` : ""}</div>
                   </div>
                 </div>
@@ -6158,6 +6379,7 @@
       return `il y a ${Math.floor(h / 24)} j`;
     }
 
+    // Réconciliation stricte : Apple Santé & Fitness priment toujours sur les saisies manuelles en cas d'écart
     function applyHealthToDays() {
       let changed = false;
       Object.keys(healthStore || {}).forEach(rawKey => {
@@ -6169,15 +6391,15 @@
         const d = getDay(iso);
 
         const w = Number(h.weight);
-        if (w > 0 && (d.weight === null || d.weightAuto === true) && d.weight !== w) {
+        if (w > 0 && d.weight !== w) {
           d.weight = w; d.weightAuto = true; changed = true;
         }
         const waistVal = Number(h.waist);
-        if (waistVal > 0 && (d.waist === null || d.waistAuto === true) && d.waist !== waistVal) {
+        if (waistVal > 0 && d.waist !== waistVal) {
           d.waist = waistVal; d.waistAuto = true; changed = true;
         }
         const sl = h.sleep ? Number(h.sleep.asleepH) : 0;
-        if (sl > 0 && (d.sleepHours === null || d.sleepAuto === true) && d.sleepHours !== sl) {
+        if (sl > 0 && d.sleepHours !== sl) {
           d.sleepHours = sl; d.sleepAuto = true; changed = true;
         }
         const hScore = h.sleep && (h.sleep.score !== undefined && h.sleep.score !== null)
@@ -6185,15 +6407,21 @@
           : null;
         if (hScore !== null && !isNaN(hScore)) {
           const clampedScore = Math.min(100, Math.max(0, Math.round(hScore)));
-          if ((!d.sleepQualityManual || d.sleepQuality === null) && d.sleepQuality !== clampedScore) {
+          if (d.sleepQuality !== clampedScore) {
             d.sleepQuality = clampedScore;
+            d.sleepQualityManual = false;
             changed = true;
           }
         }
         const waterVal = Number(h.water);
-        if (waterVal > 0 && (d.water === 0 || d.waterAuto === true) && d.water !== waterVal) {
+        if (waterVal > 0 && waterVal > d.water) {
           d.water = waterVal;
           d.waterAuto = true;
+          changed = true;
+        }
+        const stp = Number(h.steps);
+        if (stp > 0 && d.manualSteps !== null && d.manualSteps !== Math.round(stp)) {
+          d.manualSteps = null;
           changed = true;
         }
       });
@@ -6204,12 +6432,12 @@
     function renderHealthStrip() {
       const box = document.getElementById("health-today-strip");
       if (!box) return;
-      const h = getHealthDay(currentDate);
+      const effStp = getEffectiveSteps(currentDate);
       const wk = getWorkoutsOfDay(currentDate);
       const d = getDay(currentDate);
       const avg7Steps = getRolling7DayStepsAverage(currentDate);
-      const stepsTxt = h && h.steps
-        ? `${Number(h.steps).toLocaleString("fr-FR")} pas${avg7Steps.avg !== null ? ` • Moy 7j : ${avg7Steps.avg.toLocaleString("fr-FR")}` : ""}`
+      const stepsTxt = effStp.steps > 0
+        ? `${effStp.steps.toLocaleString("fr-FR")} pas${avg7Steps.avg !== null ? ` • Moy 7j : ${avg7Steps.avg.toLocaleString("fr-FR")}` : ""}`
         : (avg7Steps.avg !== null ? `Moy 7j : ${avg7Steps.avg.toLocaleString("fr-FR")} pas` : "— pas");
 
       box.innerHTML = [
@@ -6236,6 +6464,7 @@
       const effSleep = getEffectiveSleepHours(iso, d);
       const effQual = getEffectiveSleepQuality(iso, d);
       const effWater = getEffectiveWaterLiters(iso, d);
+      const effStepsObj = getEffectiveSteps(iso, d);
 
       const title = document.getElementById("health-day-title");
       if (title) title.textContent = formatFrenchDate(iso);
@@ -6261,6 +6490,9 @@
         const weightDisplay = d.weight ? Number(d.weight).toFixed(1) + " kg" : (h && h.weight ? Number(h.weight).toFixed(1) + " kg" : "—");
         const waistDisplay = d.waist ? Number(d.waist).toFixed(1) + " cm" : (h && h.waist ? Number(h.waist).toFixed(1) + " cm" : "—");
         const waterDisplay = effWater.toFixed(2) + " L";
+        const stepsSourceLabel = effStepsObj.source === "health_override"
+          ? "⌚ Apple Santé (prioritaire)"
+          : (effStepsObj.source === "health" ? "Auto (Apple Santé)" : (effStepsObj.source === "manual" ? "Saisi manuellement" : "Non synchronisé"));
 
         tiles.innerHTML = `
           <div class="health-tile">
@@ -6270,9 +6502,13 @@
           </div>
           <div class="health-tile">
             <div class="health-tile-lbl">👣 Pas</div>
-            <div class="health-tile-val">${h && h.steps ? Number(h.steps).toLocaleString("fr-FR") : "—"}</div>
-            <div class="health-tile-sub">${avg7Steps.avg !== null ? `Moy. 7j glissants : ${avg7Steps.avg.toLocaleString("fr-FR")}/j (${avg7Steps.count}j)` : "Cumul du jour"}</div>
-            ${buildTickBar(Number(h && h.steps) || 0, avg7Steps.avg, Math.max(Number(h && h.steps) || 0, avg7Steps.avg || 0, 1) * 1.15, "#22c55e")}
+            <div class="health-tile-val">${effStepsObj.steps > 0 ? effStepsObj.steps.toLocaleString("fr-FR") : "—"}</div>
+            <div class="health-tile-sub">${stepsSourceLabel}${avg7Steps.avg !== null ? ` • Moy 7j : ${avg7Steps.avg.toLocaleString("fr-FR")}` : ""}</div>
+            ${buildTickBar(effStepsObj.steps, avg7Steps.avg, Math.max(effStepsObj.steps, avg7Steps.avg || 0, 1) * 1.15, "#22c55e")}
+            <div class="steps-manual-row">
+              <input type="number" id="manual-steps-input" class="steps-manual-input" inputmode="numeric" min="0" step="100" value="${d.manualSteps || ""}" placeholder="Corriger pas..." />
+              <button class="reuse-btn" id="btn-save-manual-steps" type="button">OK</button>
+            </div>
           </div>
           <div class="health-tile">
             <div class="health-tile-lbl">📏 Tour de taille</div>
@@ -6290,14 +6526,29 @@
             <div class="health-tile-sub">${escapeHtml([qualLabel, bed].filter(Boolean).join(" • ") || "Aucune donnée")}</div>
             ${s ? buildSleepStageBar(s) : ""}
           </div>`;
+
+        const btnSteps = document.getElementById("btn-save-manual-steps");
+        const inpSteps = document.getElementById("manual-steps-input");
+        const saveStepsHandler = () => {
+          const val = parseInt((inpSteps ? inpSteps.value : "").trim(), 10);
+          const dayObj = getDay(iso);
+          dayObj.manualSteps = (!isNaN(val) && val > 0) ? val : null;
+          persistAndSync();
+          renderAll();
+          toast(dayObj.manualSteps ? `Pas enregistrés : ${dayObj.manualSteps.toLocaleString("fr-FR")}` : "Pas manuels effacés");
+        };
+        if (btnSteps) btnSteps.addEventListener("click", saveStepsHandler);
+        if (inpSteps) inpSteps.addEventListener("keydown", e => {
+          if (e.key === "Enter") { e.preventDefault(); saveStepsHandler(); }
+        });
       }
 
       const list = document.getElementById("health-workouts-list");
       if (list) {
         list.innerHTML = wk.length ? wk.map(w => {
-          const isHevy = w.source === "hevy" || Boolean(w.volumeKg) || (Array.isArray(w.muscles) && w.muscles.length > 0);
+          const isHevy = isHevyWorkout(w);
           const recH = estimateWorkoutRecoveryHours(w, iso);
-          const srcTag = `<span class="wk-tag ${isHevy ? "hevy" : ""}">${isHevy ? "🏋️ Hevy" : "⌚ Fitness"}</span>`;
+          const srcTag = `<span class="wk-tag ${isHevy ? "hevy" : "fitness"}">${isHevy ? "🏋️ Hevy" : "🏃 Apple Fitness"}</span>`;
           const recTag = `<span class="wk-tag rec">🔄 Récup. ~${recH}h</span>`;
           const volTag = w.volumeKg ? `<span class="wk-tag">Vol. ${Number(w.volumeKg).toLocaleString("fr-FR")} kg</span>` : "";
           const setsTag = w.sets ? `<span class="wk-tag">${w.sets} séries</span>` : "";
@@ -6337,10 +6588,11 @@
           const hd = getHealthDay(di);
           const dayObj = store[di] ? getDay(di) : null;
           const rowSlp = getEffectiveSleepHours(di, dayObj);
+          const rowStp = getEffectiveSteps(di, dayObj).steps;
           rows.push(`
             <div class="health-row health-week-grid">
               <span>${di.slice(8)}/${di.slice(5, 7)}</span>
-              <strong>${hd && hd.steps ? Number(hd.steps).toLocaleString("fr-FR") : "—"}</strong>
+              <strong>${rowStp > 0 ? rowStp.toLocaleString("fr-FR") : "—"}</strong>
               <span>${dayObj && dayObj.weight ? dayObj.weight.toFixed(1) : (hd && hd.weight ? Number(hd.weight).toFixed(1) : "—")}</span>
               <span>${rowSlp ? formatSleepHours(rowSlp) : "—"}</span>
               <span>${getWorkoutsOfDay(di).length || "—"}</span>
@@ -7063,7 +7315,7 @@
           </div>
           ${rows}
           <div class="meal-summary-bar">
-            <div class="meal-sum-box"><strong style="color:#60a5fa;">P ${mValP.toFixed(1)}g</strong> <span style="color:#64748b;">/${mP.toFixed(0)}g</span></div>
+            <div class="meal-sum-box"><strong style="color:var(--blue-bright);">P ${mValP.toFixed(1)}g</strong> <span style="color:#64748b;">/${mP.toFixed(0)}g</span></div>
             <div class="meal-sum-box"><strong style="color:#fb923c;">C ${mValC.toFixed(1)}g</strong> <span style="color:#64748b;">/${mC.toFixed(0)}g</span></div>
             <div class="meal-sum-box"><strong style="color:#38bdf8;">L ${mValF.toFixed(1)}g</strong> <span style="color:#64748b;">/${mF.toFixed(0)}g</span></div>
           </div>
@@ -7398,6 +7650,32 @@
       const el = document.getElementById(id);
       if (el) el.addEventListener(ev, fn);
     };
+
+    on("btn-theme-toggle", "click", e => {
+      e.stopPropagation();
+      const pop = document.getElementById("theme-popover");
+      if (pop) pop.classList.toggle("hidden");
+    });
+    on("btn-close-theme", "click", () => {
+      const pop = document.getElementById("theme-popover");
+      if (pop) pop.classList.add("hidden");
+    });
+    document.addEventListener("click", e => {
+      const pop = document.getElementById("theme-popover");
+      const btn = document.getElementById("btn-theme-toggle");
+      if (pop && !pop.classList.contains("hidden") && !pop.contains(e.target) && btn && !btn.contains(e.target)) {
+        pop.classList.add("hidden");
+      }
+    });
+
+    on("btn-toggle-hevy-body", "click", () => {
+      hevySummaryCollapsed = !hevySummaryCollapsed;
+      renderHevySection();
+    });
+    on("btn-toggle-hevy-recent", "click", () => {
+      hevyRecentCollapsed = !hevyRecentCollapsed;
+      renderHevySection();
+    });
 
     on("nav-today", "click", () => switchMainTab("today"));
     on("nav-radar", "click", () => switchMainTab("radar"));
@@ -7780,6 +8058,7 @@
     on("btn-save-cloud", "click", async () => {
       const rawBed = document.getElementById("bedtime-input").value;
       cfg = {
+        ...cfg,
         url: document.getElementById("firebase-url-input").value.trim().replace(/\/+$/, "") || DEFAULT_URL,
         uid: document.getElementById("sync-uid-input").value.trim() || DEFAULT_UID,
         aiUrl: document.getElementById("ai-worker-url-input").value.trim().replace(/\/+$/, ""),
@@ -8091,6 +8370,7 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
   "energyDelta": 0,
   "weightKg": null,
   "waistCm": null,
+  "manualSteps": null,
   "sleepHours": null,
   "sleepQuality": null,
   "wheyShakes": [{"id":"bt_iso_clear_mango","qty":25}],
@@ -8153,6 +8433,7 @@ Renvoie UNIQUEMENT un JSON valide avec uniquement les champs pertinents (mets 0/
         }
         if (a.weightKg && Number(a.weightKg) > 0) { day.weight = Number(Number(a.weightKg).toFixed(1)); day.weightAuto = false; }
         if (a.waistCm && Number(a.waistCm) > 0) { day.waist = Number(Number(a.waistCm).toFixed(1)); day.waistAuto = false; }
+        if (a.manualSteps && Number(a.manualSteps) > 0) { day.manualSteps = Math.round(Number(a.manualSteps)); }
         if (a.sleepHours && Number(a.sleepHours) > 0) { day.sleepHours = Number(Number(a.sleepHours).toFixed(2)); day.sleepAuto = false; }
         if (a.sleepQuality !== null && a.sleepQuality !== undefined && !isNaN(Number(a.sleepQuality))) {
           day.sleepQuality = Math.min(100, Math.max(0, Math.round(Number(a.sleepQuality))));
@@ -8404,7 +8685,7 @@ Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros appo
       const water = days.map(x => getEffectiveWaterLiters(x.iso, x.d));
       const sleeps = days.map(x => getEffectiveSleepHours(x.iso, x.d)).filter(v => v > 0);
       const quals = days.map(x => getEffectiveSleepQuality(x.iso, x.d)).filter(v => v !== null && v !== undefined);
-      const steps = days.map(x => Number((getHealthDay(x.iso) || {}).steps) || 0).filter(v => v > 0);
+      const steps = days.map(x => getEffectiveSteps(x.iso, x.d).steps).filter(v => v > 0);
       const weights = days.map(x => x.d.weight).filter(v => v > 0);
       const waists = days.map(x => x.d.waist).filter(v => v > 0);
       const allWk = days.flatMap(x => x.wk.map(w => ({ iso: x.iso, ...w })));
@@ -8448,7 +8729,7 @@ Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros appo
           L.push(`Tour de taille : ${evo(waists, "cm")}`);
           L.push(`Pas : ${steps.length ? `moy. ${Math.round(avg(steps)).toLocaleString("fr-FR")}/j (${steps.length}j)` : "aucune donnée"}`);
           const wkMin = allWk.reduce((a, w) => a + (Number(w.min) || 0), 0);
-          const hevyWks = allWk.filter(w => w.source === "hevy" || Number(w.volumeKg) > 0);
+          const hevyWks = allWk.filter(w => isHevyWorkout(w));
           const hevyVol = hevyWks.reduce((a, w) => a + (Number(w.volumeKg) || 0), 0);
           const hevySets = hevyWks.reduce((a, w) => a + (Number(w.sets) || 0), 0);
           const hevyMuscles = [...new Set(hevyWks.flatMap(w => Array.isArray(w.muscles) ? w.muscles : []))];
@@ -8472,7 +8753,7 @@ Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros appo
           rows.forEach(r => L.push(`${r[0]} : ${r[1]}/${r[2]} ${r[3]} (${Math.round((r[1] / r[2]) * 100)} %)`));
           L.push(`Pas moy. : ${steps.length ? Math.round(avg(steps)).toLocaleString("fr-FR") : "aucune donnée"}`);
           const wkMin = allWk.reduce((a, w) => a + (Number(w.min) || 0), 0);
-          const hevyWks = allWk.filter(w => w.source === "hevy" || Number(w.volumeKg) > 0);
+          const hevyWks = allWk.filter(w => isHevyWorkout(w));
           const hevyVol = hevyWks.reduce((a, w) => a + (Number(w.volumeKg) || 0), 0);
           L.push(`Séances : ${allWk.length ? `${allWk.length} (${fmtMinutes(wkMin)} cumulées${hevyVol > 0 ? `, tonnage Hevy ${fmtTonnage(hevyVol)}` : ""})` : "aucune enregistrée"}`);
           break;
@@ -8486,10 +8767,10 @@ Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros appo
         case "q18": {
           const lines = [];
           allWk.forEach(w => {
-            if (w.source === "hevy") return;
+            if (isHevyWorkout(w)) return;
             lines.push(`${w.iso.slice(5)} ${w.name || "Cardio"} • ${fmtMinutes(w.min)}${w.kcal ? ` • ${Math.round(w.kcal)} kcal` : ""}${w.avgHr ? ` • FC moy. ${Math.round(w.avgHr)} bpm` : ""}${w.maxHr ? ` • max ${Math.round(w.maxHr)} bpm` : ""}`);
           });
-          L.push(`Séances cardio enregistrées : ${lines.length ? "\n" + lines.join("\n") : "aucune"}`);
+          L.push(`Séances cardio / Fitness enregistrées : ${lines.length ? "\n" + lines.join("\n") : "aucune"}`);
           L.push(`Pas : ${steps.length ? `moy. ${Math.round(avg(steps)).toLocaleString("fr-FR")}/j` : "aucune donnée"}`);
           break;
         }
@@ -8586,6 +8867,7 @@ ${contextLines ? `\nContexte fourni par l'utilisateur pour cette question unique
       });
     }
 
+    applyTheme(cfg.theme);
     renderAll();
     autoSync();
   </script>
