@@ -2446,6 +2446,26 @@
     .status-pill.pill-warn { background:rgba(245,158,11,.18); color:#fbbf24; border-color:rgba(245,158,11,.4); }
     .status-pill.pill-err { background:rgba(244,63,94,.18); color:#fb7185; border-color:rgba(244,63,94,.4); }
 
+    .hevy-kpis-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; margin-top:8px; }
+    .hevy-kpi-box { background:#090c13; border:1px solid #181f30; border-radius:10px; padding:7px 6px; text-align:center; min-width:0; }
+    .hevy-kpi-lbl { font-size:8.5px; font-weight:800; text-transform:uppercase; color:#8b95a8; letter-spacing:.04em; }
+    .hevy-kpi-val { margin-top:3px; font-size:15px; font-weight:700; color:#f8fafc; font-family:var(--serif); white-space:nowrap; }
+    .muscle-bars-wrap { margin-top:9px; display:flex; flex-direction:column; gap:5px; }
+    .muscle-bar-row { display:grid; grid-template-columns:82px 1fr auto; align-items:center; gap:7px; font-size:10.5px; }
+    .muscle-bar-name { font-weight:700; color:#cbd5e1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .muscle-bar-track { height:7px; background:#090c13; border:1px solid #181f30; border-radius:999px; overflow:hidden; }
+    .muscle-bar-fill { height:100%; background:linear-gradient(90deg, #2563eb, #38bdf8); border-radius:999px; }
+    .muscle-bar-val { font-size:9.5px; font-weight:700; color:#94a3b8; white-space:nowrap; }
+    .hevy-ex-details { margin-top:6px; background:#090c13; border:1px solid #181f30; border-radius:8px; padding:5px 8px; }
+    .hevy-ex-details summary { cursor:pointer; font-size:10.5px; font-weight:700; color:#93c5fd; list-style:none; }
+    .hevy-ex-details summary::-webkit-details-marker { display:none; }
+    .hevy-ex-item { padding:5px 0; border-top:1px solid rgba(255,255,255,.05); font-size:10.5px; }
+    .hevy-ex-item:first-of-type { border-top:none; margin-top:4px; }
+    .hevy-ex-head { display:flex; justify-content:space-between; gap:6px; font-weight:700; color:#e2e8f0; }
+    .hevy-sets-pills { display:flex; flex-wrap:wrap; gap:4px; margin-top:3px; }
+    .hevy-set-chip { font-size:9.5px; font-weight:600; padding:1px 6px; border-radius:6px; background:#121724; border:1px solid #1e273b; color:#cbd5e1; }
+    .hevy-recent-card { background:#090c13; border:1px solid #181f30; border-radius:10px; padding:8px 9px; margin-top:6px; }
+
     button { transition: transform 0.12s ease, opacity 0.15s ease, background-color 0.2s ease, border-color 0.2s ease; }
     button:active:not(:disabled) { transform: scale(0.97); }
     @keyframes tabFadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -2527,6 +2547,16 @@
         <input type="url" id="ai-worker-url-input" placeholder="https://macrotrack-ai.ton-compte.workers.dev" />
       </div>
       <div class="field-row-2">
+        <div class="field-group" style="margin-bottom:0;">
+          <label>URL Worker Santé / Hevy</label>
+          <input type="url" id="health-worker-url-input" placeholder="https://macrotrack-health.maximeweber007.workers.dev" />
+        </div>
+        <div class="field-group" style="margin-bottom:0;">
+          <label>Clé secrète Santé / Hevy</label>
+          <input type="password" id="health-key-input" placeholder="HEALTH_KEY" />
+        </div>
+      </div>
+      <div class="field-row-2" style="margin-top:7px;">
         <div class="field-group" style="margin-bottom:0;">
           <label>Heure coucher (caféine)</label>
           <input type="time" id="bedtime-input" value="22:30" />
@@ -3272,7 +3302,29 @@
           <div class="eyebrow">SÉANCES DU JOUR (HEVY & FITNESS)</div>
           <div id="health-workouts-list" style="margin-top:6px;"></div>
         </div>
+
+        <div class="panel-card">
+          <div class="whey-head">
+            <div>
+              <div class="eyebrow">MUSCULATION HEVY</div>
+              <strong style="font-size:14.5px;">Volume & Muscles travaillés</strong>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="seg-mini" id="hevy-range-mini">
+                <button class="seg-mini-btn active" data-hevy-range="7" type="button">7j</button>
+                <button class="seg-mini-btn" data-hevy-range="30" type="button">30j</button>
+              </div>
+              <button class="reuse-btn" id="btn-sync-hevy-history" type="button" title="Importer les 12 dernières séances via API Hevy">↻ Importer</button>
+            </div>
+          </div>
+          <div class="hevy-kpis-grid" id="hevy-kpis-grid"></div>
+          <div class="muscle-bars-wrap" id="hevy-muscles-bars"></div>
+        </div>
       </div><div class="col">
+        <div class="panel-card">
+          <div class="eyebrow">DERNIÈRES SÉANCES HEVY</div>
+          <div id="hevy-recent-list" style="margin-top:6px;"></div>
+        </div>
         <div class="panel-card">
           <div class="eyebrow">7 DERNIERS JOURS</div>
           <div id="health-week-table" style="margin-top:6px;"></div>
@@ -3282,13 +3334,12 @@
           <div class="import-preview-box" id="health-diag-box">Chargement du diagnostic...</div>
         </details>
         <details class="panel-card">
-          <summary style="cursor:pointer;font-weight:800;font-size:12.5px;">⚙️ Configuration Health Auto Export</summary>
+          <summary style="cursor:pointer;font-weight:800;font-size:12.5px;">⚙️ Configuration Health Auto Export & Hevy</summary>
           <div class="import-preview-box">1. App Health Auto Export (Premium) → Automations → + → REST API.
-2. URL : l'adresse du Worker macrotrack-health.
+2. URL : https://macrotrack-health.maximeweber007.workers.dev
 3. Header : X-MacroTrack-Key = ta clé secrète.
-4. Automation 1 : Health Metrics (Poids, Pas, Sommeil, Eau, Tour de taille), JSON, agrégation par jour, période 7 derniers jours.
-5. Automation 2 : Workouts, JSON, période 7 derniers jours.
-6. Laisse l'app tourner en arrière-plan (ne la ferme pas depuis le sélecteur d'apps).</div>
+4. Hevy Developers → Webhook URL : https://macrotrack-health.maximeweber007.workers.dev/hevy
+5. Hevy Developers → Authorization header : ta clé secrète (HEALTH_KEY).</div>
         </details>
         <details class="panel-card">
           <summary style="cursor:pointer;font-weight:800;font-size:12.5px;">📥 Import manuel (secours)</summary>
@@ -3648,6 +3699,7 @@
     const COACH_CTX_KEY = "macrotrack_ascend_coach_ctx_v1";
     const DEFAULT_URL = "https://macrotrack-sync-default-rtdb.firebaseio.com";
     const DEFAULT_UID = "maxime-macrotrack";
+    const DEFAULT_HEALTH_WORKER = "https://macrotrack-health.maximeweber007.workers.dev";
 
     function readStore(key, fallback) {
       try {
@@ -3668,10 +3720,14 @@
       url: DEFAULT_URL,
       uid: DEFAULT_UID,
       aiUrl: "",
+      healthWorkerUrl: DEFAULT_HEALTH_WORKER,
+      healthKey: "",
       bedtime: "22:30",
       autoCollapseScroll: true
     };
     if (typeof cfg.aiUrl !== "string") cfg.aiUrl = "";
+    if (typeof cfg.healthWorkerUrl !== "string" || !cfg.healthWorkerUrl.trim()) cfg.healthWorkerUrl = DEFAULT_HEALTH_WORKER;
+    if (typeof cfg.healthKey !== "string") cfg.healthKey = "";
     if (typeof cfg.bedtime !== "string" || !/^\d{2}:\d{2}$/.test(cfg.bedtime)) cfg.bedtime = "22:30";
     if (typeof cfg.autoCollapseScroll !== "boolean") cfg.autoCollapseScroll = true;
 
@@ -3691,6 +3747,7 @@
     if (!coachCtxStore || typeof coachCtxStore !== "object") coachCtxStore = {};
     let coachAnswers = {};
     let lastHealthDiag = "";
+    let hevyRecapDays = 7;
 
     function saveMealItemPref(phaseKey, modeKey, mealId, idx, food, qty) {
       const planKey = `${phaseKey || DEFAULT_PHASE}__${modeKey === "rest" ? "rest" : "training"}`;
@@ -3815,7 +3872,7 @@
         const isSelected = dayIso === currentDate;
         const isTodayCell = dayIso === nowIso;
         const dObj = store[dayIso] ? getDay(dayIso) : null;
-        const hasAny = dObj ? hasDayData(dObj, getDayStats(dObj)) : false;
+        const hasAny = (dObj ? hasDayData(dObj, getDayStats(dObj)) : false) || getWorkoutsOfDay(dayIso).length > 0;
 
         cells.push(`
           <button class="week-day-cell ${isSelected ? "selected" : ""} ${isTodayCell ? "is-today" : ""} ${hasAny ? "has-data" : ""}" data-pick-week-day="${dayIso}" type="button">
@@ -4600,6 +4657,44 @@
       </div>`;
     }
 
+    function buildHevyExercisesHtml(w) {
+      if (!w || !Array.isArray(w.exercises) || !w.exercises.length) return "";
+      const exRows = w.exercises.map(ex => {
+        const setsHtml = Array.isArray(ex.sets) && ex.sets.length
+          ? ex.sets.map(s => {
+              const kgTxt = Number(s.kg) > 0 ? `${s.kg}kg` : "PDC";
+              const rpeTxt = s.rpe ? ` @${s.rpe}` : "";
+              return `<span class="hevy-set-chip">${s.reps || 0}×${kgTxt}${rpeTxt}</span>`;
+            }).join("")
+          : "";
+        const mBadge = Array.isArray(ex.muscles) && ex.muscles.length
+          ? `<span style="font-size:9px;color:#8b95a8;font-weight:600;">${escapeHtml(ex.muscles.join(", "))}</span>`
+          : "";
+        return `
+          <div class="hevy-ex-item">
+            <div class="hevy-ex-head">
+              <span>${escapeHtml(ex.name || "Exercice")}</span>
+              <span style="color:#60a5fa;font-size:10px;white-space:nowrap;">${ex.volumeKg ? `${Number(ex.volumeKg).toLocaleString("fr-FR")} kg` : `${ex.setsCount || 0} séries`}</span>
+            </div>
+            ${mBadge}
+            ${setsHtml ? `<div class="hevy-sets-pills">${setsHtml}</div>` : ""}
+          </div>
+        `;
+      }).join("");
+      return `
+        <details class="hevy-ex-details">
+          <summary>📋 Détail exercices (${w.exercises.length})</summary>
+          <div style="margin-top:4px;">${exRows}</div>
+        </details>
+      `;
+    }
+
+    function fmtTonnage(kg) {
+      const v = Math.round(Number(kg) || 0);
+      if (v >= 10000) return `${(v / 1000).toFixed(1)} t`;
+      return `${v.toLocaleString("fr-FR")} kg`;
+    }
+
     function estimateWorkoutRecoveryHours(w, iso) {
       const mins = Number(w && w.min) || 0;
       const avgHr = Number(w && w.avgHr) || 0;
@@ -5204,6 +5299,50 @@
         updateHealthDiagnostic(errNote);
         if (showToast) toast(errNote);
         return false;
+      }
+    }
+
+    async function syncHevyHistoryNow() {
+      const btn = document.getElementById("btn-sync-hevy-history");
+      const wUrl = (cfg.healthWorkerUrl || DEFAULT_HEALTH_WORKER).trim().replace(/\/+$/, "");
+      const hKey = (cfg.healthKey || "").trim();
+      if (!wUrl) {
+        toast("URL Worker Santé manquante dans Cloud");
+        return;
+      }
+      if (!hKey) {
+        toast("Renseigne la clé secrète Santé / Hevy dans Cloud");
+        const p = document.getElementById("cloud-panel");
+        if (p) p.classList.remove("hidden");
+        return;
+      }
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "⏳...";
+      }
+      try {
+        const res = await fetch(`${wUrl}/hevy/sync?count=12`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-MacroTrack-Key": hKey
+          },
+          body: "{}"
+        });
+        if (!res.ok) {
+          const txt = await res.text().catch(() => "");
+          throw new Error(`HTTP ${res.status} ${txt.slice(0, 60)}`);
+        }
+        const json = await res.json();
+        await pullHealthOnly(false);
+        toast(`Hevy : ${json.hevy || 0} séance(s) importée(s)`);
+      } catch (e) {
+        toast("Erreur import Hevy : " + (e && e.message ? e.message : "échec"));
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "↻ Importer";
+        }
       }
     }
 
@@ -5873,6 +6012,131 @@
         .sort((a, b) => String(a.start || "").localeCompare(String(b.start || "")));
     }
 
+    function getAllHevyWorkouts(daysSpan = null) {
+      const minIso = daysSpan ? addDaysISO(todayISO(), -(daysSpan - 1)) : null;
+      const all = [];
+      Object.keys(healthStore || {}).forEach(rawKey => {
+        const m = String(rawKey).match(/^(\d{4}-\d{2}-\d{2})/);
+        if (!m) return;
+        const iso = m[1];
+        if (minIso && iso < minIso) return;
+        const h = normalizeHealthDay(healthStore[rawKey]);
+        if (!h || !h.workouts || typeof h.workouts !== "object") return;
+        Object.values(h.workouts).forEach(w => {
+          if (!w || typeof w !== "object") return;
+          const isHevy = w.source === "hevy" || Boolean(w.volumeKg) || (Array.isArray(w.exercises) && w.exercises.length > 0);
+          if (isHevy) all.push({ iso, ...w });
+        });
+      });
+      return all.sort((a, b) => String(b.start || b.iso).localeCompare(String(a.start || a.iso)));
+    }
+
+    function renderHevySection() {
+      document.querySelectorAll("#hevy-range-mini .seg-mini-btn").forEach(btn => {
+        btn.classList.toggle("active", Number(btn.dataset.hevyRange) === hevyRecapDays);
+      });
+
+      const periodWorkouts = getAllHevyWorkouts(hevyRecapDays);
+      const totalSessions = periodWorkouts.length;
+      const totalVolume = periodWorkouts.reduce((a, w) => a + (Number(w.volumeKg) || 0), 0);
+      const totalSets = periodWorkouts.reduce((a, w) => a + (Number(w.sets) || 0), 0);
+      const totalMin = periodWorkouts.reduce((a, w) => a + (Number(w.min) || 0), 0);
+
+      const kpiBox = document.getElementById("hevy-kpis-grid");
+      if (kpiBox) {
+        kpiBox.innerHTML = `
+          <div class="hevy-kpi-box">
+            <div class="hevy-kpi-lbl">Séances</div>
+            <div class="hevy-kpi-val">${totalSessions}</div>
+          </div>
+          <div class="hevy-kpi-box">
+            <div class="hevy-kpi-lbl">Tonnage</div>
+            <div class="hevy-kpi-val">${fmtTonnage(totalVolume)}</div>
+          </div>
+          <div class="hevy-kpi-box">
+            <div class="hevy-kpi-lbl">Séries</div>
+            <div class="hevy-kpi-val">${totalSets}</div>
+          </div>
+          <div class="hevy-kpi-box">
+            <div class="hevy-kpi-lbl">Durée</div>
+            <div class="hevy-kpi-val">${totalMin > 0 ? fmtMinutes(totalMin) : "—"}</div>
+          </div>
+        `;
+      }
+
+      const muscleMap = {};
+      periodWorkouts.forEach(w => {
+        if (Array.isArray(w.exercises) && w.exercises.length) {
+          w.exercises.forEach(ex => {
+            const mList = Array.isArray(ex.muscles) && ex.muscles.length ? ex.muscles : [];
+            const setsCnt = Number(ex.setsCount) || (Array.isArray(ex.sets) ? ex.sets.length : 1);
+            const vol = Number(ex.volumeKg) || 0;
+            mList.forEach(mName => {
+              if (!muscleMap[mName]) muscleMap[mName] = { sets: 0, volume: 0, sessions: 0 };
+              muscleMap[mName].sets += setsCnt;
+              muscleMap[mName].volume += vol;
+            });
+          });
+        }
+        const wMuscles = Array.isArray(w.muscles) ? w.muscles : [];
+        wMuscles.forEach(mName => {
+          if (!muscleMap[mName]) muscleMap[mName] = { sets: Number(w.sets) || 1, volume: Number(w.volumeKg) || 0, sessions: 0 };
+          muscleMap[mName].sessions += 1;
+        });
+      });
+
+      const muscleEntries = Object.entries(muscleMap).sort((a, b) => (b[1].sets - a[1].sets) || (b[1].volume - a[1].volume));
+      const barsBox = document.getElementById("hevy-muscles-bars");
+      if (barsBox) {
+        if (!muscleEntries.length) {
+          barsBox.innerHTML = `<div style="color:#7c879c;font-size:11px;margin-top:4px;">Aucune séance Hevy enregistrée sur les ${hevyRecapDays} derniers jours.</div>`;
+        } else {
+          const maxSets = Math.max(1, ...muscleEntries.map(e => e[1].sets));
+          barsBox.innerHTML = muscleEntries.map(([mName, st]) => {
+            const pct = Math.max(8, Math.round((st.sets / maxSets) * 100));
+            const rightTxt = st.volume > 0 ? `${st.sets} séries • ${fmtTonnage(st.volume)}` : `${st.sets} séries`;
+            return `
+              <div class="muscle-bar-row">
+                <span class="muscle-bar-name">${escapeHtml(mName)}</span>
+                <div class="muscle-bar-track"><div class="muscle-bar-fill" style="width:${pct}%"></div></div>
+                <span class="muscle-bar-val">${rightTxt}</span>
+              </div>
+            `;
+          }).join("");
+        }
+      }
+
+      const recentBox = document.getElementById("hevy-recent-list");
+      if (recentBox) {
+        const recentAll = getAllHevyWorkouts(null).slice(0, 10);
+        if (!recentAll.length) {
+          recentBox.innerHTML = `<div style="color:#7c879c;font-size:11.5px;margin-top:4px;">Aucune séance Hevy enregistrée. Clique sur « ↻ Importer » ou termine une séance dans Hevy.</div>`;
+        } else {
+          recentBox.innerHTML = recentAll.map(w => {
+            const mTags = Array.isArray(w.muscles) && w.muscles.length
+              ? w.muscles.map(m => `<span class="wk-tag hevy">${escapeHtml(m)}</span>`).join("")
+              : "";
+            return `
+              <div class="hevy-recent-card">
+                <div class="whey-head">
+                  <div style="min-width:0;">
+                    <strong style="font-size:12px;color:#f8fafc;">${escapeHtml(w.name || "Séance Hevy")}</strong>
+                    <div class="health-tile-sub">${escapeHtml(formatFrenchDate(w.iso))}${w.min ? ` • ${fmtMinutes(w.min)}` : ""}</div>
+                  </div>
+                  <div style="text-align:right;flex-shrink:0;">
+                    <strong style="font-size:12px;color:#60a5fa;">${w.volumeKg ? fmtTonnage(w.volumeKg) : ""}</strong>
+                    <div class="health-tile-sub">${w.sets ? `${w.sets} séries` : ""}</div>
+                  </div>
+                </div>
+                ${mTags ? `<div class="wk-tags">${mTags}</div>` : ""}
+                ${buildHevyExercisesHtml(w)}
+              </div>
+            `;
+          }).join("");
+        }
+      }
+    }
+
     function getWorkoutMinutes(iso) {
       return getWorkoutsOfDay(iso).reduce((acc, w) => acc + (Number(w.min) || 0), 0);
     }
@@ -6040,6 +6304,7 @@
             : "";
           const hrLine = `${escapeHtml(String(w.start || "").slice(11, 16))}${w.avgHr ? ` • FC moy. ${Math.round(w.avgHr)} bpm` : ""}${w.maxHr ? ` • max ${Math.round(w.maxHr)} bpm` : ""}`;
           const hrChart = buildWorkoutHrSparkline(w.hrSeries);
+          const exDetails = isHevy ? buildHevyExercisesHtml(w) : "";
 
           return `
             <div class="health-row">
@@ -6049,6 +6314,7 @@
                 ${musclesLine}
                 <div class="wk-tags">${srcTag}${recTag}${volTag}${setsTag}</div>
                 ${hrChart}
+                ${exDetails}
               </div>
               <div style="text-align:right;flex-shrink:0;">
                 <strong>${fmtMinutes(w.min)}</strong>
@@ -6058,6 +6324,8 @@
         }).join("")
           : `<div style="color:#7c879c;font-size:11.5px;">Aucune séance ce jour-là.</div>`;
       }
+
+      renderHevySection();
 
       const wkBox = document.getElementById("health-week-table");
       if (wkBox) {
@@ -7117,6 +7385,13 @@
       });
     });
 
+    document.querySelectorAll("#hevy-range-mini .seg-mini-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        hevyRecapDays = Number(btn.dataset.hevyRange) || 7;
+        renderHevySection();
+      });
+    });
+
     const on = (id, ev, fn) => {
       const el = document.getElementById(id);
       if (el) el.addEventListener(ev, fn);
@@ -7128,6 +7403,7 @@
     on("nav-history", "click", () => switchMainTab("history"));
     on("nav-imports", "click", () => { switchMainTab("imports"); pullHealthOnly(false); });
     on("health-today-strip", "click", () => { switchMainTab("imports"); pullHealthOnly(false); });
+    on("btn-sync-hevy-history", "click", syncHevyHistoryNow);
     on("btn-refresh-health-now", "click", async () => {
       const btn = document.getElementById("btn-refresh-health-now");
       if (btn) btn.disabled = true;
@@ -7474,11 +7750,15 @@
     const fbInp = document.getElementById("firebase-url-input");
     const uidInp = document.getElementById("sync-uid-input");
     const aiInp = document.getElementById("ai-worker-url-input");
+    const hwInp = document.getElementById("health-worker-url-input");
+    const hkInp = document.getElementById("health-key-input");
     const bedInp = document.getElementById("bedtime-input");
     const autoChk = document.getElementById("auto-collapse-scroll-chk");
     if (fbInp) fbInp.value = cfg.url;
     if (uidInp) uidInp.value = cfg.uid;
     if (aiInp) aiInp.value = cfg.aiUrl || "";
+    if (hwInp) hwInp.value = cfg.healthWorkerUrl || DEFAULT_HEALTH_WORKER;
+    if (hkInp) hkInp.value = cfg.healthKey || "";
     if (bedInp) bedInp.value = cfg.bedtime || "22:30";
     if (autoChk) autoChk.checked = Boolean(cfg.autoCollapseScroll);
 
@@ -7501,6 +7781,8 @@
         url: document.getElementById("firebase-url-input").value.trim().replace(/\/+$/, "") || DEFAULT_URL,
         uid: document.getElementById("sync-uid-input").value.trim() || DEFAULT_UID,
         aiUrl: document.getElementById("ai-worker-url-input").value.trim().replace(/\/+$/, ""),
+        healthWorkerUrl: document.getElementById("health-worker-url-input").value.trim().replace(/\/+$/, "") || DEFAULT_HEALTH_WORKER,
+        healthKey: document.getElementById("health-key-input").value.trim(),
         bedtime: /^\d{2}:\d{2}$/.test(rawBed) ? rawBed : "22:30",
         autoCollapseScroll: Boolean(document.getElementById("auto-collapse-scroll-chk").checked)
       };
@@ -8071,7 +8353,7 @@ Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros appo
       },
       q15: {
         title: "Quelles ont été tes réussites/difficultés de la semaine ?",
-        instruction: "Mets en avant 2 ou 3 réussites et 1 difficulté, chiffrées, à partir du corps (poids, tour de taille), de la régularité/progression à l'entraînement (séances, pas) et du sommeil, plus le contexte. Priorise les fondations et la constance étape par étape sans micro-contrôle. Ne détaille ni l'alimentation ni l'hydratation."
+        instruction: "Mets en avant 2 ou 3 réussites et 1 difficulté, chiffrées, à partir du corps (poids, tour de taille), de la régularité/progression à l'entraînement (séances, tonnage Hevy, groupes musculaires, pas) et du sommeil, plus le contexte. Priorise les fondations et la constance étape par étape sans micro-contrôle. Ne détaille ni l'alimentation ni l'hydratation."
       },
       q16: {
         title: "Quels sont les objectifs que tu te fixes pour la semaine prochaine ?",
@@ -8164,9 +8446,16 @@ Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros appo
           L.push(`Tour de taille : ${evo(waists, "cm")}`);
           L.push(`Pas : ${steps.length ? `moy. ${Math.round(avg(steps)).toLocaleString("fr-FR")}/j (${steps.length}j)` : "aucune donnée"}`);
           const wkMin = allWk.reduce((a, w) => a + (Number(w.min) || 0), 0);
+          const hevyWks = allWk.filter(w => w.source === "hevy" || Number(w.volumeKg) > 0);
+          const hevyVol = hevyWks.reduce((a, w) => a + (Number(w.volumeKg) || 0), 0);
+          const hevySets = hevyWks.reduce((a, w) => a + (Number(w.sets) || 0), 0);
+          const hevyMuscles = [...new Set(hevyWks.flatMap(w => Array.isArray(w.muscles) ? w.muscles : []))];
           L.push(`Séances : ${allWk.length ? `${allWk.length} (${fmtMinutes(wkMin)} cumulées, moy. ${fmtMinutes(Math.round(wkMin / allWk.length))}/séance)` : "aucune enregistrée"}`);
+          if (hevyWks.length) {
+            L.push(`Musculation Hevy : ${hevyWks.length} séance(s) • tonnage ${fmtTonnage(hevyVol)} • ${hevySets} séries${hevyMuscles.length ? ` • muscles : ${hevyMuscles.join(", ")}` : ""}`);
+          }
           if (allWk.length) {
-            L.push(`Liste séances : ${allWk.map(w => `${w.iso.slice(5)} ${w.name || "Séance"} (${fmtMinutes(w.min)}${w.kcal ? `, ${Math.round(w.kcal)} kcal` : ""}${w.avgHr ? `, FC ${Math.round(w.avgHr)}` : ""})`).join(" ; ")}`);
+            L.push(`Liste séances : ${allWk.map(w => `${w.iso.slice(5)} ${w.name || "Séance"} (${fmtMinutes(w.min)}${w.volumeKg ? `, ${w.volumeKg}kg` : ""}${w.kcal ? `, ${Math.round(w.kcal)} kcal` : ""}${w.avgHr ? `, FC ${Math.round(w.avgHr)}` : ""})`).join(" ; ")}`);
           }
           L.push(`Sommeil : ${sleeps.length ? `moy. ${formatSleepHours(avg(sleeps))}/nuit (objectif 8h00)` : "aucune donnée"}`);
           break;
@@ -8181,7 +8470,9 @@ Réponds en français en 5 à 8 lignes maximum (aliment + grammage + macros appo
           rows.forEach(r => L.push(`${r[0]} : ${r[1]}/${r[2]} ${r[3]} (${Math.round((r[1] / r[2]) * 100)} %)`));
           L.push(`Pas moy. : ${steps.length ? Math.round(avg(steps)).toLocaleString("fr-FR") : "aucune donnée"}`);
           const wkMin = allWk.reduce((a, w) => a + (Number(w.min) || 0), 0);
-          L.push(`Séances : ${allWk.length ? `${allWk.length} (${fmtMinutes(wkMin)} cumulées)` : "aucune enregistrée"}`);
+          const hevyWks = allWk.filter(w => w.source === "hevy" || Number(w.volumeKg) > 0);
+          const hevyVol = hevyWks.reduce((a, w) => a + (Number(w.volumeKg) || 0), 0);
+          L.push(`Séances : ${allWk.length ? `${allWk.length} (${fmtMinutes(wkMin)} cumulées${hevyVol > 0 ? `, tonnage Hevy ${fmtTonnage(hevyVol)}` : ""})` : "aucune enregistrée"}`);
           break;
         }
         case "q17": {
